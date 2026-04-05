@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.exe
+crash.log
+.terraform.lock.hcl
+
+# macOS
+.DS_Store
+
+# Optional: sensitive variable files
+*.tfvars
+*.tfvars.json
+
+#Certificates for Client VPN
+/Infrastructure/VPN_Auth_Certificates/

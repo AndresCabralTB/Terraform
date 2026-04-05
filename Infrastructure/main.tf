@@ -1,0 +1,41 @@
+#This file will call every resource through modules
+module "VPC_Module" {
+  source = "./VPC-Conf"
+  project_version = var.project_version
+}
+
+module "BastionHost_Module" {
+  source = "./EC2-Conf"
+  project_version = var.project_version
+  subnet_A_id = module.VPC_Module.VPC_Subnet_A_Output.id #Pass the output from the subnet in the VPC module
+  subnet_B_id = module.VPC_Module.VPC_Subnet_B_Output.id #Pass the output from the subnet in the VPC module
+  vpc_id = module.VPC_Module.VPC_Terraform_Output.id
+  cidr_ipv4_mac = var.cidr_ipv4_mac
+}
+
+#Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN
+#module "Client_VPN_Module" {
+#  source            = "./Client-VPN-Conf"
+#  #project_version = var.project_version
+#  subnet_A_id       = module.VPC_Module.VPC_Subnet_A_Output.id
+#  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
+#  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
+#  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
+#}
+
+module "EventBrideEC2_Module" {
+  source = "./Events-Config"
+  project_version = var.project_version
+  BastionHost = module.BastionHost_Module.BastionHost_Output.id
+  PrivateHost = module.BastionHost_Module.PrivateHost_Output.id
+  start_crontab = var.start_crontab
+  stop_crontab = var.stop_crontab
+}
+
+module "Route53_Module" {
+  source = "./Route-53-Conf"
+  project_version = var.project_version
+  vpc_id = module.VPC_Module.VPC_Terraform_Output.id
+  bastionhost_private_ip = module.BastionHost_Module.BastionHost_Output.private_ip
+  privatehost_private_ip = module.BastionHost_Module.PrivateHost_Output.private_ip
+}
