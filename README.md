@@ -1,5 +1,7 @@
 # Cloud Infrastructure Project — IaaC
 
+Run: fswatch -o . | xargs -n1 -I{} aws s3 sync . s3://terraform-infrastructure-project --delete
+
 This is an Infrastructure as Code (IaC) project built with Terraform that deploys a secure, self-contained AWS network infrastructure. The entire environment can be deployed and destroyed with a single command.
 
 ## Architecture
