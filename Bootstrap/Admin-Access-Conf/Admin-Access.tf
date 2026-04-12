@@ -14,17 +14,8 @@ resource "aws_iam_group_policy_attachment" "AdminAccessGroupPolicies" {
     group = aws_iam_group.AdminAccessGroup.id
     for_each = toset ([
         #AWS Managed
-        "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-        "arn:aws:iam::aws:policy/EC2InstanceConnect",
-        "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
-        "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-        "arn:aws:iam::aws:policy/AWSCloudShellFullAccess",
-        "arn:aws:iam::aws:policy/AWSCertificateManagerFullAccess",
-        "arn:aws:iam::aws:policy/AmazonEventBridgeFullAccess",
-        "arn:aws:iam::aws:policy/AmazonRoute53FullAccess",
-        "arn:aws:iam::aws:policy/IAMFullAccess",
         #Customer Managed
-        "arn:aws:iam::718254829448:policy/AWSSecretsManager_ReadAccessOnly",
+        "arn:aws:iam::718254829448:policy/AdminAccess_Policy",
         "arn:aws:iam::718254829448:policy/New_Systems_Manager_Policy"
     ])
     policy_arn = each.value

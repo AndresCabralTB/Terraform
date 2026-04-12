@@ -11,6 +11,18 @@ module "BastionHost_Module" {
   subnet_B_id = module.VPC_Module.VPC_Subnet_B_Output.id #Pass the output from the subnet in the VPC module
   vpc_id = module.VPC_Module.VPC_Terraform_Output.id
   cidr_ipv4_mac = var.cidr_ipv4_mac
+  TerraformDB_SecurityGroup_Id = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
+}
+
+module "RDS_Instance_Moduel" {
+  source = "./RDS-DB-Conf"
+  project_version = var.project_version
+  vpc_id = module.VPC_Module.VPC_Terraform_Output.id
+  PrivateHostSG_ID= module.BastionHost_Module.PrivateHost_SecurityGroup.id
+  vpc_subnet_B_id = module.VPC_Module.VPC_Subnet_B_Output.id
+  vpc_subnet_C_id = module.VPC_Module.VPC_Subnet_C_Output.id
+  db_username = var.db_username
+  db_password = var.db_password
 }
 
 #Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN
@@ -24,7 +36,7 @@ module "BastionHost_Module" {
 #}
 
 module "EventBrideEC2_Module" {
-  source = "./Events-Config"
+  source = "./Events-Conf"
   project_version = var.project_version
   BastionHost = module.BastionHost_Module.BastionHost_Output.id
   PrivateHost = module.BastionHost_Module.PrivateHost_Output.id

@@ -12,6 +12,7 @@ crash.log
 # Optional: sensitive variable files
 *.tfvars
 *.tfvars.json
+secrets.tf
 
 #Certificates for Client VPN
 /Infrastructure/VPN_Auth_Certificates/

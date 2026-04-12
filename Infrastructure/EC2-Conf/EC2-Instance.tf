@@ -19,6 +19,10 @@ variable "subnet_B_id" {
   type = string
 }
 
+variable "TerraformDB_SecurityGroup_Id" {
+  type = string
+}
+
 locals {
   BastionHost_InternalName = "bastionhost.cabral.cloud"
   PrivateHost_InternalName = "privatehost.cabral.cloud"
@@ -53,6 +57,7 @@ module "SecurityGroups_Module" {
   vpc_id                 = var.vpc_id
   cidr_ipv4_mac       = var.cidr_ipv4_mac
   privateHost_private_ip = aws_instance.PrivateHost.private_ip
+  TerraformDB_SecurityGroup_Id = var.TerraformDB_SecurityGroup_Id
 }
 
 #Fetch the instance profile created in the bootstrap workspace
@@ -110,4 +115,8 @@ output "BastionHost_Output" {
 
 output "PrivateHost_Output" {
   value = aws_instance.PrivateHost
+}
+
+output "PrivateHost_SecurityGroup" {
+  value = module.SecurityGroups_Module.PrivateHostSecurityGroup_Output
 }

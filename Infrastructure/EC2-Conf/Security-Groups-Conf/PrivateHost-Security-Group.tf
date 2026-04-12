@@ -1,3 +1,7 @@
+variable "TerraformDB_SecurityGroup_Id" {
+  type = string
+}
+
 resource "aws_security_group" "PrivateHostSG" {
     name = "Private-Host-Security-Group"
     vpc_id = var.vpc_id
@@ -21,12 +25,13 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
 }
 
 # Commented out because there is no database to connec to yet
-#resource "aws_vpc_security_group_egress_rule" "BastionHostEgress" {
-#    cidr_ipv4 = var.PrivateHost_Cidr_Ip.cidr_ipv4
-#    from_port = 22
-#    ip_protocol = tcp
-#    security_group_id = aws_security_group.BastionHostSG.id
-#}
+resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {    
+    from_port = 3306
+    to_port = 3306
+    ip_protocol = "tcp"
+    security_group_id = aws_security_group.PrivateHostSG.id
+    referenced_security_group_id = var.TerraformDB_SecurityGroup_Id
+}
 
 output "PrivateHostSecurityGroup_Output" {
   value = aws_security_group.PrivateHostSG
