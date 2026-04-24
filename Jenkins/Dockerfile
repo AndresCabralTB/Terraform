@@ -1,6 +1,6 @@
 FROM jenkins/jenkins:2.555.1-jdk21
 USER root
-RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
+RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim && \
     install -m 0755 -d /etc/apt/keyrings && \
     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
     chmod a+r /etc/apt/keyrings/docker.asc && \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     apt-get update && apt-get install -y docker-ce-cli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-COPY ./Bootstrap/ .
-COPY ./Infrastructure/ .
+COPY ../Bootstrap/ .
+COPY ../Infrastructure/ .
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
