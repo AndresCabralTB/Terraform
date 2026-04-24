@@ -21,8 +21,8 @@ module "RDS_Instance_Moduel" {
   PrivateHostSG_ID= module.BastionHost_Module.PrivateHost_SecurityGroup.id
   vpc_subnet_B_id = module.VPC_Module.VPC_Subnet_B_Output.id
   vpc_subnet_C_id = module.VPC_Module.VPC_Subnet_C_Output.id
-  db_username = var.db_username
-  db_password = var.db_password
+  #db_username = var.db_username
+  #db_password = var.db_password
 }
 
 #Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN

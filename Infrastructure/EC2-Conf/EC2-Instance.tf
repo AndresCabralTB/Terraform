@@ -37,7 +37,7 @@ data "aws_ami" "bastion_ami" {
 
     filter {
     name   = "tag:Name"                  # The tag key
-    values = ["Bastion Host AMI - 29/03/2026"]  # The tag value
+    values = ["Bastion Host AMI - 24/04/2026"]  # The tag value
   }
 }
 

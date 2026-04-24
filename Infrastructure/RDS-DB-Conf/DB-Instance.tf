@@ -11,7 +11,7 @@ variable "vpc_subnet_C_id" {
 }
 
 locals {
-  db_creds = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string)
+  # db_creds = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string) #Set variable to the secrets manager string containing the username and password
 }
 
 resource "aws_db_subnet_group" "terraform_db_SubnetGroup" {
@@ -20,9 +20,15 @@ resource "aws_db_subnet_group" "terraform_db_SubnetGroup" {
   
 }
 
-resource "aws_kms_key" "secrets_key" {
-  description             = "KMS key for RDS master user secret"
-  deletion_window_in_days = 7
+#We will be using an already-existing KMS secret key - but remove this if you want to create a brand new onw
+#resource "aws_kms_key" "secrets_key" {
+#  description             = "KMS key for RDS master user secret ${var.project_version}"
+#  deletion_window_in_days = 7
+#}
+
+#Extract the value from an existing secret 
+data "aws_kms_key" "secret_key_id" {
+  key_id = "96e24ab7-98ee-4746-9ec2-d63d98e5f069"
 }
 
 resource "aws_db_instance" "ProjectDatabasePROD" {
@@ -32,10 +38,11 @@ resource "aws_db_instance" "ProjectDatabasePROD" {
     db_subnet_group_name    = aws_db_subnet_group.terraform_db_SubnetGroup.name #The subnets where the DB will be deployed
     engine                  = "mysql"
     engine_version          = "8.4.8"
-    username                = local.db_creds["username"]
+    username                = "svc_database"
+    #username                = local.db_creds["username"] #Get username from secret created - removed because
     #password                = local.db_creds["password"]
     manage_master_user_password = true
-    master_user_secret_kms_key_id = aws_kms_key.secrets_key.id
+    master_user_secret_kms_key_id = data.aws_kms_key.secret_key_id.id
     parameter_group_name    = "default.mysql8.4"
     identifier = "terraform-db-${var.project_version}"
     instance_class          = "db.t4g.micro"

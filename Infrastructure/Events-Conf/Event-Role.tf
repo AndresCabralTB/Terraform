@@ -1,11 +1,3 @@
-variable "BastionHost" {
-    type = string
-}
-
-variable "PrivateHost" {
-    type = string
-}
-
 variable "project_version" {
     type = string
 }
