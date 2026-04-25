@@ -6,9 +6,6 @@ variable "cidr_ipv4_mac" {
   type = string
 }
 
-variable "privateHost_private_ip" {
-  type = string
-}
 
 resource "aws_security_group" "BastionHostSG" {
     name = "Bastion-Host-Security-Group"
@@ -33,6 +30,20 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress" {
   }
 }
 
+resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_8080" {
+  cidr_ipv4  = "10.0.0.0/22"  # VPN client CIDR
+  description = "Jenkins access from VPN clients"
+  from_port = 8080
+  ip_protocol = "tcp"
+  to_port = 8080
+  security_group_id = aws_security_group.BastionHostSG.id
+
+  tags = {
+    Name = "IngressRule_BastionHost_SG"
+  }
+}
+
+
 resource "aws_vpc_security_group_egress_rule" "BastionHostEgress" {
     cidr_ipv4 = "0.0.0.0/0" # Allow connection to access the internet
     ip_protocol = "-1"
@@ -40,6 +51,6 @@ resource "aws_vpc_security_group_egress_rule" "BastionHostEgress" {
     #referenced_security_group_id = aws_security_group.PrivateHostSG.id
 }
 
-output "BastionHostSecurityGroup_Output" {
-  value = aws_security_group.BastionHostSG
+output "BastionHostSecurityGroup_Id_Output" {
+  value = aws_security_group.BastionHostSG.id
 }

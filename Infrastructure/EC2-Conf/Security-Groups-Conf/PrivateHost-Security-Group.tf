@@ -2,37 +2,50 @@ variable "TerraformDB_SecurityGroup_Id" {
   type = string
 }
 
+# ─────────────────────────────────────────────
+# Private Host Security Group
+# Defines inbound and outbound rules for the private host.
+#
+# Note: The ingress rule allowing the VPN to reach this host (UDP/443),
+# and the egress rule allowing this host to respond to the VPN (TCP/22),
+# are defined in Infrastructure/Client-VPN-Conf/VPN-Security-Groups.tf
+# ─────────────────────────────────────────────
+
 resource "aws_security_group" "PrivateHostSG" {
-    name = "Private-Host-Security-Group"
-    vpc_id = var.vpc_id
-    tags = {
-      Name = "Private-Host-Security-Group"
-    }
-}
-
-resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
-  #cidr_ipv4 = var.cidr_ipv4_mac - Not needed because we reference the security group from the Bastion Host
-  description = "Allow connections from Mac"
-  from_port = 22
-  ip_protocol = "tcp"
-  to_port = 22
-  security_group_id = aws_security_group.PrivateHostSG.id
-  referenced_security_group_id = aws_security_group.BastionHostSG.id
-
+  name   = "Private-Host-Security-Group"
+  vpc_id = var.vpc_id
   tags = {
-    Name = "IngressRule_BastionHost_SG"
+    Name = "Private-Host-Security-Group"
   }
 }
 
-# Commented out because there is no database to connec to yet
-resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {    
-    from_port = 3306
-    to_port = 3306
-    ip_protocol = "tcp"
-    security_group_id = aws_security_group.PrivateHostSG.id
-    referenced_security_group_id = var.TerraformDB_SecurityGroup_Id
+# Allow SSH from the Bastion Host only.
+# Users SSH into the bastion first, then jump to this private host.
+# No direct public SSH access is permitted.
+resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
+  description                  = "Allow SSH connections from Bastion Host"
+  from_port                    = 22
+  ip_protocol                  = "tcp"
+  to_port                      = 22
+  security_group_id            = aws_security_group.PrivateHostSG.id
+  referenced_security_group_id = aws_security_group.BastionHostSG.id
+  tags = {
+    Name = "IngressRule_PrivateHost_SG"
+  }
 }
 
-output "PrivateHostSecurityGroup_Output" {
-  value = aws_security_group.PrivateHostSG
+# Allow the private host to reach the database on port 3306 (MySQL/Aurora).
+# Scoped to the DB security group only — no broad outbound access.
+resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {
+  from_port                    = 3306
+  to_port                      = 3306
+  ip_protocol                  = "tcp"
+  security_group_id            = aws_security_group.PrivateHostSG.id
+  referenced_security_group_id = var.TerraformDB_SecurityGroup_Id
+}
+
+# Output the Private Host SG ID so it can be referenced by other modules,
+# such as the VPN and DB security group configurations.
+output "PrivateHostSecurityGroup_Id_Output" {
+  value = aws_security_group.PrivateHostSG.id
 }

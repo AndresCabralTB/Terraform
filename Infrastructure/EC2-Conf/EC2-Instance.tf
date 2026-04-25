@@ -23,6 +23,7 @@ variable "TerraformDB_SecurityGroup_Id" {
   type = string
 }
 
+
 locals {
   BastionHost_InternalName = "bastionhost.cabral.cloud"
   PrivateHost_InternalName = "privatehost.cabral.cloud"
@@ -56,7 +57,6 @@ module "SecurityGroups_Module" {
   source              = "./Security-Groups-Conf"
   vpc_id                 = var.vpc_id
   cidr_ipv4_mac       = var.cidr_ipv4_mac
-  privateHost_private_ip = aws_instance.PrivateHost.private_ip
   TerraformDB_SecurityGroup_Id = var.TerraformDB_SecurityGroup_Id
 }
 
@@ -80,7 +80,7 @@ resource "aws_instance" "BastionHost" {
         hostnamectl set-hostname ${local.BastionHost_InternalName}
     EOF
 
-    vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Output.id]
+    vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_A_id
 
     tags = {
@@ -93,7 +93,7 @@ resource "aws_instance" "PrivateHost" {
     availability_zone           = "us-east-1b"
     #iam_instance_profile        =  aws_iam_instance_profile.BastionHostProfile.name
     instance_type               = "t2.micro"
-    vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Output.id]
+    vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_B_id
 
     #private_dns_name_options {
@@ -117,6 +117,10 @@ output "PrivateHost_Output" {
   value = aws_instance.PrivateHost
 }
 
-output "PrivateHost_SecurityGroup" {
-  value = module.SecurityGroups_Module.PrivateHostSecurityGroup_Output
+output "PrivateHost_SecurityGroup_Id" {
+  value = module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output
+}
+
+output "BastionHost_SecurityGroup_Id" {
+  value = module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output
 }
