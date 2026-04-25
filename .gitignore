@@ -16,3 +16,4 @@ secrets.tf
 
 #Certificates for Client VPN
 /Infrastructure/VPN_Auth_Certificates/
+*.ovpn

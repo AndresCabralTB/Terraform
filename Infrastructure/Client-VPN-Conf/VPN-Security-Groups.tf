@@ -119,6 +119,42 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_SSH" {
 }
 
 # ─────────────────────────────────────────────
+# Bastion Host -Private Ip- Ingress Rules
+# The private host has no public internet access, so all traffic comes through the VPN.
+# Two rules are needed:
+#   1. UDP/443 — allows the VPN tunnel to be established
+#   2. TCP/22  — allows SSH traffic that flows inside the VPN tunnel
+# ─────────────────────────────────────────────
+
+
+resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_VPN" {
+  description                  = "Allow VPN tunnel (UDP/443) from VPN Security Group to Private Host"
+  from_port                    = 443
+  ip_protocol                  = "udp"
+  to_port                      = 443
+  security_group_id            = var.bastionHost_SecurityGroup_id
+  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Only accept traffic originating from the VPN SG
+  tags = {
+    Name = "IngressRule_BastionHost_Private_SG_VPN"
+  }
+}
+
+# Allows SSH (TCP/22) from the VPN Security Group to the private host.
+# Once the VPN tunnel is established, clients SSH into the private host through it.
+# Source is the VPN Security Group to ensure only tunneled traffic is accepted.
+resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_SSH" {
+  description                  = "Allow SSH (TCP/22) from VPN Security Group to Private Host"
+  from_port                    = 22
+  ip_protocol                  = "tcp"
+  to_port                      = 22
+  security_group_id            = var.bastionHost_SecurityGroup_id
+  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Only accept SSH that comes through the VPN
+  tags = {
+    Name = "IngressRule_BastionHost_Private_SG_SSH"
+  }
+}
+
+# ─────────────────────────────────────────────
 # Private Host Egress Rule
 # Allows the private host to respond to SSH sessions back through the VPN.
 # TCP/22 egress to the VPN Security Group covers SSH return traffic.
@@ -131,5 +167,20 @@ resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress_VPN" {
   from_port                    = 22
   to_port                      = 22
   security_group_id            = var.privateHost_SecurityGroup_id
+  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return SSH traffic goes back through the VPN SG
+}
+
+# ─────────────────────────────────────────────
+# Bastion Host -Private Ip- Egress Rule
+# Allows the private host to respond to SSH sessions back through the VPN.
+# TCP/22 egress to the VPN Security Group covers SSH return traffic.
+# ─────────────────────────────────────────────
+
+
+resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_VPN" {
+  ip_protocol                  = "tcp"
+  from_port                    = 22
+  to_port                      = 22
+  security_group_id            = var.bastionHost_SecurityGroup_id
   referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return SSH traffic goes back through the VPN SG
 }
