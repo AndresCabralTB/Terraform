@@ -150,6 +150,6 @@ This embeds each user's unique cert and key into the base `.ovpn` downloaded fro
 - Split tunneling is enabled, meaning only VPC-bound traffic is routed through the VPN tunnel. All other internet traffic goes directly from the client. This prevents general internet browsing from hanging or being degraded while connected.
 - Both Subnet A and Subnet B are associated as target networks, granting connected clients access to resources in both subnets.
 
-## asdasdgafdgsdfgsdfg
+## Conclusion
 
 The result is a secure, modular, and independently deployable infrastructure. External clients can connect to the VPC through the Client VPN, access private resources directly by DNS name, and the entire environment can be torn down and redeployed at any time without manual intervention.
