@@ -139,6 +139,20 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_VPN" {
   }
 }
 
+resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_8080" {
+  #cidr_ipv4  = "10.0.0.0/22"  # VPN client CIDR
+  description = "Jenkins access from VPN clients"
+  from_port = 8080
+  ip_protocol = "tcp"
+  to_port = 8080
+  security_group_id = var.bastionHost_SecurityGroup_id
+  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return 8080 TCP traffic goes back through the VPN SG
+
+  tags = {
+    Name = "IngressRule_BastionHost_SG_8080"
+  }
+}
+
 # Allows SSH (TCP/22) from the VPN Security Group to the private host.
 # Once the VPN tunnel is established, clients SSH into the private host through it.
 # Source is the VPN Security Group to ensure only tunneled traffic is accepted.
@@ -184,3 +198,17 @@ resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_VPN" {
   security_group_id            = var.bastionHost_SecurityGroup_id
   referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return SSH traffic goes back through the VPN SG
 }
+
+resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_8080" {
+  description                  = "Allow Jenkins response traffic back through VPN"
+  ip_protocol                  = "tcp"
+  from_port                    = 8080
+  to_port                      = 8080
+  security_group_id            = var.bastionHost_SecurityGroup_id
+  referenced_security_group_id = aws_security_group.VPN_Security_Group.id
+  tags = {
+    Name = "EgressRule_BastionHost_SG_8080"
+  }
+}
+
+
