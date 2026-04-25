@@ -38,7 +38,7 @@ data "aws_ami" "bastion_ami" {
 
     filter {
     name   = "tag:Name"                  # The tag key
-    values = ["Bastion Host AMI - 24/04/2026"]  # The tag value
+    values = ["BastionHostAMI-24-04-2026"]  # The tag value
   }
 }
 
@@ -48,7 +48,7 @@ data "aws_ami" "privatehost_ami" {
 
     filter {
     name   = "tag:Name"                  # The tag key
-    values = ["Private EC2 AMI - 17/03/2026"]  # The tag value
+    values = ["PrivateHostAMI-24-04-2026"]  # The tag value
   }
 }
 
