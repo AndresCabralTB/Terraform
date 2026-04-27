@@ -2,7 +2,6 @@
 module "VPC_Module" {
   source = "./VPC-Conf"
   project_version = var.project_version
-  ClientVPN_Endpoint_id = module.Client_VPN_Module.ClientVPN_Endpoint_Output
 }
 
 module "EC2_Module" {
@@ -33,6 +32,8 @@ module "RDS_Instance_Moduel" {
 #  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
 #  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
 #  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
+#  subnet_C_id       = module.VPC_Module.VPC_Subnet_C_Output.id
+#  subnet_C_cidr     = module.VPC_Module.VPC_Subnet_C_Output.cidr_block
 #  vpn_users         = ["alice", "bob", "charlie"]
 #  vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
 #  privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
@@ -56,15 +57,16 @@ module "Route53_Module" {
   privatehost_private_ip = module.EC2_Module.PrivateHost_Output.private_ip
 }
 
-output "vpn_user_certs" {
-  sensitive = true
-  value     = module.Client_VPN_Module.vpn_user_certs
-}
+# Commented out because the VPN configuration is also commented out
+#output "vpn_user_certs" {
+#  sensitive = true
+#  value     = module.Client_VPN_Module.vpn_user_certs
+#}
 
-output "ca_cert" {
-  sensitive = true
-  value     = module.Client_VPN_Module.ca_cert
-}
+#output "ca_cert" {
+#  sensitive = true
+#  value     = module.Client_VPN_Module.ca_cert
+#}
 
 output "bastionhost_output" {
   value     = module.EC2_Module.BastionHost_Name_Output

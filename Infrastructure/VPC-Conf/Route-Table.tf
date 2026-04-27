@@ -1,7 +1,3 @@
-variable "ClientVPN_Endpoint_id" {
-  type = string
-}
-
 #Beggin by declaring the Route Table for the VPC - They are in the same module, so it can be referenced directly.
 resource "aws_route_table" "RouteTableVPC" {
     vpc_id = aws_vpc.VPC_Terraform.id
@@ -22,26 +18,4 @@ resource "aws_route" "RouteToIGW" {
 resource "aws_route_table_association" "SubnetA_Association" {
     subnet_id = aws_subnet.VPC_Subnet_A.id
     route_table_id = aws_route_table.RouteTableVPC.id
-}
-
-######### ROUTE TABLE FOR VPN #############
-
-#Beggin by declaring the Route Table for the VPC - They are in the same module, so it can be referenced directly.
-resource "aws_route_table" "PrivateRouteTableVPC" {
-    vpc_id = aws_vpc.VPC_Terraform.id
-
-    tags = {
-        Name = "Private-Route-Table"
-    }
-}
-
-#Associate the Route Table to the subnet that you wish to have internet access to. The subnet needs to be public!
-resource "aws_route_table_association" "SubnetB_Association" {
-    subnet_id = aws_subnet.VPC_Subnet_B.id
-    route_table_id = aws_route_table.PrivateRouteTableVPC.id
-}
-
-resource "aws_route_table_association" "SubnetC_Association" {
-    subnet_id = aws_subnet.VPC_Subnet_C.id
-    route_table_id = aws_route_table.PrivateRouteTableVPC.id
 }

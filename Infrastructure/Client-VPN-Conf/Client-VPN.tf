@@ -13,6 +13,13 @@ variable "subnet_B_id" {
 variable "subnet_B_cidr" {
   type = string
 }
+variable "subnet_C_id" {
+  type = string
+}
+
+variable "subnet_C_cidr" {
+  type = string
+}
 variable "vpn_users" {
   type    = list(string)
   default = ["alice", "bob"]
@@ -64,6 +71,10 @@ resource "aws_ec2_client_vpn_network_association" "Client_Network_Association_Su
   subnet_id              = var.subnet_B_id
 }
 
+resource "aws_ec2_client_vpn_network_association" "Client_Network_Association_Subnet_C" {
+  client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
+  subnet_id              = var.subnet_C_id
+}
 # ─────────────────────────────────────────────
 # AUTHORIZATION RULES
 # ─────────────────────────────────────────────
@@ -84,6 +95,17 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
   #target_network_cidr = "172.16.0.0/24" # The IPv4 or IPv6 address range, in CIDR notation, of the network to which the authorization rule applies. - Here we allow access to the entire VPC
   target_network_cidr  = var.subnet_B_cidr # Here, we allow connections only to subnet B of the VPC
+  authorize_all_groups = true
+
+  lifecycle {
+    ignore_changes = all # Ignores if it already exists
+  }
+}
+
+resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_Subnet_C" {
+  client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
+  #target_network_cidr = "172.16.0.0/24" # The IPv4 or IPv6 address range, in CIDR notation, of the network to which the authorization rule applies. - Here we allow access to the entire VPC
+  target_network_cidr  = var.subnet_C_cidr # Here, we allow connections only to subnet B of the VPC
   authorize_all_groups = true
 
   lifecycle {
