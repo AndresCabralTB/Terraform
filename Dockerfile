@@ -26,8 +26,8 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY Bootstrap/ /app/Bootstrap
-COPY Infrastructure/ /app/Infrastructure
+#COPY Bootstrap/ /app/Bootstrap #Jenkins pulls the code from Github directly from the pipeline and into it's workspace /var/jenkins_home/workspace/terraform-pipeline-v1/
+#COPY Infrastructure/ /app/Infrastructure #Jenkins pulls the code from Github directly from the pipeline and into it's workspace /var/jenkins_home/workspace/terraform-pipeline-v1/
 COPY startup.sh /startup.sh
 RUN chmod +x /startup.sh
 RUN chown -R jenkins:jenkins /app
