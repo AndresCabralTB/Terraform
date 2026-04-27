@@ -35,7 +35,7 @@ EOF
         }
         stage('Terraform Apply') {
             steps {
-                sh 'cd Infrastructure && terraforma apply --auto-approve'
+                sh 'cd Infrastructure && terraform apply --auto-approve'
             }
         }
     }
