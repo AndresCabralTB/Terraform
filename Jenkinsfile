@@ -29,4 +29,4 @@ pipeline {
         }
     }
 }
-//Force new pipeline ${BUILD_ID} - new
+//Force new pipeline ${BUILD_ID}
