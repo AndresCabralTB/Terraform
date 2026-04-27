@@ -14,10 +14,10 @@ pipeline {
         }
         stage('Terraform Directory') {
             steps {
-                sh 'cd /app/Infrastructure && git pull'
+                sh 'cd /app/Infrastructure'
             }
         }
-        stage('Terraform Directory') {
+        stage('Terraform Plan') {
             steps {
                 sh 'terraform plan'
             }
