@@ -1,12 +1,12 @@
 /*
-Jenkins Plugins 
-- Github plugin
+Jenkins Plugins:
+- GitHub plugin
 - Pipeline As YAML (Incubated)
 */
 
 pipeline {
     agent any
-    triggers{
+    triggers {
         pollSCM('H/5 * * * *')
     }
     environment {
@@ -15,9 +15,9 @@ pipeline {
         AWS_DEFAULT_REGION        = 'us-east-1'
         TF_TOKEN_app_terraform_io = credentials('terraform-cloud-token')
         TF_VAR_cidr_ipv4_mac      = credentials('cidr_ipv4_mac')
-        Delete_infrastructure     = 'true'
-        Enable_VPN                = 'true'
-        PROJECT_VERSION           = "${BUILD_ID}"
+        TF_VAR_project_version    = "${BUILD_ID}"
+        DELETE_INFRASTRUCTURE     = 'true'
+        ENABLE_VPN                = 'true'
     }
     stages {
 
@@ -29,57 +29,50 @@ variable "cidr_ipv4_mac" {
   type        = string
   description = "This is the Public IP for my Mac"
 }
-
 variable "project_version" {
-    type = string 
-    default = "${env.Project_version}"
-    description = "This is the version control"
+  type        = string
+  description = "This is the version control"
 }
 EOF
 '''
             }
         }
+
         stage('Terraform VPN Enabled') {
             when {
-                expression { return env.Enable_VPN == 'true' && return env.Delete_infrastructure == 'false'}
+                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
             }
             steps {
-                sh '''
-                cd Infrastructure && terraform init
-                terraform plan
-                terraform apply --auto-approve
-                '''
-
+                sh 'cd Infrastructure && terraform init && terraform plan && terraform apply --auto-approve'
             }
         }
+
         stage('Terraform VPN Disabled') {
             when {
-                expression { return env.Enable_VPN == 'false' && return env.Delete_infrastructure == 'false'}
+                expression { return env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'false' }
             }
             steps {
-                sh '''
-                cd Infrastructure-NoVPN && terraform init
-                terraform plan
-                terraform apply --auto-approve
-                '''
-
+                sh 'cd Infrastructure-NoVPN && terraform init && terraform plan && terraform apply --auto-approve'
             }
         }
+
         stage('Terraform Destroy VPN Enabled') {
             when {
-                expression { return env.Enable_VPN == 'true' && return env.Delete_infrastructure == 'true' }
+                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' }
             }
             steps {
-                sh 'cd Infrastructure && terraform destroy --auto-approve'
+                sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
             }
         }
+
         stage('Terraform Destroy VPN Disabled') {
             when {
-                expression { return env.Enable_VPN == 'false' && return env.Delete_infrastructure == 'true' }
+                expression { return env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'true' }
             }
             steps {
-                sh 'cd Infrastructure-NoVPN && terraform destroy --auto-approve'
+                sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
             }
         }
+
     }
 }
