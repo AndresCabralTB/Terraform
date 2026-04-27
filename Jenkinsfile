@@ -6,9 +6,9 @@ pipeline {
         AWS_DEFAULT_REGION    = 'us-east-1'
     }
     stages {
-        stage('List S3 Files') {
+        stage('Deploy Terraform Infrastructure') {
             steps {
-                sh 'aws s3 ls'
+                sh 'cd /app/Infrastructure/; terraform init; terraform --auto-approve'
             }
         }
         stage('Pipeline Version') {
