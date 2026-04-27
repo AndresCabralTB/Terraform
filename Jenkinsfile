@@ -1,12 +1,15 @@
 pipeline {
     agent any
+    triggers{
+        cron('H 8 * * *')
+    }
     environment {
         AWS_ACCESS_KEY_ID         = credentials('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY     = credentials('aws_secret_access_key')
         AWS_DEFAULT_REGION        = 'us-east-1'
         TF_TOKEN_app_terraform_io = credentials('terraform-cloud-token')
         TF_VAR_cidr_ipv4_mac      = credentials('cidr_ipv4_mac')
-        DELETE                    = 'true'
+        DELETE                    = 'false'
     }
     stages {
 
@@ -55,6 +58,5 @@ EOF
                 sh 'cd Infrastructure && terraform destroy --auto-approve'
             }
         }
-
     }
 }
