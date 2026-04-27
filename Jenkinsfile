@@ -12,9 +12,14 @@ pipeline {
                 sh 'cd /app/Infrastructure && terraform init'
             }
         }
-        stage('Terraform Plan') {
+        stage('Terraform Directory') {
             steps {
-                sh 'cd /app/Infrastructure && terraform plan'
+                sh 'cd /app/Infrastructure && git pull'
+            }
+        }
+        stage('Terraform Directory') {
+            steps {
+                sh 'terraform plan'
             }
         }
         stage('Terraform Apply') {
