@@ -8,6 +8,21 @@ pipeline {
         TF_VAR_cidr_ipv4_mac = credentials('cidr_ipv4_mac')
     }
     stages {
+
+        stage('Generate secrets.tf') {
+            steps {
+                sh '''
+                    cat > Infrastructure/secrets.tf << EOF
+                    variable "cidr_ipv4_mac" {
+                    type        = string
+                    default     = "${TF_VAR_cidr_ipv4_mac}"
+                    description = "This is the Public IP for my Mac"
+                    }
+                    EOF
+                '''
+            }
+        }
+
         stage('Terraform Init') {
             steps {
                 // Jenkins already checked out your repo here:
