@@ -27,17 +27,17 @@ module "RDS_Instance_Moduel" {
 }
 
 #Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN
-module "Client_VPN_Module" {
-  source            = "./Client-VPN-Conf"
-  subnet_A_id       = module.VPC_Module.VPC_Subnet_A_Output.id
-  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
-  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
-  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
-  vpn_users         = ["alice", "bob", "charlie"]
-  vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
-  privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
-  bastionHost_SecurityGroup_id = module.EC2_Module.BastionHost_SecurityGroup_Id
-}
+#module "Client_VPN_Module" {
+#  source            = "./Client-VPN-Conf"
+#  subnet_A_id       = module.VPC_Module.VPC_Subnet_A_Output.id
+#  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
+#  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
+#  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
+#  vpn_users         = ["alice", "bob", "charlie"]
+#  vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
+#  privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
+#  bastionHost_SecurityGroup_id = module.EC2_Module.BastionHost_SecurityGroup_Id
+#}
 
 module "EventBrideEC2_Module" {
   source = "./Events-Conf"
@@ -64,4 +64,13 @@ output "vpn_user_certs" {
 output "ca_cert" {
   sensitive = true
   value     = module.Client_VPN_Module.ca_cert
+}
+
+output "bastionhost_output" {
+  value     = module.EC2_Module.BastionHost_Name_Output
+}
+
+output "privatehost_output" {
+  sensitive = true
+  value     = module.EC2_Module.PrivateHost_Name_Output
 }

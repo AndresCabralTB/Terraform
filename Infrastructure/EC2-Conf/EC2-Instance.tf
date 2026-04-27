@@ -124,3 +124,11 @@ output "PrivateHost_SecurityGroup_Id" {
 output "BastionHost_SecurityGroup_Id" {
   value = module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output
 }
+
+output "BastionHost_Name_Output" {
+  value = aws_instance.BastionHost.tags_all
+}
+
+output "PrivateHost_Name_Output" {
+  value = aws_instance.PrivateHost.tags_all
+}
