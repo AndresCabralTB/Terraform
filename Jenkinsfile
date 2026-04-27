@@ -13,7 +13,7 @@ pipeline {
                     branch: 'main'
             }
         }
-         stage('List S3 Files') {
+         stage('List S3 Files - New Deployment') {
             steps {
                 sh 'aws s3 ls'
             }
