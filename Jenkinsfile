@@ -6,13 +6,6 @@ pipeline {
         AWS_DEFAULT_REGION    = 'us-east-1'
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/AndresCabralTB/Terraform.git',
-                    credentialsId: 'github-credentials',
-                    branch: 'main'
-            }
-        }
         stage('List S3 Files') {
             steps {
                 sh 'aws s3 ls'
