@@ -31,6 +31,7 @@ WORKDIR /app
 COPY startup.sh /startup.sh
 RUN chmod +x /startup.sh
 RUN chown -R jenkins:jenkins /app
+RUN export CASC_JENKINS_CONFIG = ${JENKINS_HOME}/workspace/${ITEM_FULL_NAME}
 
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"

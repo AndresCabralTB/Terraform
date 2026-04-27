@@ -1,3 +1,9 @@
+variable "project_version" {
+    type = string 
+    default = "v4"
+    description = "This is the version control"
+}
+
 variable "start_crontab" {
   type = string
   default = "cron(0 15 * * ? *)"
