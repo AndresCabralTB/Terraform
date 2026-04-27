@@ -30,6 +30,7 @@ COPY Bootstrap/ /app/Bootstrap
 COPY Infrastructure/ /app/Infrastructure
 COPY startup.sh /startup.sh
 RUN chmod +x /startup.sh
+RUN chown -R jenkins:jenkins /app
 
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"

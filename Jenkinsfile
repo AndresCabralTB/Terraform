@@ -8,7 +8,11 @@ pipeline {
     stages {
         stage('Deploy Terraform Infrastructure') {
             steps {
-                sh 'cd /app/Infrastructure/; terraform init; terraform --auto-approve'
+                sh '''
+                cd /app/Infrastructure/
+                terraform init
+                terraform apply -auto-approve
+                '''
             }
         }
         stage('Pipeline Version') {
@@ -18,4 +22,4 @@ pipeline {
         }
     }
 }
-//Force new pipeline ${BUILD_ID}
+//Force new pipeline ${BUILD_ID} - new
