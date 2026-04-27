@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID         = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY     = credentials('aws-secret-access-key')
-        AWS_DEFAULT_REGION        = 'us-east-1'
+        AWS_ACCESS_KEY_ID     = credentials('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+        AWS_DEFAULT_REGION    = 'us-east-1'
         TF_TOKEN_app_terraform_io = credentials('terraform-cloud-token')
     }
     stages {
@@ -20,8 +20,9 @@ pipeline {
         }
         stage('Terraform Apply') {
             steps {
-                sh 'cd Infrastructure && terraform apply -auto-approve'
+                sh 'cd Infrastructure && terraforma apply -auto-approve'
             }
         }
     }
 }
+//Force new pipeline ${BUILD_ID} - New terraform token
