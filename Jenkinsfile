@@ -13,11 +13,16 @@ pipeline {
                     branch: 'main'
             }
         }
-         stage('List S3 Files') {
+        stage('List S3 Files') {
             steps {
                 sh 'aws s3 ls'
             }
         }
+        stage('Pipeline Version') {
+            steps {
+                sh 'echo "This is build version ${BUILD_ID}"'
+            }
+        }
     }
 }
-//Force pipeline
+//Force pipeline ${BUILD_ID}
