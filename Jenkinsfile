@@ -41,7 +41,7 @@ EOF
         }
         stage('Terraform VPN Enabled') {
             when {
-                expression { return env.Enable_VPN == 'true' && env.Delete_infrastructure == 'false'}
+                expression { return env.Enable_VPN == 'true' && return env.Delete_infrastructure == 'false'}
             }
             steps {
                 sh '''
@@ -54,7 +54,7 @@ EOF
         }
         stage('Terraform VPN Disabled') {
             when {
-                expression { return env.Enable_VPN == 'false' && env.Delete_infrastructure == 'false'}
+                expression { return env.Enable_VPN == 'false' && return env.Delete_infrastructure == 'false'}
             }
             steps {
                 sh '''
@@ -67,7 +67,7 @@ EOF
         }
         stage('Terraform Destroy VPN Enabled') {
             when {
-                expression { return env.Enable_VPN == 'true' && return env.DELETE == 'true' }
+                expression { return env.Enable_VPN == 'true' && return env.Delete_infrastructure == 'true' }
             }
             steps {
                 sh 'cd Infrastructure && terraform destroy --auto-approve'
@@ -75,7 +75,7 @@ EOF
         }
         stage('Terraform Destroy VPN Disabled') {
             when {
-                expression { return env.Enable_VPN == 'false' && return env.DELETE == 'true' }
+                expression { return env.Enable_VPN == 'false' && return env.Delete_infrastructure == 'true' }
             }
             steps {
                 sh 'cd Infrastructure-NoVPN && terraform destroy --auto-approve'
