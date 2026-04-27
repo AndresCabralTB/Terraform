@@ -5,6 +5,7 @@
 terraform.exe
 crash.log
 .terraform.lock.hcl
+echo ".terraform/" >> .gitignore
 
 # macOS
 .DS_Store
