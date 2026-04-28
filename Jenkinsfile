@@ -102,17 +102,26 @@ EOF
             deleteDir() /* clean up our workspace */
         }
         unstable {
-            echo 'I am unstable :/'
+            script{
+                if { env.ENABLE_VPN == 'true'}{
+                    sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
+                    sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
+                    sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
+                } else {
+                    sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
+                }
+            }
         }
         failure {
-            echo 'Pipeline failed — running cleanup...'
-            sh '''
-                if [ "$ENABLE_VPN" = "true" ]; then
-                    cd Infrastructure && terraform destroy --auto-approve
-                else
-                    cd Infrastructure-NoVPN && terraform destroy --auto-approve
-                fi
-            '''
+            script{
+                if { env.ENABLE_VPN == 'true'}{
+                    sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
+                    sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
+                    sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
+                } else {
+                    sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
+                }
+            }
         }
         changed {
             echo 'Things were different before...'
