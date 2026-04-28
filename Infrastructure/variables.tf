@@ -5,6 +5,6 @@ variable "start_crontab" {
 
 variable "stop_crontab" {
   type = string
-  default = "cron(30 3 * * ? *)"
+  default = "cron(30 5 * * ? *)"
 }
 
