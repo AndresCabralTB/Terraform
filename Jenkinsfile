@@ -4,6 +4,17 @@ Jenkins Plugins:
 - Pipeline As YAML (Incubated)
 */
 
+def destroyInfrastructure() {
+    if (env.ENABLE_VPN == 'true') {
+        sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
+        sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
+        sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn || true'
+    } else {
+        sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
+    }
+}
+
+
 pipeline {
     agent any
     triggers {
@@ -100,27 +111,8 @@ EOF
         success {
             echo 'Pipeline completed successfully'
         }
-        unstable {
-            script{
-                if (env.ENABLE_VPN == 'true'){
-                    sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
-                    sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
-                    sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn || true'
-                } else {
-                    sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
-                }
-            }
-        }
-        failure {
-            script{
-                if (env.ENABLE_VPN == 'true'){
-                    sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
-                    sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
-                    sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
-                } else {
-                    sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
-                }
-            }
+        unsuccessful {
+            script { destroyInfrastructure() }
         }
         changed {
             echo 'Environment changed'
