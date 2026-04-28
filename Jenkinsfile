@@ -12,14 +12,19 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID         = credentials('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY     = credentials('aws_secret_access_key')
-        AWS_DEFAULT_REGION        = 'us-east-1'
         TF_TOKEN_app_terraform_io = credentials('terraform-cloud-token')
         TF_VAR_cidr_ipv4_mac      = credentials('cidr_ipv4_mac')
         TF_VAR_project_version    = "${BUILD_ID}"
-        DELETE_INFRASTRUCTURE     = 'true'
-        ENABLE_VPN                = 'true'
     }
     stages {
+
+        stage('Load Configuration Values') {
+            script{
+                def config = readYaml file: 'config.yaml'
+                env.ENABLE_VPN = config.ENABLE_VPN
+                env.DELETE_INFRASTRUCTURE = config.DELETE_INFRASTRUCTURE
+            }
+        }
 
         stage('Generate secrets.tf') {
             steps {
@@ -44,6 +49,16 @@ EOF
             }
             steps {
                 sh 'cd Infrastructure && terraform init && terraform plan && terraform apply --auto-approve'
+                //Create .ovpn file for users
+                sh '''
+                aws ec2 export-client-vpn-client-configuration \
+                    --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
+                        --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
+                        --output text) \
+                    --output text > downloaded.ovpn
+                '''
+                sh 'cd Infrastructure/VPN-CONF/ && ./generate_ovpn.sh alice Infrastructure/downloaded.ovpn'
+                sh 'aws s3 cp Infrastructure/VPN-CONF/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
             }
         }
 

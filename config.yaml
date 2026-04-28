@@ -1,0 +1,5 @@
+# Declare the configuration values for the AWS Resources created
+
+DELETE_INFRASTRUCTURE: 'false' 
+ENABLE_VPN: 'true'
+AWS_DEFAULT_REGION: 'us-east-1'
