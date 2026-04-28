@@ -1,4 +1,8 @@
-resource "aws_s3_bucket" "vpn_configs" {
+variable "project_version" {
+  type = string
+}
+
+resource "aws_s3_bucket" "vpn_configs_bucket" {
   bucket = "cloud-cabral-ovpn-files"
 
   tags = {
@@ -9,7 +13,7 @@ resource "aws_s3_bucket" "vpn_configs" {
 }
 
 resource "aws_s3_bucket_public_access_block" "vpn_configs" {
-  bucket                  = aws_s3_bucket.vpn_configs.id
+  bucket                  = aws_s3_bucket.vpn_configs_bucket.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
