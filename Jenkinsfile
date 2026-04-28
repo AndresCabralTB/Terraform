@@ -102,7 +102,6 @@ EOF
             steps {
                 sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
                 sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf *.ovpn'
-                sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
             }
         }
 
