@@ -81,6 +81,7 @@ EOF
             }
             steps {
                 sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
+                sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf *.ovpn'
             }
         }
 
