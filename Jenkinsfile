@@ -61,6 +61,11 @@ EOF
             }
             steps {
                 sh 'cd Infrastructure && terraform init && terraform plan && terraform apply --auto-approve'
+            }
+        }
+
+        stage('Download Client VPN OVPN File') {
+            steps{
                 sh 'pwd'
                 //Create .ovpn file for users
                 sh ''' cd Infrastructure/Client-VPN-Conf/ && \
@@ -70,8 +75,16 @@ EOF
                         --output text) \
                     --output text > downloaded.ovpn
                 '''
+            }
+        }
+        stage('Generate User OVPN File') {
+            steps{
                 sh 'cd Infrastructure/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn'
-                sh 'aws s3 cp Infrastructure/VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
+            }
+        }
+        stage('Copy OVPN to S3') {
+            steps{
+                sh 'aws s3 cp Infrastructure/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
             }
         }
 
