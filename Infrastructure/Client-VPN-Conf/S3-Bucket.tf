@@ -9,10 +9,6 @@ resource "aws_s3_bucket" "vpn_configs_bucket" {
     Environment = "Dev"
     Version     = var.project_version
   }
-
-  lifecycle {
-    prevent_destroy    = true
-  }
 }
 
 resource "aws_s3_bucket_public_access_block" "vpn_configs" {
@@ -23,6 +19,6 @@ resource "aws_s3_bucket_public_access_block" "vpn_configs" {
   restrict_public_buckets = true
 
   lifecycle {
-    prevent_destroy = true
+    ignore_changes = all # Ignores if it already exists
   }
 }
