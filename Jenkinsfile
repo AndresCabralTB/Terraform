@@ -99,11 +99,10 @@ EOF
     post {
         always {
             echo 'One way or another, I have finished'
-            deleteDir() /* clean up our workspace */
         }
         unstable {
             script{
-                if { env.ENABLE_VPN == 'true'}{
+                if (env.ENABLE_VPN == 'true'){
                     sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
                     sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
                     sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
@@ -114,7 +113,7 @@ EOF
         }
         failure {
             script{
-                if { env.ENABLE_VPN == 'true'}{
+                if (env.ENABLE_VPN == 'true'){
                     sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
                     sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf alice.ovpn'
                     sh 'aws s3 rm s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
