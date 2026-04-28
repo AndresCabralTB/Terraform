@@ -5,7 +5,7 @@
 
 USER=$1
 BASE_OVPN=$2
-TERRAFORM_DIR="/Users/andrescabral/Desktop/Terraform-Project/Infrastructure"
+TERRAFORM_DIR="${WORKSPACE}/Infrastructure" 
 
 if [ -z "$USER" ] || [ -z "$BASE_OVPN" ]; then
   echo "Usage: ./generate_ovpn.sh <username> <downloaded.ovpn>"
