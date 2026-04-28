@@ -24,6 +24,7 @@ pipeline {
                     def config = readYaml file: 'config.yaml'
                     env.ENABLE_VPN = config.ENABLE_VPN
                     env.DELETE_INFRASTRUCTURE = config.DELETE_INFRASTRUCTURE
+                    env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
                 }
             }
         }
