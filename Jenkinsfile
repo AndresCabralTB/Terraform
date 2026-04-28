@@ -96,4 +96,26 @@ EOF
         }
 
     }
+    post {
+        always {
+            echo 'One way or another, I have finished'
+            deleteDir() /* clean up our workspace */
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'Pipeline failed — running cleanup...'
+            sh '''
+                if [ "$ENABLE_VPN" = "true" ]; then
+                    cd Infrastructure && terraform destroy --auto-approve
+                else
+                    cd Infrastructure-NoVPN && terraform destroy --auto-approve
+                fi
+            '''
+        }
+        changed {
+            echo 'Things were different before...'
+        }
+    }
 }
