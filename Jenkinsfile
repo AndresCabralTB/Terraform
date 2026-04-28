@@ -54,7 +54,7 @@ EOF
                 sh 'cd Infrastructure && terraform init && terraform plan && terraform apply --auto-approve'
                 sh 'pwd'
                 //Create .ovpn file for users
-                sh ''' cd Infrastructure/Client-VPN-Conf/ &&
+                sh ''' cd Infrastructure/Client-VPN-Conf/ && \
                 aws ec2 export-client-vpn-client-configuration \
                     --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
                         --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
