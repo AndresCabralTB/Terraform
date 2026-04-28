@@ -97,7 +97,7 @@ EOF
 
     }
     post {
-        successful {
+        success {
             echo 'Pipeline completed successfully'
         }
         unstable {
