@@ -97,8 +97,8 @@ EOF
 
     }
     post {
-        always {
-            echo 'One way or another, I have finished'
+        successful {
+            echo 'Pipeline completed successfully'
         }
         unstable {
             script{
@@ -123,7 +123,7 @@ EOF
             }
         }
         changed {
-            echo 'Things were different before...'
+            echo 'Environment changed'
         }
     }
 }

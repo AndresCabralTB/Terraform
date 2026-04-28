@@ -1,7 +1,7 @@
 FROM jenkins/jenkins:2.555.1-jdk21
 USER root
 
-RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli && \
+RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq && \
     # Terraform repo
     wget -O- https://apt.releases.hashicorp.com/gpg | \
     gpg --dearmor | \
