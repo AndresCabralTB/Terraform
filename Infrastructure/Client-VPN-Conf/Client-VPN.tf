@@ -89,6 +89,10 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
   lifecycle {
     ignore_changes = all # Ignores if it already exists
   }
+  timeouts {
+    create = "10m"
+    delete = "30m"  # ← increase this
+  }
 }
 
 resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_Subnet_B" {
@@ -100,6 +104,10 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
   lifecycle {
     ignore_changes = all # Ignores if it already exists
   }
+  timeouts {
+    create = "10m"
+    delete = "30m"  # ← increase this
+  }
 }
 
 resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_Subnet_C" {
@@ -110,6 +118,10 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
 
   lifecycle {
     ignore_changes = all # Ignores if it already exists
+  }
+  timeouts {
+    create = "10m"
+    delete = "30m"  # ← increase this
   }
 }
 
