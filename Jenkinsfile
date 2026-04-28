@@ -5,6 +5,10 @@ Jenkins Plugins:
 */
 
 def destroyInfrastructure() {
+    if (env.DELETE_INFRASTRUCTURE == 'true') {
+        echo 'Destroy was already requested — skipping cleanup, review logs above.'
+        return
+    }
     if (env.ENABLE_VPN == 'true') {
         sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
         sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf *.ovpn'
