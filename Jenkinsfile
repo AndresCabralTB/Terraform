@@ -54,14 +54,14 @@ EOF
                 sh 'cd Infrastructure && terraform init && terraform plan && terraform apply --auto-approve'
                 sh 'pwd'
                 //Create .ovpn file for users
-                sh ''' 
+                sh ''' cd Infrastructure/Client-VPN-Conf/ &&
                 aws ec2 export-client-vpn-client-configuration \
                     --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
                         --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
                         --output text) \
                     --output text > downloaded.ovpn
                 '''
-                sh 'cd Infrastructure/VPN-Conf/ && ./generate_ovpn.sh alice ~/downloaded.ovpn'
+                sh 'cd Infrastructure/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn'
                 sh 'aws s3 cp Infrastructure/VPN-CONF/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
             }
         }
