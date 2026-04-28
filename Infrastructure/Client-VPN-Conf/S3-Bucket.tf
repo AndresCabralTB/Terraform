@@ -4,11 +4,14 @@ variable "project_version" {
 
 resource "aws_s3_bucket" "vpn_configs_bucket" {
   bucket = "cloud-cabral-ovpn-files"
-
   tags = {
     Name        = "VPN Configs"
     Environment = "Dev"
-    Version = var.project_version
+    Version     = var.project_version
+  }
+
+  lifecycle {
+    prevent_destroy    = true
   }
 }
 
@@ -18,4 +21,8 @@ resource "aws_s3_bucket_public_access_block" "vpn_configs" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
