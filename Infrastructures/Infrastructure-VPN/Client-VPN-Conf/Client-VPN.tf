@@ -43,7 +43,7 @@ variable "create_resource" {
 resource "aws_ec2_client_vpn_endpoint" "ClientVPN_Endpoint" {
   count = var.create_resource
   description            = "terraform-clientvpn"
-  server_certificate_arn = aws_acm_certificate.server.arn
+  server_certificate_arn = aws_acm_certificate.server[count.index].arn
   security_group_ids     = [aws_security_group.VPN_Security_Group[count.index].id]
 
   authentication_options {
@@ -152,5 +152,5 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
 # OUTPUTS
 # ─────────────────────────────────────────────
 output "ClientVPN_Endpoint_Output" {
-  value = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
+  value = one(aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint[*].id)    
 }
