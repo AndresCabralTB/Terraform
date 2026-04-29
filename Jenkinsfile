@@ -4,17 +4,71 @@ Jenkins Plugins:
 - Pipeline As YAML (Incubated)
 */
 
+def createSecretsTF() {
+    if(env.DELETE_INFRASTRUCTURE == "false"){
+        def homeDir  // Groovy variable, not $env.HOME_DIR
+        if (env.ENABLE_VPN == 'true') {
+            homeDir = "Infrastructures/Infrastructure-VPN"
+        } else {
+            homeDir = "Infrastructures/Infrastructure-NoVPN"
+        }
+
+        sh """
+    cat > ${homeDir}/secrets.tf << 'EOF'
+    variable "cidr_ipv4_mac" {
+    type        = string
+    description = "This is the Public IP for my Mac"
+    }
+    variable "project_version" {
+    type        = string
+    description = "This is the version control"
+    }
+    EOF
+    """
+    } else {
+        sh 'echo Skipping secrets.tf creation as infrastructure is marked for deletion'
+    }
+}
+
+def planTerraform(){
+    if(env.DELETE_INFRASTRUCTURE=="false"){
+        sh "cd ${env.HOME_DIR} && terraform init && terraform plan && terraform apply --auto-approve"
+    } else {
+        sh 'echo Skipping Terraform plan and apply as infrastructure is marked for deletion'
+    }
+}
+
+def configureOVPNFiles(){
+    if(env.DELETE_INFRASTRUCTURE == "false"){
+        if(env.ENABLE_VPN == "true"){
+    sh 'pwd'
+    //Create .ovpn file for users
+    sh """ cd ${env.HOME_DIR}/Client-VPN-Conf/ && \
+        aws ec2 export-client-vpn-client-configuration \
+            --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
+                --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
+                --output text) \
+            --output text > downloaded.ovpn
+        """
+    sh "cd ${env.HOME_DIR}/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn"
+    sh "aws s3 cp ${env.HOME_DIR}/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
+    } else{
+    sh 'echo VPN is disabled - Skipping OVPN Configuration'
+    }
+    } else{
+    sh 'echo Skipping OVPN configuration as infrastructure is marked for deletion'
+    }
+}
+
 def destroyInfrastructure() {
-    if (env.DELETE_INFRASTRUCTURE == 'true') {
-        echo 'Destroy was already requested — skipping cleanup, review logs above.'
+    if (env.DELETE_INFRASTRUCTURE != 'true') {
+        echo 'Destroy was not requested'
         return
     }
     if (env.ENABLE_VPN == 'true') {
-        sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
-        sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf *.ovpn'
-    } else {
-        sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
+        sh "cd ${env.HOME_DIR}/Client-VPN-Conf/ && rm -rf *.ovpn"
     }
+    sh "cd ${env.HOME_DIR} && terraform init && terraform destroy --auto-approve"
 }
 
 pipeline {
@@ -38,89 +92,39 @@ pipeline {
                     env.ENABLE_VPN = config.ENABLE_VPN
                     env.DELETE_INFRASTRUCTURE = config.DELETE_INFRASTRUCTURE
                     env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
+                    env.HOME_DIR = (env.ENABLE_VPN == "true")
+                        ? "Infrastructures/Infrastructure-VPN"
+                        : "Infrastructures/Infrastructure-NoVPN"
                 }
             }
         }
-
         stage('Generate secrets.tf') {
-            steps {
-                sh '''
-cat > Infrastructure/secrets.tf << EOF
-variable "cidr_ipv4_mac" {
-  type        = string
-  description = "This is the Public IP for my Mac"
-}
-variable "project_version" {
-  type        = string
-  description = "This is the version control"
-}
-EOF
-'''
-            }
+            steps { createSecretsTF() }
         }
 
-        stage('Terraform VPN Enabled') {
-            when {
-                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
-            }
-            steps {
-                sh 'cd Infrastructure && terraform init && terraform plan && terraform apply --auto-approve'
-            }
+        stage('Terraform Plan') {
+            steps { planTerraform() }
         }
         stage('OVPN File Configuration') {
-            when {
-                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
-            }
-            steps{
-                sh 'pwd'
-                //Create .ovpn file for users
-                sh ''' cd Infrastructure/Client-VPN-Conf/ && \
-                aws ec2 export-client-vpn-client-configuration \
-                    --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
-                        --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
-                        --output text) \
-                    --output text > downloaded.ovpn
-                '''
-                sh 'cd Infrastructure/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn'
-                sh 'aws s3 cp Infrastructure/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn'
-            }
+            steps{ configureOVPNFiles() }
         }
 
-        stage('Terraform VPN Disabled') {
-            when {
-                expression { return env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'false' }
-            }
-            steps {
-                sh 'cd Infrastructure-NoVPN && terraform init && terraform plan && terraform apply --auto-approve'
-            }
+        stage('Terraform Destroy') {
+            steps { destroyInfrastructure()}
         }
-
-        stage('Terraform Destroy VPN Enabled') {
-            when {
-                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' }
-            }
-            steps {
-                sh 'cd Infrastructure && terraform init && terraform destroy --auto-approve'
-                sh 'cd Infrastructure/Client-VPN-Conf/ && rm -rf *.ovpn'
-            }
-        }
-
-        stage('Terraform Destroy VPN Disabled') {
-            when {
-                expression { return env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'true' }
-            }
-            steps {
-                sh 'cd Infrastructure-NoVPN && terraform init && terraform destroy --auto-approve'
-            }
-        }
-
     }
     post {
         success {
             echo 'Pipeline completed successfully'
         }
         unsuccessful {
-            script { destroyInfrastructure() }
+            script { 
+                if (env.DELETE_INFRASTRUCTURE == 'true') {
+                    destroyInfrastructure()
+                } else {
+                    echo 'Pipeline failed but DELETE_INFRASTRUCTURE is false — skipping auto-destroy.'
+                }
+             }
         }
         changed {
             echo 'Environment changed'

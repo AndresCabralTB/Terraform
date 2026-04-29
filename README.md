@@ -144,6 +144,28 @@ This embeds each user's unique cert and key into the base `.ovpn` downloaded fro
 
 ---
 
+### 6. Docker Implementation
+
+In the root directory you will find a docker file capable of creating a docker image with Jenkins configuration, as well as other resources, such as Terraform, Github, Ngrok, and AWS CLI
+
+This project allows for the configuration of a Docker container using the mentioned Dockerfile. This container host jenkins, through which we will create the pipeline to deploy and modify our AWS Infrastructure.
+
+### 7. NGROK
+
+NGROK will allow us to host our local port (localhost:4040) and map it to a working URL, which will then be used as a webhook for Jenkins to track our pushes and commits to our repository
+
+### 8. Jenkins
+
+As mentioned above, Jenkins will be used to create a pipeline process and track our github repository through a webhook in "https://film-yoyo-unfreeze.ngrok-free.dev"
+
+Therefore, we simply need to push changes to our github, and they will be automatically deployed as long as the docker container is running
+
+### 9. Enhancements
+
+One possible solution to keep the docker container running all the time, is simply to deploy it in an ECS Container - either server managed or serverless (fargate) - which will allow us to constantly make changes if needed.
+
+Lastly, we can use Route 53 to create a permanent URL, webhook it to the github and have constant use of it.
+
 **Configuration:**
 
 - The VPN endpoint is configured with the VPC DNS resolver (`172.16.0.2`) so that private Route 53 records resolve correctly when connected.

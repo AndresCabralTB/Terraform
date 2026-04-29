@@ -64,16 +64,28 @@ resource "aws_ec2_client_vpn_endpoint" "ClientVPN_Endpoint" {
 resource "aws_ec2_client_vpn_network_association" "Client_Network_Association_Subnet_A" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
   subnet_id              = var.subnet_A_id
+  timeouts {
+    create = "30m"
+    delete = "30m"  # ← increase this
+  }
 }
 
 resource "aws_ec2_client_vpn_network_association" "Client_Network_Association_Subnet_B" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
   subnet_id              = var.subnet_B_id
+  timeouts {
+    create = "30m"
+    delete = "30m"  # ← increase this
+  }
 }
 
 resource "aws_ec2_client_vpn_network_association" "Client_Network_Association_Subnet_C" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.ClientVPN_Endpoint.id
   subnet_id              = var.subnet_C_id
+  timeouts {
+    create = "30m"
+    delete = "30m"  # ← increase this
+  }
 }
 # ─────────────────────────────────────────────
 # AUTHORIZATION RULES
@@ -89,6 +101,10 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
   lifecycle {
     ignore_changes = all # Ignores if it already exists
   }
+  timeouts {
+    create = "30m"
+    delete = "30m"  # ← increase this
+  }
 }
 
 resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_Subnet_B" {
@@ -100,6 +116,10 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
   lifecycle {
     ignore_changes = all # Ignores if it already exists
   }
+  timeouts {
+    create = "30m"
+    delete = "30m"  # ← increase this
+  }
 }
 
 resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_Subnet_C" {
@@ -110,6 +130,10 @@ resource "aws_ec2_client_vpn_authorization_rule" "ClientVPN_Authorization_Rule_S
 
   lifecycle {
     ignore_changes = all # Ignores if it already exists
+  }
+  timeouts {
+    create = "30m"
+    delete = "30m"  # ← increase this
   }
 }
 
