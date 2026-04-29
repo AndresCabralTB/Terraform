@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "vpn_configs_bucket" {
 
 resource "aws_s3_bucket_public_access_block" "vpn_configs" {
   count = var.create_resource
-  bucket                  = aws_s3_bucket.vpn_configs_bucket.id
+  bucket                  = aws_s3_bucket.vpn_configs_bucket[count.index].id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true

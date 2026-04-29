@@ -13,11 +13,11 @@ resource "aws_route_table" "PrivateRouteTableVPC" {
 resource "aws_route_table_association" "SubnetB_Association" {
     count = var.create_resource
     subnet_id = var.subnet_B_id
-    route_table_id = aws_route_table.PrivateRouteTableVPC.id
+    route_table_id = aws_route_table.PrivateRouteTableVPC[count.index].id
 }
 
 resource "aws_route_table_association" "SubnetC_Association" {
    count = var.create_resource
    subnet_id = var.subnet_C_id
-    route_table_id = aws_route_table.PrivateRouteTableVPC.id
+    route_table_id = aws_route_table.PrivateRouteTableVPC[count.index].id
 }

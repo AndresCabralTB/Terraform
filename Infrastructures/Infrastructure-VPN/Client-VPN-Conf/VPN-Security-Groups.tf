@@ -36,7 +36,7 @@ resource "aws_vpc_security_group_ingress_rule" "VPN_Ingress_Rule" {
   #from_port         = 0
   ip_protocol       = "-1"
   #to_port           = 0
-  security_group_id = aws_security_group.VPN_Security_Group.id
+  security_group_id = aws_security_group.VPN_Security_Group[count.index].id
   cidr_ipv4         = "0.0.0.0/0"
   tags = {
     Name = "VPN-IngressRule-SG"
@@ -51,7 +51,7 @@ resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule" {
   #from_port         = 0
   #to_port           = 0
   ip_protocol       = "-1"
-  security_group_id = aws_security_group.VPN_Security_Group.id
+  security_group_id = aws_security_group.VPN_Security_Group[count.index].id
   cidr_ipv4         = "0.0.0.0/0"
   tags = {
     Name = "VPN-Egress-Rule-Internet"
@@ -65,7 +65,7 @@ resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule_BastionHost" {
   from_port                    = 443
   to_port                      = 443
   ip_protocol                  = "udp"
-  security_group_id            = aws_security_group.VPN_Security_Group.id
+  security_group_id            = aws_security_group.VPN_Security_Group[count.index].id
   referenced_security_group_id = var.bastionHost_SecurityGroup_id
   tags = {
     Name = "VPN-Egress-Rule-BastionHost"
@@ -79,7 +79,7 @@ resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule_PrivateHost" {
   from_port                    = 443
   to_port                      = 443
   ip_protocol                  = "udp"
-  security_group_id            = aws_security_group.VPN_Security_Group.id
+  security_group_id            = aws_security_group.VPN_Security_Group[count.index].id
   referenced_security_group_id = var.privateHost_SecurityGroup_id
   tags = {
     Name = "VPN-Egress-Rule-PrivateHost"
@@ -103,7 +103,7 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_VPN" {
   ip_protocol                  = "udp"
   to_port                      = 443
   security_group_id            = var.privateHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Only accept traffic originating from the VPN SG
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Only accept traffic originating from the VPN SG
   tags = {
     Name = "IngressRule_PrivateHost_SG_VPN"
   }
@@ -119,7 +119,7 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_SSH" {
   ip_protocol                  = "tcp"
   to_port                      = 22
   security_group_id            = var.privateHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Only accept SSH that comes through the VPN
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Only accept SSH that comes through the VPN
   tags = {
     Name = "IngressRule_PrivateHost_SG_SSH"
   }
@@ -141,7 +141,7 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_VPN" {
   ip_protocol                  = "udp"
   to_port                      = 443
   security_group_id            = var.bastionHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Only accept traffic originating from the VPN SG
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Only accept traffic originating from the VPN SG
   tags = {
     Name = "IngressRule_BastionHost_Private_SG_VPN"
   }
@@ -155,7 +155,7 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_8080" {
   ip_protocol = "tcp"
   to_port = 8080
   security_group_id = var.bastionHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return 8080 TCP traffic goes back through the VPN SG
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Return 8080 TCP traffic goes back through the VPN SG
 
   tags = {
     Name = "IngressRule_BastionHost_SG_8080"
@@ -172,7 +172,7 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_SSH" {
   ip_protocol                  = "tcp"
   to_port                      = 22
   security_group_id            = var.bastionHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Only accept SSH that comes through the VPN
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Only accept SSH that comes through the VPN
   tags = {
     Name = "IngressRule_BastionHost_Private_SG_SSH"
   }
@@ -192,7 +192,7 @@ resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress_VPN" {
   from_port                    = 22
   to_port                      = 22
   security_group_id            = var.privateHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return SSH traffic goes back through the VPN SG
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Return SSH traffic goes back through the VPN SG
 }
 
 # ─────────────────────────────────────────────
@@ -208,7 +208,7 @@ resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_VPN" {
   from_port                    = 22
   to_port                      = 22
   security_group_id            = var.bastionHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id  # Return SSH traffic goes back through the VPN SG
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id  # Return SSH traffic goes back through the VPN SG
 }
 
 resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_8080" {
@@ -218,7 +218,7 @@ resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_8080" {
   from_port                    = 8080
   to_port                      = 8080
   security_group_id            = var.bastionHost_SecurityGroup_id
-  referenced_security_group_id = aws_security_group.VPN_Security_Group.id
+  referenced_security_group_id = aws_security_group.VPN_Security_Group[count.index].id
   tags = {
     Name = "EgressRule_BastionHost_SG_8080"
   }
