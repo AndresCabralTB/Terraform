@@ -7,6 +7,7 @@
 
 # Generate the CA's private key, used to sign all certificates
 resource "tls_private_key" "ca" {
+  count = var.create_resource
   algorithm = "RSA"
   rsa_bits  = 2048
 }
@@ -14,6 +15,7 @@ resource "tls_private_key" "ca" {
 # Generate the self-signed CA certificate.
 # Valid for 10 years. Acts as the root of trust for the entire VPN PKI.
 resource "tls_self_signed_cert" "ca" {
+  count = var.create_resource
   private_key_pem       = tls_private_key.ca.private_key_pem
   validity_period_hours = 87600 # 10 years
   is_ca_certificate     = true
@@ -37,12 +39,14 @@ resource "tls_self_signed_cert" "ca" {
 
 # Generate the server's private key
 resource "tls_private_key" "server" {
+  count = var.create_resource
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
 # Create a certificate signing request (CSR) for the server
 resource "tls_cert_request" "server" {
+  count = var.create_resource
   private_key_pem = tls_private_key.server.private_key_pem
 
   subject {
@@ -56,6 +60,7 @@ resource "tls_cert_request" "server" {
 # Sign the server CSR with the CA to produce the final server certificate.
 # Valid for 10 years. Allows key encipherment, digital signing, and server auth.
 resource "tls_locally_signed_cert" "server" {
+  count = var.create_resource
   cert_request_pem      = tls_cert_request.server.cert_request_pem
   ca_private_key_pem    = tls_private_key.ca.private_key_pem
   ca_cert_pem           = tls_self_signed_cert.ca.cert_pem
@@ -70,6 +75,7 @@ resource "tls_locally_signed_cert" "server" {
 
 # Upload the signed server certificate to ACM so it can be used by the AWS Client VPN endpoint
 resource "aws_acm_certificate" "server" {
+  count = var.create_resource
   private_key       = tls_private_key.server.private_key_pem
   certificate_body  = tls_locally_signed_cert.server.cert_pem
   certificate_chain = tls_self_signed_cert.ca.cert_pem # CA chain for client validation
@@ -78,6 +84,7 @@ resource "aws_acm_certificate" "server" {
 # Upload the CA certificate to ACM separately.
 # AWS Client VPN uses this as the root CA to validate client certificates.
 resource "aws_acm_certificate" "ca" {
+  count = var.create_resource
   private_key      = tls_private_key.ca.private_key_pem
   certificate_body = tls_self_signed_cert.ca.cert_pem
 }
@@ -91,6 +98,7 @@ resource "aws_acm_certificate" "ca" {
 
 # Generate a unique private key for each VPN user
 resource "tls_private_key" "client" {
+  count = var.create_resource
   for_each  = toset(var.vpn_users)
   algorithm = "RSA"
   rsa_bits  = 2048
@@ -98,6 +106,7 @@ resource "tls_private_key" "client" {
 
 # Create a CSR for each VPN user
 resource "tls_cert_request" "client" {
+  count = var.create_resource
   for_each        = toset(var.vpn_users)
   private_key_pem = tls_private_key.client[each.key].private_key_pem
 
@@ -113,6 +122,7 @@ resource "tls_cert_request" "client" {
 # Valid for 2 years — shorter than the server cert, intentionally,
 # so client access can be rotated more frequently.
 resource "tls_locally_signed_cert" "client" {
+  count = var.create_resource
   for_each              = toset(var.vpn_users)
   cert_request_pem      = tls_cert_request.client[each.key].cert_request_pem
   ca_private_key_pem    = tls_private_key.ca.private_key_pem

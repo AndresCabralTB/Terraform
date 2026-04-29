@@ -20,6 +20,7 @@ variable "bastionHost_SecurityGroup_id" {
 # ─────────────────────────────────────────────
 
 resource "aws_security_group" "VPN_Security_Group" {
+  count = var.create_resource
   name   = "VPN-Security-Group"
   vpc_id = var.vpc_id
   tags = {
@@ -30,6 +31,7 @@ resource "aws_security_group" "VPN_Security_Group" {
 # Allow all inbound traffic from anywhere.
 # This is intentional — VPN clients can connect from any device or location worldwide.
 resource "aws_vpc_security_group_ingress_rule" "VPN_Ingress_Rule" {
+  count = var.create_resource
   description       = "Allow connections from any client worldwide"
   #from_port         = 0
   ip_protocol       = "-1"
@@ -45,6 +47,7 @@ resource "aws_vpc_security_group_ingress_rule" "VPN_Ingress_Rule" {
 # This covers general internet access and also makes the two rules below redundant,
 # but those are kept for explicitness and documentation purposes.
 resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule" {
+  count = var.create_resource
   #from_port         = 0
   #to_port           = 0
   ip_protocol       = "-1"
@@ -58,6 +61,7 @@ resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule" {
 # Allow VPN to send UDP/443 traffic to the Bastion Host.
 # Redundant given the broad egress rule above, but kept for clarity.
 resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule_BastionHost" {
+  count = var.create_resource
   from_port                    = 443
   to_port                      = 443
   ip_protocol                  = "udp"
@@ -71,6 +75,7 @@ resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule_BastionHost" {
 # Allow VPN to send UDP/443 traffic to the Private Host.
 # Redundant given the broad egress rule above, but kept for clarity.
 resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule_PrivateHost" {
+  count = var.create_resource
   from_port                    = 443
   to_port                      = 443
   ip_protocol                  = "udp"
@@ -92,6 +97,7 @@ resource "aws_vpc_security_group_egress_rule" "VPN_Egress_Rule_PrivateHost" {
 # Allows the VPN tunnel (UDP/443) to reach the private host.
 # Source is the VPN Security Group, not a CIDR, so only VPN server traffic is accepted.
 resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_VPN" {
+  count = var.create_resource
   description                  = "Allow VPN tunnel (UDP/443) from VPN Security Group to Private Host"
   from_port                    = 443
   ip_protocol                  = "udp"
@@ -107,6 +113,7 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_VPN" {
 # Once the VPN tunnel is established, clients SSH into the private host through it.
 # Source is the VPN Security Group to ensure only tunneled traffic is accepted.
 resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_SSH" {
+  count = var.create_resource
   description                  = "Allow SSH (TCP/22) from VPN Security Group to Private Host"
   from_port                    = 22
   ip_protocol                  = "tcp"
@@ -128,6 +135,7 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress_SSH" {
 
 
 resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_VPN" {
+  count = var.create_resource
   description                  = "Allow VPN tunnel (UDP/443) from VPN Security Group to Private Host"
   from_port                    = 443
   ip_protocol                  = "udp"
@@ -140,6 +148,7 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_VPN" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_8080" {
+  count = var.create_resource
   #cidr_ipv4  = "10.0.0.0/22"  # VPN client CIDR
   description = "Jenkins access from VPN clients"
   from_port = 8080
@@ -157,6 +166,7 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_8080" {
 # Once the VPN tunnel is established, clients SSH into the private host through it.
 # Source is the VPN Security Group to ensure only tunneled traffic is accepted.
 resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_SSH" {
+  count = var.create_resource
   description                  = "Allow SSH (TCP/22) from VPN Security Group to Private Host"
   from_port                    = 22
   ip_protocol                  = "tcp"
@@ -177,6 +187,7 @@ resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress_SSH" {
 # Allows the private host to send SSH return traffic (TCP/22) back to the VPN Security Group.
 # This is the response side of the SSH connection initiated by the client through the VPN.
 resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress_VPN" {
+  count = var.create_resource
   ip_protocol                  = "tcp"
   from_port                    = 22
   to_port                      = 22
@@ -192,6 +203,7 @@ resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress_VPN" {
 
 
 resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_VPN" {
+  count = var.create_resource
   ip_protocol                  = "tcp"
   from_port                    = 22
   to_port                      = 22
@@ -200,6 +212,7 @@ resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_VPN" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "BastionHostEgress_8080" {
+  count = var.create_resource
   description                  = "Allow Jenkins response traffic back through VPN"
   ip_protocol                  = "tcp"
   from_port                    = 8080

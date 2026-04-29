@@ -3,6 +3,7 @@ variable "project_version" {
 }
 
 resource "aws_s3_bucket" "vpn_configs_bucket" {
+  count = var.create_resource
   bucket = "cloud-cabral-ovpn-files"
   force_destroy = true
   tags = {
@@ -13,6 +14,7 @@ resource "aws_s3_bucket" "vpn_configs_bucket" {
 }
 
 resource "aws_s3_bucket_public_access_block" "vpn_configs" {
+  count = var.create_resource
   bucket                  = aws_s3_bucket.vpn_configs_bucket.id
   block_public_acls       = true
   block_public_policy     = true
