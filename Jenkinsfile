@@ -37,7 +37,7 @@ def configureOVPNFiles(){
         if(env.ENABLE_VPN == "true"){
     sh 'pwd'
     //Create .ovpn file for users
-    sh """ cd $env.HOME_DIR/Client-VPN-Conf/ && \
+    sh """ cd "${env.HOME_DIR}"/Client-VPN-Conf/ && \
         aws ec2 export-client-vpn-client-configuration \
             --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
                 --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
