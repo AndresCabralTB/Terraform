@@ -76,17 +76,17 @@ resource "tls_locally_signed_cert" "server" {
 # Upload the signed server certificate to ACM so it can be used by the AWS Client VPN endpoint
 resource "aws_acm_certificate" "server" {
   count = var.create_resource
-  private_key       = tls_private_key.server.private_key_pem
-  certificate_body  = tls_locally_signed_cert.server.cert_pem
-  certificate_chain = tls_self_signed_cert.ca.cert_pem # CA chain for client validation
+  private_key       = tls_private_key.server[count.index].private_key_pem
+  certificate_body  = tls_locally_signed_cert.server[count.index].cert_pem
+  certificate_chain = tls_self_signed_cert.ca[count.index].cert_pem # CA chain for client validation
 }
 
 # Upload the CA certificate to ACM separately.
 # AWS Client VPN uses this as the root CA to validate client certificates.
 resource "aws_acm_certificate" "ca" {
   count = var.create_resource
-  private_key      = tls_private_key.ca.private_key_pem
-  certificate_body = tls_self_signed_cert.ca.cert_pem
+  private_key      = tls_private_key.ca[count.index].private_key_pem
+  certificate_body = tls_self_signed_cert.ca[count.index].cert_pem
 }
 
 # ─────────────────────────────────────────────
@@ -122,8 +122,8 @@ resource "tls_cert_request" "client" {
 resource "tls_locally_signed_cert" "client" {
   for_each              = toset(var.vpn_users)
   cert_request_pem      = tls_cert_request.client[each.key].cert_request_pem
-  ca_private_key_pem    = tls_private_key.ca[count.index].private_key_pem
-  ca_cert_pem           = tls_self_signed_cert.ca[count.index].cert_pem
+  ca_private_key_pem    = tls_private_key.ca.private_key_pem
+  ca_cert_pem           = tls_self_signed_cert.ca.cert_pem
   validity_period_hours = 17520 # 2 years
 
   allowed_uses = [
@@ -149,5 +149,5 @@ output "vpn_user_certs" {
 # for server certificate validation. Marked sensitive as it is part of the PKI.
 output "ca_cert" {
   sensitive = true
-  value     = tls_self_signed_cert.ca.cert_pem
+  value     = tls_self_signed_cert.ca[count.index].cert_pem
 }
