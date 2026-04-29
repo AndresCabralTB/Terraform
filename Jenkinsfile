@@ -65,11 +65,15 @@ EOF
             steps{
                 sh 'pwd'
                 //Create .ovpn file for users
-                sh """ cd "${env.HOME_DIR}/Client-VPN-Conf/" 
+                sh """ 
+                cd "${env.HOME_DIR}/Client-VPN-Conf/" 
+
+                ENDPOINT_ID=\$(aws ec2 describe-client-vpn-endpoints \
+                    --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
+                    --output text)
+
                 aws ec2 export-client-vpn-client-configuration \
-                    --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
-                        --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
-                        --output text) \
+                    --client-vpn-endpoint-id \$ENDPOINT_ID \
                     --output text > downloaded.ovpn
                 """
                 sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn"
