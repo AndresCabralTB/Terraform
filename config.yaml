@@ -1,5 +1,5 @@
 # Declare the configuration values for the AWS Resources created
-force_pipeline: 'true_2' #Simple variable to force the pipeline process
+force_pipeline: 'true_3' #Simple variable to force the pipeline process
 
 DELETE_INFRASTRUCTURE: 'false' 
 ENABLE_VPN: 'true'
