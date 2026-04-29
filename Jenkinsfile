@@ -55,7 +55,7 @@ EOF
                 expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
             }
             steps {
-                sh "cd $env.HOME_DIR && terraform init && terraform plan && terraform apply --auto-approve"
+                sh "cd $env.HOME_DIR && terraform init && terraform apply --auto-approve"
             }
         }
         stage('OVPN File Configuration') {
@@ -63,7 +63,7 @@ EOF
                 expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
             }
             steps{
-                sh 'pwd'
+                sh "cd $env.HOME_DIR terraform init"
                 //Create .ovpn file for users
                 sh """ 
                 cd "${env.HOME_DIR}/Client-VPN-Conf/" 
