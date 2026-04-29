@@ -8,17 +8,17 @@ def createSecretsTF() {
     if(env.DELETE_INFRASTRUCTURE == "false"){
         def home_dir = env.HOME_DIR
         sh """
-    cat > ${home_dir}/secrets.tf << 'EOF'
-    variable "cidr_ipv4_mac" {
-    type        = string
-    description = "This is the Public IP for my Mac"
-    }
-    variable "project_version" {
-    type        = string
-    description = "This is the version control"
-    }
-    EOF
-    """
+        cat > ${home_dir}/secrets.tf << 'EOF'
+            variable "cidr_ipv4_mac" {
+            type        = string
+            description = "This is the Public IP for my Mac"
+        }
+        variable "project_version" {
+            type        = string
+            description = "This is the version control"
+        }
+        'EOF'
+        """
     } else {
         sh 'echo Skipping secrets.tf creation as infrastructure is marked for deletion'
     }
@@ -59,10 +59,6 @@ def configureOVPNFiles(){
 }
 
 def destroyInfrastructure() {
-    if (env.DELETE_INFRASTRUCTURE != 'true') {
-        echo 'Destroy was not requested'
-        return
-    }
     if (env.ENABLE_VPN == 'true') {
         sh "cd $env.HOME_DIR/Client-VPN-Conf/ && rm -rf *.ovpn"
     }
