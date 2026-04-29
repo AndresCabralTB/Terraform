@@ -8,8 +8,4 @@ variable "stop_crontab" {
   default = "cron(30 5 * * ? *)"
 }
 
-variable "enable_vpn" {
-  type = string
-  default = "false"
-}
 

@@ -27,8 +27,8 @@ pipeline {
                     env.DELETE_INFRASTRUCTURE = config.DELETE_INFRASTRUCTURE
                     env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
                     env.HOME_DIR = (env.ENABLE_VPN == "true")
-                        ? "Infrastructures/Infrastructure-VPN" 
-                        : "Infrastructures/Infrastructure-NoVPN"
+                        ? "Infrastructures/Infrastructure-VPN"
+                    env.TF_VAR_enable_vpn = config.ENABLE_VPN
                 }
             }
         }
@@ -45,17 +45,27 @@ variable "project_version" {
   type        = string
   description = "This is the version control"
 }
+
+variable "enable_vpn" {
+  type = string
+  default = "false"
+}
 EOF
 """
             }
         }
 
-        stage('Terraform VPN Enabled') {
-            when {
-                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
-            }
+        stage('Terraform Init') {
             steps {
                 sh "cd $env.HOME_DIR && terraform init && terraform apply --auto-approve"
+            }
+        }
+        stage('Terraform Apply') {
+            when {
+                expression { return env.DELETE_INFRASTRUCTURE == "false" }
+            }
+            steps {
+                sh "cd $env.HOME_DIR && terraform apply --auto-approve"
             }
         }
         stage('OVPN File Configuration') {
@@ -81,28 +91,18 @@ EOF
             }
         }
 
-        stage('Terraform VPN Disabled') {
-            when {
-                expression { return env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'false' }
-            }
-            steps {
-                sh "cd $env.HOME_DIR && terraform init && terraform plan && terraform apply --auto-approve"
-            }
-        }
-
-        stage('Terraform Destroy VPN Enabled') {
+        stage('Destroy OVPN Files') {
             when {
                 expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' }
             }
             steps {
-                sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
                 sh "cd $env.HOME_DIR/Client-VPN-Conf/ && rm -rf *.ovpn"
             }
         }
 
-        stage('Terraform Destroy VPN Disabled') {
+        stage('Terraform Destroy') {
             when {
-                expression { return env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'true' }
+                expression { return env.DELETE_INFRASTRUCTURE == "true" }
             }
             steps {
                 sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
