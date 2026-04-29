@@ -6,8 +6,9 @@ Jenkins Plugins:
 
 def createSecretsTF() {
     if(env.DELETE_INFRASTRUCTURE == "false"){
+        def home_dir = env.HOME_DIR
         sh """
-    cat > "${env.HOME_DIR}"/secrets.tf << 'EOF'
+    cat > ${home_dir}/secrets.tf << 'EOF'
     variable "cidr_ipv4_mac" {
     type        = string
     description = "This is the Public IP for my Mac"
@@ -25,7 +26,7 @@ def createSecretsTF() {
 
 def planTerraform(){
     if(env.DELETE_INFRASTRUCTURE=="false"){
-        sh "cd "${env.HOME_DIR}" && terraform init && terraform plan && terraform apply --auto-approve"
+        sh "cd $env.HOME_DIR && terraform init && terraform plan && terraform apply --auto-approve"
     } else {
         sh 'echo Skipping Terraform plan and apply as infrastructure is marked for deletion'
     }
@@ -36,15 +37,15 @@ def configureOVPNFiles(){
         if(env.ENABLE_VPN == "true"){
     sh 'pwd'
     //Create .ovpn file for users
-    sh """ cd "${env.HOME_DIR}"/Client-VPN-Conf/ && \
+    sh """ cd $env.HOME_DIR/Client-VPN-Conf/ && \
         aws ec2 export-client-vpn-client-configuration \
             --client-vpn-endpoint-id $(aws ec2 describe-client-vpn-endpoints \
                 --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
                 --output text) \
             --output text > downloaded.ovpn
         """
-    sh "cd "${env.HOME_DIR}"/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn"
-    sh "aws s3 cp "${env.HOME_DIR}"/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
+    sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn"
+    sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
     } else{
     sh 'echo VPN is disabled - Skipping OVPN Configuration'
     }
@@ -59,9 +60,9 @@ def destroyInfrastructure() {
         return
     }
     if (env.ENABLE_VPN == 'true') {
-        sh "cd "${env.HOME_DIR}"/Client-VPN-Conf/ && rm -rf *.ovpn"
+        sh "cd $env.HOME_DIR/Client-VPN-Conf/ && rm -rf *.ovpn"
     }
-    sh "cd "${env.HOME_DIR}" && terraform init && terraform destroy --auto-approve"
+    sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
 }
 
 pipeline {
