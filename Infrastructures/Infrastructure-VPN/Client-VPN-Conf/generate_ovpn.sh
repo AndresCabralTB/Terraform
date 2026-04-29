@@ -5,10 +5,10 @@
 
 USER=$1
 BASE_OVPN=$2
-TERRAFORM_DIR="${WORKSPACE}/Infrastructure" 
+TERRAFORM_DIR=$3 
 
-if [ -z "$USER" ] || [ -z "$BASE_OVPN" ]; then
-  echo "Usage: ./generate_ovpn.sh <username> <downloaded.ovpn>"
+if [ -z "$USER" ] || [ -z "$BASE_OVPN" ] || [-z "$TERRAFORM_DIR"]; then
+  echo "Usage: ./generate_ovpn.sh <username> <downloaded.ovpn> <client-vpn-directory>"
   exit 1
 fi
 

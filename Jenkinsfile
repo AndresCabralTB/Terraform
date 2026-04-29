@@ -76,7 +76,8 @@ EOF
                     --client-vpn-endpoint-id \$ENDPOINT_ID \
                     --output text > downloaded.ovpn
                 """
-                sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn"
+                sh "echo Current directory passed to ./generate_ovpn.sh -> $env.HOME_DIR"
+                sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn $env.HOME_DIR"
                 sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
             }
         }
