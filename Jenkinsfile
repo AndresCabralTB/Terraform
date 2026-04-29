@@ -28,7 +28,7 @@ pipeline {
                     env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
                     env.HOME_DIR = (env.ENABLE_VPN == "true")
                         ? "Infrastructures/Infrastructure-VPN"
-                    env.TF_VAR_enable_vpn = config.ENABLE_VPN
+                    TF_VAR_enable_vpn = config.ENABLE_VPN
                 }
             }
         }
