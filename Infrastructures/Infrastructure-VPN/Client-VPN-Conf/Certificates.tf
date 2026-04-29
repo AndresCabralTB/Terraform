@@ -16,7 +16,7 @@ resource "tls_private_key" "ca" {
 # Valid for 10 years. Acts as the root of trust for the entire VPN PKI.
 resource "tls_self_signed_cert" "ca" {
   count = var.create_resource
-  private_key_pem       = tls_private_key.ca.private_key_pem
+  private_key_pem       = tls_private_key.ca[count.index].private_key_pem
   validity_period_hours = 87600 # 10 years
   is_ca_certificate     = true
 
