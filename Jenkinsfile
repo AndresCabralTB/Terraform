@@ -56,7 +56,7 @@ EOF
 
         stage('Terraform Init') {
             steps {
-                sh "cd $env.HOME_DIR && terraform init && terraform apply --auto-approve"
+                sh "cd $env.HOME_DIR && terraform init"
             }
         }
         stage('Terraform Apply') {
