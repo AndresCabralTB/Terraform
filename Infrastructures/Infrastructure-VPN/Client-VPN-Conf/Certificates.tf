@@ -98,7 +98,6 @@ resource "aws_acm_certificate" "ca" {
 
 # Generate a unique private key for each VPN user
 resource "tls_private_key" "client" {
-  count = var.create_resource
   for_each  = toset(var.vpn_users)
   algorithm = "RSA"
   rsa_bits  = 2048
@@ -106,7 +105,6 @@ resource "tls_private_key" "client" {
 
 # Create a CSR for each VPN user
 resource "tls_cert_request" "client" {
-  count = var.create_resource
   for_each        = toset(var.vpn_users)
   private_key_pem = tls_private_key.client[each.key].private_key_pem
 
@@ -122,7 +120,6 @@ resource "tls_cert_request" "client" {
 # Valid for 2 years — shorter than the server cert, intentionally,
 # so client access can be rotated more frequently.
 resource "tls_locally_signed_cert" "client" {
-  count = var.create_resource
   for_each              = toset(var.vpn_users)
   cert_request_pem      = tls_cert_request.client[each.key].cert_request_pem
   ca_private_key_pem    = tls_private_key.ca.private_key_pem
