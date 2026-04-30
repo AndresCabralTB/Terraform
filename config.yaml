@@ -1,6 +1,7 @@
 # Declare the configuration values for the AWS Resources created
-force_pipeline: 'true_4' #Simple variable to force the pipeline process
 
 DELETE_INFRASTRUCTURE: 'false' 
 ENABLE_VPN: 'false'
 AWS_DEFAULT_REGION: 'us-east-1'
+
+ONLY_A_GIT_UPDATE: 'true'
