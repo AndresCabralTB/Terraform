@@ -44,6 +44,9 @@ pipeline {
         }
 
         stage('Generate secrets.tf') {
+            when {
+                expression { return env.ONLY_A_GIT_UPDATE == 'false' }
+            }
             steps {
                 sh """
 cat > "${env.HOME_DIR}"/secrets.tf << 'EOF'
