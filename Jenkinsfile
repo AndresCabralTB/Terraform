@@ -24,9 +24,8 @@ pipeline {
                 expression { return env.ONLY_A_GIT_UPDATE == 'true' }
             }
             steps{
-                script{
-                    sh "echo $'\nThis is only an update to git main - no changes made to the Infrastructure\n'"
-                }
+                sh "echo $'\nThis is only an update to git main - no changes made to the Infrastructure\n'"
+            
             }
         }
 
