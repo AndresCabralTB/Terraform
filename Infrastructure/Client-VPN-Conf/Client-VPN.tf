@@ -33,6 +33,10 @@ variable "create_resource" {
   type = string
 }
 
+variable "project_version" {
+  type = string
+}
+
 
 
 # ─────────────────────────────────────────────

@@ -38,8 +38,8 @@ module "Client_VPN_Module" {
   vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
   privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
   bastionHost_SecurityGroup_id = module.EC2_Module.BastionHost_SecurityGroup_Id
-  project_version = var.project_version
   create_resource = var.enable_vpn == "true" ? 1 : 0
+  project_version = var.project_version
 }
 
 module "EventBrideEC2_Module" {

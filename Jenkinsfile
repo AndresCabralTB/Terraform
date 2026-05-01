@@ -4,7 +4,8 @@ Jenkins Plugins:
 - Pipeline As YAML (Incubated)
 */
 
-
+// We set up a webhook to our repository so that when we push our code, Jenkins Git Plugin detects the push and begins the pipeline using the repository 
+// This trigger only kicks git-plugin internal polling algo for every incoming event against matched repo.
 pipeline {
     agent any
     triggers {
@@ -16,6 +17,7 @@ pipeline {
         TF_TOKEN_app_terraform_io = credentials('terraform-cloud-token')
         TF_VAR_cidr_ipv4_mac      = credentials('cidr_ipv4_mac')
         TF_VAR_project_version    = "${BUILD_ID}"
+        NGROK_TOKEN               = credentials('ngrok-token')
     }
     stages {
 
@@ -42,32 +44,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Generate secrets.tf') {
-            when {
-                expression { return env.ONLY_A_GIT_UPDATE == 'false' }
-            }
-            steps {
-                sh """
-cat > "${env.HOME_DIR}"/secrets.tf << 'EOF'
-variable "cidr_ipv4_mac" {
-  type        = string
-  description = "This is the Public IP for my Mac"
-}
-variable "project_version" {
-  type        = string
-  description = "This is the version control"
-}
-
-variable "enable_vpn" {
-  type = string
-  default = "false"
-}
-EOF
-"""
-            }
-        }
-
+        
         stage('Terraform Init') {
             when {
                 expression { return env.ONLY_A_GIT_UPDATE == 'false' }
