@@ -20,17 +20,6 @@ pipeline {
         NGROK_TOKEN               = credentials('ngrok-token')
     }
     stages {
-
-        stage('Update Code Only'){
-            when {
-                expression { return env.ONLY_A_GIT_UPDATE == 'true' }
-            }
-            steps{
-                sh "echo This is only an update to git main - no changes were made to the Infrastructure"
-            
-            }
-        }
-
         stage('Load Configuration Values') {
             steps{
                 script{
@@ -42,6 +31,16 @@ pipeline {
                     env.TF_VAR_enable_vpn = config.ENABLE_VPN
                     env.ONLY_A_GIT_UPDATE = config.ONLY_A_GIT_UPDATE
                 }
+            }
+        }
+
+        stage('Update Code Only'){
+            when {
+                expression { return env.ONLY_A_GIT_UPDATE == 'true' && env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'false'}
+            }
+            steps{
+                sh "echo This is only an update to git main - no changes were made to the Infrastructure"
+            
             }
         }
         
