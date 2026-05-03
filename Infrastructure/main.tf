@@ -26,21 +26,21 @@ module "RDS_Instance_Moduel" {
 }
 
 #Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN
-module "Client_VPN_Module" {
-  source            = "./Client-VPN-Conf"
-  subnet_A_id       = module.VPC_Module.VPC_Subnet_A_Output.id
-  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
-  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
-  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
-  subnet_C_id       = module.VPC_Module.VPC_Subnet_C_Output.id
-  subnet_C_cidr     = module.VPC_Module.VPC_Subnet_C_Output.cidr_block
-  vpn_users         = var.enable_vpn == "true" ? ["alice", "bob", "charlie"] : []
-  vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
-  privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
-  bastionHost_SecurityGroup_id = module.EC2_Module.BastionHost_SecurityGroup_Id
-  create_resource = var.enable_vpn == "true" ? 1 : 0
-  project_version = var.project_version
-}
+#module "Client_VPN_Module" {
+#  source            = "./Client-VPN-Conf"
+#  subnet_A_id       = module.VPC_Module.VPC_Subnet_A_Output.id
+#  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
+#  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
+#  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
+#  subnet_C_id       = module.VPC_Module.VPC_Subnet_C_Output.id
+#  subnet_C_cidr     = module.VPC_Module.VPC_Subnet_C_Output.cidr_block
+#  vpn_users         = var.enable_vpn == "true" ? ["alice", "bob", "charlie"] : []
+#  vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
+#  privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
+#  bastionHost_SecurityGroup_id = module.EC2_Module.BastionHost_SecurityGroup_Id
+#  create_resource = var.enable_vpn == "true" ? 1 : 0
+#  project_version = var.project_version
+#}
 
 module "EventBrideEC2_Module" {
   source = "./Events-Conf"
