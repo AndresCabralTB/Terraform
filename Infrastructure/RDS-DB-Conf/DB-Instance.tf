@@ -21,15 +21,15 @@ resource "aws_db_subnet_group" "terraform_db_SubnetGroup" {
 }
 
 #We will be using an already-existing KMS secret key - but remove this if you want to create a brand new onw
-#resource "aws_kms_key" "secrets_key" {
-#  description             = "KMS key for RDS master user secret ${var.project_version}"
-#  deletion_window_in_days = 7
-#}
+resource "aws_kms_key" "secrets_key" {
+  description             = "KMS 03/05/2026 pipeline${var.project_version}"
+  deletion_window_in_days = 7
+}
 
 #Extract the value from an existing secret 
-data "aws_kms_key" "secret_key_id" {
-  key_id = "96e24ab7-98ee-4746-9ec2-d63d98e5f069"
-}
+#data "aws_kms_key" "secret_key_id" {
+#  key_id = "96e24ab7-98ee-4746-9ec2-d63d98e5f069"
+#}
 
 resource "aws_db_instance" "ProjectDatabasePROD" {
     allocated_storage       = 10
@@ -42,7 +42,7 @@ resource "aws_db_instance" "ProjectDatabasePROD" {
     #username                = local.db_creds["username"] #Get username from secret created - removed because
     #password                = local.db_creds["password"]
     manage_master_user_password = true
-    master_user_secret_kms_key_id = data.aws_kms_key.secret_key_id.id
+    master_user_secret_kms_key_id = aws_kms_key.secrets_key.id
     parameter_group_name    = "default.mysql8.4"
     identifier = "terraform-db-${var.project_version}"
     instance_class          = "db.t4g.micro"
