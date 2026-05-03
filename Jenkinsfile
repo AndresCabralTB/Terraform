@@ -27,7 +27,7 @@ pipeline {
                     env.ENABLE_VPN = config.ENABLE_VPN
                     env.DELETE_INFRASTRUCTURE = config.DELETE_INFRASTRUCTURE
                     env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
-                    env.HOME_DIR = "Infrastructures/Infrastructure-VPN"
+                    env.HOME_DIR = "Infrastructure"
                     env.TF_VAR_enable_vpn = config.ENABLE_VPN
                     env.ONLY_A_GIT_UPDATE = config.ONLY_A_GIT_UPDATE
                 }
