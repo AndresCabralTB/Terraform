@@ -1,0 +1,7 @@
+docker: invalid spec: :/var/jenkins_home: empty section between colons
+
+Run 'docker run --help' for more information
+Container Created Successfully
+
+CONTAINER ID   IMAGE                      COMMAND         CREATED      STATUS      PORTS                                                                                          NAMES
+6699c57f28ba   docker-images-v14:latest   "/startup.sh"   5 days ago   Up 2 days   0.0.0.0:4040->4040/tcp, [::]:4040->4040/tcp, 0.0.0.0:60000->60000/tcp, [::]:60000->60000/tcp   mydocker-container-v14-4040

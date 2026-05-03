@@ -42,7 +42,6 @@ fi
 #fi
 }
 
-
 echo '''
 ====================================================
 CREATING CONTAINER STAGE 1: SETTING UP THE VARIABLES
@@ -66,6 +65,8 @@ until docker image inspect "$CONTAINER_IMAGE" > /dev/null 2>&1
       CONTAINER_IMAGE=$(is_empty "$CONTAINER_IMAGE")
     fi
   done
+
+inspect_image "$CONTAINER_IMAGE"
 
 read -p $'\nEnter the PORT number to host the container: ' CONTAINER_PORT
 CONTAINER_PORT=$(is_empty "$CONTAINER_PORT")
