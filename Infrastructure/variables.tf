@@ -35,10 +35,12 @@ variable "db_username" {
   description = "Database master username"
   type        = string
   sensitive   = true
+  default     = "test_user" #Filler so that pipeline executes
 }
 
 variable "db_password" {
   description = "Database master password"
   type        = string
   sensitive   = true
+  default     = "test_password" #Filler so that pipeline executes
 }
