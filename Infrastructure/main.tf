@@ -60,15 +60,15 @@ module "Route53_Module" {
 }
 
 # Commented out because the VPN configuration is also commented out
-output "vpn_user_certs" {
-  sensitive = true
-  value     = module.Client_VPN_Module.vpn_user_certs
-}
+#output "vpn_user_certs" {
+#  sensitive = true
+#  value     = module.Client_VPN_Module.vpn_user_certs
+#}
 
-output "ca_cert" {
-  sensitive = true
-  value     = module.Client_VPN_Module.ca_cert
-}
+#output "ca_cert" {
+#  sensitive = true
+#  value     = module.Client_VPN_Module.ca_cert
+#}
 
 output "bastionhost_output" {
   value     = module.EC2_Module.BastionHost_Name_Output
