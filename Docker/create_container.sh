@@ -7,7 +7,6 @@ CONTAINER_NAME=$1
 CONTAINER_VOLUME=$2
 CONTAINER_PORT=$3
 CONTAINER_IMAGE=$4
-CONTAINER_LOG=$5
 
 docker run --name "$CONTAINER_NAME" --restart=on-failure --detach \
   --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
@@ -15,18 +14,18 @@ docker run --name "$CONTAINER_NAME" --restart=on-failure --detach \
   --publish "$CONTAINER_PORT":8080 \
   --volume "$CONTAINER_VOLUME":/var/jenkins_home \
   --volume jenkins-docker-certs:/certs/client:ro \
-  "$CONTAINER_IMAGE" >> "$CONTAINER_LOG" 2>&1
+  "$CONTAINER_IMAGE" >> "$SESSION_LOGS" 2>&1
 
-if grep -qi "ERROR" "$CONTAINER_LOG"; 
+if grep -qi "ERROR" "$SESSION_LOGS"; 
 then
-  echo "Failed to create $CONTAINER_NAME" | tee -a "$CONTAINER_LOG"
-  echo "Stopping container "$(docker stop "$CONTAINER_NAME")"" >> "$CONTAINER_LOG" 
-  echo "Removing container "$(docker rm "$CONTAINER_NAME")"..." >> "$CONTAINER_LOG" 
-  echo -e "More information in "$CONTAINER_LOG"\n"
+  echo "[$(date)] - Failed to create $CONTAINER_NAME" | tee -a "$SESSION_LOGS"
+  echo "[$(date)] - Stopping container "$(docker stop "$CONTAINER_NAME")"" >> "$SESSION_LOGS" 
+  echo "[$(date)] - Removing container "$(docker rm "$CONTAINER_NAME")"..." >> "$SESSION_LOGS" 
+  echo -e "More information in "$SESSION_LOGS"\n"
   exit 1
 else
-  echo -e "Container Created Successfully\n" | tee -a "$CONTAINER_LOG"
-  docker ps -a | grep -i "$CONTAINER_NAME" >> "$CONTAINER_LOG" 2>&1
+  echo -e "[$(date)] - Container Created Successfully\n" | tee -a "$SESSION_LOGS"
+  docker ps -a | grep -i "$CONTAINER_NAME" >> "$SESSION_LOGS" 2>&1
 fi
 #NGROK DISABLED FOR NOW
 
@@ -79,19 +78,8 @@ CONTAINER_VOLUME=$(is_empty "$CONTAINER_VOLUME")
 
 echo '''
 ====================================================
-CREATING CONTAINER STAGE 2: CREATING THE LOG FILE
+CREATING CONTAINER STAGE 2: CREATING THE CONTAINER
 ====================================================
 '''
-#Create variable to define the container startup log
-mkdir -p ./logs/
-CONTAINER_LOG=$(echo ./logs/"$CONTAINER_NAME"_startup.log | tr :- _)
-touch $CONTAINER_LOG > /dev/null 2>&1
-echo -e "Log file "$CONTAINER_LOG" created successfully\n" && chmod +rwx "$CONTAINER_LOG"
-    
-echo '''
-====================================================
-CREATING CONTAINER STAGE 3: CREATING THE CONTAINER
-====================================================
-'''
-create_container "$CONTAINER_NAME" "$CONTAINER_VOLUME" "$CONTAINER_PORT" "$CONTAINER_IMAGE" "$CONTAINER_LOG"
+create_container "$CONTAINER_NAME" "$CONTAINER_VOLUME" "$CONTAINER_PORT" "$CONTAINER_IMAGE"
 

@@ -1,0 +1,13 @@
+Sun May  3 14:19:26 CST 2026
+Untagged: image-name-1:latest
+Deleted: sha256:b5b5fda1238bf27c0ad7ac3a806ba70ebff264fcb2e1aecb8e1e501051060f9a
+Error response from daemon: conflict: unable to delete df56e0764d68 (cannot be forced) - image is being used by running container 1f881fadfbd8
+Untagged: image-test-5:latest
+Deleted: sha256:ad36cf5b97cf1b6c35f603c9543a946842f863cdf2451e8f81380ae091724c7e
+Error response from daemon: conflict: unable to delete df56e0764d68 (cannot be forced) - image is being used by running container 1f881fadfbd8
+Error response from daemon: conflict: unable to delete df56e0764d68 (cannot be forced) - image is being used by running container 1f881fadfbd8
+Error response from daemon: conflict: unable to delete df56e0764d68 (cannot be forced) - image is being used by running container 1f881fadfbd8
+Untagged: docker-image-bash-v8:latest
+Deleted: sha256:8c94dea58c109a245c4d9c9a9af8cdb8c4ab7e73953e854ee17b5df5aae51543
+Untagged: image-bash-v2026:latest
+Deleted: sha256:d34572026cbc5718c87a4d39f7c5dc6017029a8dc35c1d2fbd1b9362addb2951

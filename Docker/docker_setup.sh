@@ -1,11 +1,18 @@
 #!/bin/bash
 source functions.sh
+export PIDP=$$
+export SESSION_LOGS=$(echo ./logs/session_"$PIDP".logs | tr :- _)
 
 echo "
 =================================
 WELCOME TO DOCKER CONFIGURATIONS
 ==================================
 "
+echo "Session ID: "$PIDP""
+mkdir -p "./logs"
+SESSION_LOGS=$(echo ./logs/session_"$PIDP".logs | tr :- _)
+touch "$SESSION_LOGS"
+echo "$(date)" >> "$SESSION_LOGS"
 
 PS3=$'\nChose an option: '
 startup_options=("List Images" "List Containers" "List Volumes" "Create Image" "Create Container" "Delete Image" "Delete Container" "Exit")
@@ -45,10 +52,7 @@ echo -e "
                 break
                 ;;
             "Delete Container")
-                #echo  "To be released" 
-                read -p "Enter test value: " TEST_VAL
-                TEST_VAL=$(is_empty "$TEST_VAL")
-                echo "TEST_VAL = "$TEST_VAL""
+                echo  "To be released" 
                 break
                 ;;
             "Exit")

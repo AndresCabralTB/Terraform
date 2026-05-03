@@ -1,4 +1,0 @@
-21f9c3b983ff51bf12cc22c9f0a085dfed816f9cdb6bbc0e37850a281f19ac95
-Container Created Successfully
-
-21f9c3b983ff   docker-image-22            "/usr/bin/tini -- /u…"   Less than a second ago   Up Less than a second   0.0.0.0:5050->8080/tcp, [::]:5050->8080/tcp                                                    container-5

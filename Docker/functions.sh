@@ -19,6 +19,8 @@ do
     fi
 done
 
+echo "$VAR"
+
 }  
 
 #List all the docker resources requested

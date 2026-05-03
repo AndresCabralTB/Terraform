@@ -1,0 +1,6 @@
+Sun May  3 14:22:08 CST 2026
+Untagged: image-test-8:latest
+Deleted: sha256:6075b7bb4a06d7ae37d728b608421a7c96a834f608e798ef284053efd4f4a758
+Untagged: image-test-14:latest
+Deleted: sha256:54a8a7dbf71b7f4e424280895939f4ec96ad13123bbd5c2ea0bea117cff75411
+Error response from daemon: conflict: unable to delete df56e0764d68 (cannot be forced) - image is being used by running container 1f881fadfbd8

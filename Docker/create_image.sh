@@ -4,23 +4,21 @@ source functions.sh
 create_image(){
 IMAGE_NAME=$1
 IMAGE_TAG=$2
-DOCKERFILE_PATH=$3
-IMAGE_LOG=$4
- 
+DOCKERFILE_PATH=$3 
 #echo -e "\nImage Name: "$IMAGE_NAME"\nImage_Tag: "$IMAGE_TAG"\n"DOCKERFILE_PATH: "$DOCKERFILE_PATH"\nImage Log: "$IMAGE_LOG"""
 
 # Build the docker image — write ONLY to log file (not terminal)
-docker build -t "$IMAGE_NAME":"$IMAGE_TAG" "$DOCKERFILE_PATH" >> "$IMAGE_LOG" 2>&1
+docker build -t "$IMAGE_NAME":"$IMAGE_TAG" "$DOCKERFILE_PATH" >> "$SESSION_LOGS" 2>&1
 
 # Verify that the logs don't contain any errors
-if grep -qi "ERROR" "$IMAGE_LOG"
+if grep -qi "ERROR" "$SESSION_LOGS"
 then
-    echo $'\nFailed to create Image\n' | tee -a "$IMAGE_LOG"
-    grep -i "ERROR" "$IMAGE_LOG" | tee -a "$IMAGE_LOG"
-    echo -e "\nMore information in $IMAGE_LOG\n" | tee -a "$IMAGE_LOG"
+    echo "[$(date)] - Failed to create Image" | tee -a "$SESSION_LOGS"
+    grep -i "ERROR" "$SESSION_LOGS" | tee -a "$SESSION_LOGS"
+    echo -e "More information in $SESSION_LOGS"
 else
-    echo $'\nImage created successfully\n' | tee -a "$IMAGE_LOG"
-    docker images "$IMAGE_NAME" >> "$IMAGE_LOG" 2>&1
+    echo "[$(date)] - Image created successfully" | tee -a "$SESSION_LOGS"
+    docker images "$IMAGE_NAME" >> "$SESSION_LOGS" 2>&1
     echo
 fi
 }
@@ -31,6 +29,9 @@ echo '''
 CREATING IMAGE STAGE 1: SETTING UP THE VARIABLES
 ================================================
 '''
+
+echo "Session ID: "$PIDP""
+
 read -p $'\nImage Name: ' IMAGE_NAME
     
 IMAGE_NAME=$(is_empty "$IMAGE_NAME")
@@ -55,22 +56,11 @@ else
 fi
 
 echo '''
-==========================================
-CREATING IMAGE STAGE 2: CREATE THE LOGFILE
-==========================================
-'''
-
-#Create a directory if it doesn't exist, as well as the log file for the creation of the image
-mkdir -p ./logs
-IMAGE_LOG=$(echo ./logs/"$IMAGE_NAME"_"$IMAGE_TAG"_startup.log | tr :- _)
-touch "$IMAGE_LOG"
-echo -e "Image log file "$IMAGE_LOG" created\n" && chmod +rwx "$IMAGE_LOG"
-echo '''
 ===============================================
-CREATING IMAGE STAGE 3: BUILD THE DOCKER IMAGE
+CREATING IMAGE STAGE 2: BUILD THE DOCKER IMAGE
 ===============================================
 '''
-create_image "$IMAGE_NAME" "$IMAGE_TAG" "$DOCKERFILE_PATH" "$IMAGE_LOG"
+create_image "$IMAGE_NAME" "$IMAGE_TAG" "$DOCKERFILE_PATH" 
 
 
 get_image(){

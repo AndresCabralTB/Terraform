@@ -1,0 +1,9 @@
+Sun May  3 14:29:30 CST 2026
+Untagged: image-test-21:latest
+Deleted: sha256:5688b34be75f5caf569d0645e56c11bf86c536338d0f7b84dcec726d86617d3c
+Error response from daemon: page not found
+Untagged: image-bash-2026:latest
+Deleted: sha256:c992994b884e5f81599753e40babf01781ba2acd9af8719de076f6534baba288
+Error response from daemon: conflict: unable to delete df56e0764d68 (cannot be forced) - image is being used by running container 1f881fadfbd8
+Error response from daemon: conflict: unable to delete eb0867c13391 (cannot be forced) - image is being used by running container 161d2ce60af5
+Error response from daemon: No such image: 1:latest

@@ -1,8 +1,0 @@
-ERROR: failed to build: invalid tag ":latest": invalid reference format
-
-Failed to create Image
-
-ERROR: failed to build: invalid tag ":latest": invalid reference format
-
-More information in ./logs/_latest_startup.log
-

@@ -1,0 +1,9 @@
+Sun May  3 14:06:24 CST 2026
+Untagged: docker-image-bash-v3:latest
+Deleted: sha256:c9cd71e8c3564a824935d870065991cbb9b7ef0dc68620c812cbfd620a0b4ba9
+Error response from daemon: No such image: 123:latest
+Error response from daemon: No such image: 123:latest
+Untagged: docker-image-bash-v4:latest
+Deleted: sha256:2f899d3f7482684e0f96f166e4098d1b3fd23cf7e05ab838e01d12d9b3f991da
+Untagged: image-test-16:latest
+Deleted: sha256:97b0f5cc3a4a9b9acd2bcfcc26978291fb1684659d10680dbd3ab9509e25a308

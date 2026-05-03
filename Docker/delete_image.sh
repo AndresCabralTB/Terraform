@@ -38,15 +38,28 @@ do
     let "index=index+1"
 done
 
-read -p "Enter the image ID you wish to delete: " DELETE_IMAGE
+read -p $'\nEnter the image ID you wish to delete, or enter 1 to exit: ' DELETE_IMAGE
 
-until docker rmi "$DELETE_IMAGE" 
+until [ "$DELETE_IMAGE" == "1" ]
 do
-    if [ ! -z "$DELETE_IMAGE" ]
-    then
-        read -p "Failed to delete image, try again: " DELETE_IMAGE
-    else  
-        DELETE_IMAGE=$(is_empty "$DELETE_IMAGE")
-    fi
+    until docker rmi "$DELETE_IMAGE" >> "$SESSION_LOGS" 2>&1
+    do
+        if [ -z "$DELETE_IMAGE" ]
+        then
+            DELETE_IMAGE=$(is_empty "$DELETE_IMAGE")
+        elif [ "$DELETE_IMAGE" == "1" ]
+        then
+            exit 1
+        else  
+            echo
+            echo -e "$(docker rmi "$DELETE_IMAGE")"
+            read -p $'Error deleting image, try again, or enter 1 to exit: ' DELETE_IMAGE
+        fi
+    done
+    echo -e "\nImage deleted successfully"
+    read -p $'\nEnter the image ID you wish to delete, or enter 1 to exit: ' DELETE_IMAGE
 done
-echo "Image deleted successfully"
+
+
+
+

@@ -1,7 +1,7 @@
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 2.21kB done
+#1 transferring dockerfile: 2.21kB 0.0s done
 #1 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
@@ -11,7 +11,7 @@
 #3 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
-#2 DONE 2.9s
+#2 DONE 0.8s
 
 #4 [internal] load .dockerignore
 #4 transferring context: 2B done
@@ -31,14 +31,31 @@
 #8 exporting layers done
 #8 exporting manifest sha256:1f9454b13161f20369a8b8fc623e057c9b769c025df273ec268b93c7cb59e92c done
 #8 exporting config sha256:c9b14139fea78617e5130eecdd2ecf92cd5a5fbe33325db707a6712dbfa9d65d done
-#8 exporting attestation manifest sha256:d4f89b9d1e026d059814c0f05de111e5e6787c607cbb74fa3239b74f802e48fc done
-#8 exporting manifest list sha256:c992994b884e5f81599753e40babf01781ba2acd9af8719de076f6534baba288 done
-#8 naming to docker.io/library/image-bash-2026:latest done
-#8 unpacking to docker.io/library/image-bash-2026:latest done
-#8 DONE 0.0s
-
-Image created successfully
-
+#8 exporting attestation manifest sha256:0da0537ca542747636505e5a8ecfeef70dd38e90dc8948ddb825773a578d248e 0.0s done
+#8 exporting manifest list sha256:b5b5fda1238bf27c0ad7ac3a806ba70ebff264fcb2e1aecb8e1e501051060f9a done
+#8 naming to docker.io/library/image-name-1:latest done
+#8 unpacking to docker.io/library/image-name-1:latest 0.0s done
+#8 DONE 0.1s
+[Sun May  3 13:56:43 CST 2026] - Image created successfully
 WARNING: This output is designed for human readability. For machine-readable output, please use --format.
-IMAGE                    ID             DISK USAGE   CONTENT SIZE   EXTRA
-image-bash-2026:latest   c992994b884e       1.83GB          547MB        
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-name-1:latest   b5b5fda1238b       1.83GB          547MB   U    
+161d2ce60af57abf348335fed298eb9bb2df765c6f083334020d305b7253a05b
+[Sun May  3 13:57:07 CST 2026] - Container Created Successfully
+
+161d2ce60af5   123123                     "/usr/bin/tini -- /u…"   Less than a second ago   Up Less than a second   0.0.0.0:7070->8080/tcp, [::]:7070->8080/tcp                                                    container-test-1
+225c185d22bb8c4c1c4f93d7ce34128477fe1c1e04065df794364d131b8e0e70
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint popo (70337a1a689c1ee90084e3f71ae4176d3364ca30f5c121049ca01de6e58d72bd): Bind for 0.0.0.0:9090 failed: port is already allocated
+
+Run 'docker run --help' for more information
+[Sun May  3 13:58:07 CST 2026] - Failed to create popo
+[Sun May  3 13:58:07 CST 2026] - Stopping container popo
+[Sun May  3 13:58:07 CST 2026] - Removing container popo...
+[Sun May  3 13:58:23 CST 2026] - Untagged: image-test-19:latest
+Deleted: sha256:7d6ebac0680df1deba3648bc8e8b75cbb8a7caf9cbe2ea10e1ab334792241fd8
+[Sun May  3 13:58:23 CST 2026] - Image deleted successfully
+[Sun May  3 13:58:30 CST 2026] - 
+[Sun May  3 13:58:30 CST 2026] - Image deleted successfully
+[Sun May  3 13:58:39 CST 2026] - 
+[Sun May  3 13:58:39 CST 2026] - Image deleted successfully
+[Sun May  3 13:59:20 CST 2026] - 
