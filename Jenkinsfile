@@ -53,7 +53,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Init') {
+        stage('Terraform Plan') {
             when {
                 expression { return env.ONLY_A_GIT_UPDATE == 'false' }
             }
