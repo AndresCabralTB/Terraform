@@ -7,6 +7,7 @@ Jenkins Plugins:
 // We set up a webhook to our repository so that when we push our code, Jenkins Git Plugin detects the push and begins the pipeline using the repository 
 // This trigger only kicks git-plugin internal polling algo for every incoming event against matched repo.
 pipeline {
+    options {
     agent any
     triggers {
         pollSCM('H/5 * * * *')
