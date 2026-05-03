@@ -49,11 +49,22 @@ pipeline {
                 expression { return env.ONLY_A_GIT_UPDATE == 'false' }
             }
             steps {
-                sh "cd $env.HOME_DIR && terraform init"
+                sh "cd $env.HOME_DIR && terraform init && terraform plan "
             }
         }
+
+        stage('Terraform Init') {
+            when {
+                expression { return env.ONLY_A_GIT_UPDATE == 'false' }
+            }
+            steps {
+                sh "cd $env.HOME_DIR && terraform plan "
+            }
+        }
+
         stage('Terraform Apply') {
             when {
+                branch 'main'
                 expression { return env.DELETE_INFRASTRUCTURE == "false" && env.ONLY_A_GIT_UPDATE == 'false' }
             }
             steps {
