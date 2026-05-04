@@ -8,18 +8,18 @@ DOCKERFILE_PATH=$3
 #echo -e "\nImage Name: "$IMAGE_NAME"\nImage_Tag: "$IMAGE_TAG"\n"DOCKERFILE_PATH: "$DOCKERFILE_PATH"\nImage Log: "$IMAGE_LOG"""
 
 # Build the docker image — write ONLY to log file (not terminal)
-docker build -t "$IMAGE_NAME":"$IMAGE_TAG" "$DOCKERFILE_PATH" >> "$SESSION_LOGS" 2>&1
+
 
 # Verify that the logs don't contain any errors
-if grep -qi "ERROR" "$SESSION_LOGS"
+if docker build -t "$IMAGE_NAME":"$IMAGE_TAG" "$DOCKERFILE_PATH" >> "$SESSION_LOGS" 2>&1
 then
-    echo "[$(date)] - Failed to create Image" | tee -a "$SESSION_LOGS"
-    grep -i "ERROR" "$SESSION_LOGS" | tee -a "$SESSION_LOGS"
-    echo -e "More information in $SESSION_LOGS"
-else
     echo "[$(date)] - Image created successfully" | tee -a "$SESSION_LOGS"
     docker images "$IMAGE_NAME" >> "$SESSION_LOGS" 2>&1
     echo
+else
+	echo "[$(date)] - Failed to create Image" | tee -a "$SESSION_LOGS"
+    grep -i "ERROR" "$SESSION_LOGS" | tee -a "$SESSION_LOGS"
+    echo -e "More information in $SESSION_LOGS"
 fi
 }
 

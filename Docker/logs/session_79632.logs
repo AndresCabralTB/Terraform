@@ -1,0 +1,66 @@
+Sun May  3 23:33:09 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 ...
+
+#3 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 7.44kB 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY . /app/Docker
+#9 DONE 0.0s
+
+#10 [5/7] RUN chmod +rw /app/*
+#10 DONE 0.4s
+
+#11 [6/7] RUN chown -R jenkins:jenkins /app
+#11 DONE 0.2s
+
+#12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 24.70 Done
+#12 DONE 24.9s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 4.4s done
+#13 exporting manifest sha256:d87df3be5c280e7d926340a6ef89ea4b2b682139b5116149e813eeb582c48a20 0.0s done
+#13 exporting config sha256:a1148c975f4621f10a6b59a43acab190ce70d360bc49140457aa329c06cdb0c7 0.0s done
+#13 exporting attestation manifest sha256:a24774f9276311cc178f328c27dcfc3737d2dc52eafd1e0e406a9c1f4a9fe066 0.0s done
+#13 exporting manifest list sha256:d5bed75a5e470c5302b5b74b424216431b468cee5d896281c250428b2198b5c7 done
+#13 naming to docker.io/library/docker-image-new-v15:latest done
+#13 unpacking to docker.io/library/docker-image-new-v15:latest
+#13 unpacking to docker.io/library/docker-image-new-v15:latest 7.5s done
+#13 DONE 12.1s
+[Sun May  3 23:34:03 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                         ID             DISK USAGE   CONTENT SIZE   EXTRA
+docker-image-new-v15:latest   d5bed75a5e47       1.83GB          547MB        
+ed330f5093f54fa4bff00caf4c6858b5c22797e4ec34f6bb2d67b871a713ad5b
+[Sun May  3 23:34:44 CST 2026] - Container Created Successfully
+
+ed330f5093f5   docker-image-new-v15       "/usr/bin/tini -- /u…"   Less than a second ago   Up Less than a second   0.0.0.0:6060->8080/tcp, [::]:6060->8080/tcp                                                    new-container-v15
