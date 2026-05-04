@@ -16,7 +16,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY     = credentials('aws_secret_access_key')
         TF_TOKEN_app_terraform_io = credentials('terraform-cloud-token')
         TF_VAR_cidr_ipv4_mac      = credentials('cidr_ipv4_mac')
-        TF_VAR_project_version    = "${BUILD_ID}"
+        TF_VAR_project_version    = "PROD_${BUILD_ID}"
         NGROK_TOKEN               = credentials('ngrok-token')
     }
     stages {
@@ -64,8 +64,10 @@ pipeline {
 
         stage('Terraform Apply') {
             when {
-                branch 'main'
-                expression { return env.DELETE_INFRASTRUCTURE == "false" && env.ONLY_A_GIT_UPDATE == 'false' }
+                allOf{
+                    branch 'main'
+                    expression { return env.DELETE_INFRASTRUCTURE == "false" && env.ONLY_A_GIT_UPDATE == 'false' }
+                }
             }
             steps {
                 sh "cd $env.HOME_DIR && terraform apply --auto-approve"
@@ -73,7 +75,10 @@ pipeline {
         }
         stage('OVPN File Configuration') {
             when {
-                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' && env.ONLY_A_GIT_UPDATE == 'false' }
+                allOf{
+                    branch 'main'
+                    expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' && env.ONLY_A_GIT_UPDATE == 'false' }
+                }
             }
             steps{
                 //Create .ovpn file for users
@@ -96,7 +101,10 @@ pipeline {
 
         stage('Destroy OVPN Files') {
             when {
-                expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' && env.ONLY_A_GIT_UPDATE == 'false' }
+                allOf{
+                    branch 'main'
+                    expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' && env.ONLY_A_GIT_UPDATE == 'false' }
+                }
             }
             steps {
                 sh "cd $env.HOME_DIR/Client-VPN-Conf/ && rm -rf *.ovpn"
@@ -105,7 +113,10 @@ pipeline {
 
         stage('Terraform Destroy') {
             when {
-                expression { return env.DELETE_INFRASTRUCTURE == "true" && env.ONLY_A_GIT_UPDATE == 'false' }
+                allOf{
+                    branch 'main'
+                    expression { return env.DELETE_INFRASTRUCTURE == "true" && env.ONLY_A_GIT_UPDATE == 'false' }
+                }
             }
             steps {
                 sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
