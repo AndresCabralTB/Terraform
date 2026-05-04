@@ -1,0 +1,92 @@
+[
+    {
+        "Id": "sha256:32e0dbe3f4b87a8e9830681cf6991b077085f91d7afeb8064ebfa33f9bc2f235",
+        "RepoTags": [
+            "docker-images-v14:latest"
+        ],
+        "RepoDigests": [
+            "docker-images-v14@sha256:32e0dbe3f4b87a8e9830681cf6991b077085f91d7afeb8064ebfa33f9bc2f235"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-04-28T01:18:35.065231044Z",
+        "Config": {
+            "User": "jenkins",
+            "ExposedPorts": {
+                "50000/tcp": {},
+                "8080/tcp": {}
+            },
+            "Env": [
+                "PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "JENKINS_HOME=/var/jenkins_home",
+                "JENKINS_SLAVE_AGENT_PORT=50000",
+                "REF=/usr/share/jenkins/ref",
+                "JENKINS_UC=https://updates.jenkins.io",
+                "JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental",
+                "JENKINS_INCREMENTALS_REPO_MIRROR=https://repo.jenkins-ci.org/incrementals",
+                "COPY_REFERENCE_FILE_LOG=/var/jenkins_home/copy_reference_file.log",
+                "JAVA_HOME=/opt/java/openjdk",
+                "JENKINS_VERSION=2.555.1"
+            ],
+            "Entrypoint": [
+                "/startup.sh"
+            ],
+            "Volumes": {
+                "/var/jenkins_home": {}
+            },
+            "WorkingDir": "/app",
+            "Labels": {
+                "org.opencontainers.image.description": "The Jenkins Continuous Integration and Delivery server",
+                "org.opencontainers.image.licenses": "MIT",
+                "org.opencontainers.image.revision": "0a6e573830c0c5dbc60fbbbd733d0abb5cf87627",
+                "org.opencontainers.image.source": "https://github.com/jenkinsci/docker",
+                "org.opencontainers.image.title": "Official Jenkins Docker image",
+                "org.opencontainers.image.url": "https://www.jenkins.io/",
+                "org.opencontainers.image.vendor": "Jenkins project",
+                "org.opencontainers.image.version": "2.555.1"
+            }
+        },
+        "Architecture": "arm64",
+        "Os": "linux",
+        "Size": 546632151,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:6a850320d953bf5495bc8dd4ef2ee29dcf483387ec1b7809c23362c8fc5307eb",
+                "sha256:cce816cb6da0db3a2c5d5ccc03a34d424562e165fd76693fddf22e44ab1dd1bb",
+                "sha256:164baaf3e322f6d77912af11e213a01cbd17fcc6a86befec9cd60f6388f50d54",
+                "sha256:ce65e72572dc1df6f94ea5138e3a13e6b508d5595d2427404c2c09c3cb59f7fe",
+                "sha256:7c6ecdafcbd057aeb3dedc4484e958e2451cc91f3fd4e6d7aebc79dc359a27c0",
+                "sha256:687fa7119cde0178eff280fe299fc207b4a8fa4ea61fe553453971d18e8b9b46",
+                "sha256:5c5af9fbabe485cb3cd6a8e353097a8986b1e0cd7ff414ee023a26468c9bfc3d",
+                "sha256:afbd3f02e157aedcc553be884014345eb9ff623fa0f4e1d4ab5a5e37cf44a4fa",
+                "sha256:d23a4efa9a8697f41117af03b61f3659f98a465f5a968b34a5062d3499f9983f",
+                "sha256:830fbed38b15330cd961aec4af418f39a544b067b26b4d5a1285184763e0bcb8",
+                "sha256:ea0f0ab1d8ea92db648301f1d5cc59a0feca213175733eb98f29972d20465220",
+                "sha256:07484c530ba799644695eb6d69cc3749c026991ca8bffa7dfd9dfcd68a4fbc2b",
+                "sha256:34767c80f5406792ffb0d80e71311db128f92d0000f3d98c58f41ccd07514a60",
+                "sha256:0c335b70e6ba046592a56bf04b0a0d745aed969029afa77e4527ea1ae1e550b3",
+                "sha256:cf22eeedd858413dcf50850878a97b9f545a7af7edd774eb90e4246ae1644645",
+                "sha256:d765e4ec6b7b2fefb29330e85b01978e413554ed45c1ba742ea159bd17d091a4",
+                "sha256:1ef4b446c7108fd915b75012082ca648932e5f5de49b3c8744554987c9c692fa",
+                "sha256:b929513b44b0adaea1e05e7866f967f02b61d0e96986084209b9ef5802c33ff6"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-04-28T01:18:36.720445211Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:32e0dbe3f4b87a8e9830681cf6991b077085f91d7afeb8064ebfa33f9bc2f235",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "w8so3wjxkc0fbwqdw1p0p4mxn",
+                    "CreatedAt": "2026-04-28T01:18:37.006493169Z"
+                }
+            ]
+        }
+    }
+]

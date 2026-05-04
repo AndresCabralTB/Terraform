@@ -1,0 +1,203 @@
+Sun May  3 22:44:52 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#3 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 17.26kB 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY . /app/Docker
+#9 DONE 0.0s
+
+#10 [5/7] RUN chmod +rw /app/*
+#10 DONE 0.2s
+
+#11 [6/7] RUN chown -R jenkins:jenkins /app
+#11 DONE 0.2s
+
+#12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 41.64 Done
+#12 DONE 41.8s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 3.8s done
+#13 exporting manifest sha256:11004125e2e218769b9cc40336713e97bd4055a4a4e67a3024e18213cf38187f done
+#13 exporting config sha256:d539f88f74ffe41b71daab983bb14a3f7122f85b42329ba4b90308d425fc8d81 done
+#13 exporting attestation manifest sha256:a014e626c92382d8cc27b4d314ce1d271246b4d2f0d7b5a965f5b25ab6901f11 0.0s done
+#13 exporting manifest list sha256:4d9b41556c2625395bd688c0ca0da53f99e67ec284cb6bc00d685ecd707e0fb6 done
+#13 naming to docker.io/library/image-test-1:latest done
+#13 unpacking to docker.io/library/image-test-1:latest
+#13 unpacking to docker.io/library/image-test-1:latest 0.6s done
+#13 DONE 4.5s
+[Sun May  3 22:45:49 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-test-1:latest   4d9b41556c26       1.83GB          547MB        
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 6.43kB 0.0s done
+#5 DONE 0.0s
+
+#6 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [3/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] COPY . /app/Docker
+#8 DONE 0.0s
+
+#9 [5/7] RUN chmod +rw /app/*
+#9 DONE 0.2s
+
+#10 [6/7] RUN chown -R jenkins:jenkins /app
+#10 DONE 0.2s
+
+#11 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#11 24.00 May 04, 2026 4:47:32 AM org.apache.http.impl.execchain.RetryExec execute
+#11 24.00 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://ftp-nyc.osuosl.org:443: The target server failed to respond
+#11 24.00 May 04, 2026 4:47:32 AM org.apache.http.impl.execchain.RetryExec execute
+#11 24.00 INFO: Retrying request to {s}->https://ftp-nyc.osuosl.org:443
+#11 42.59 Done
+#11 DONE 42.7s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 2.5s done
+#12 exporting manifest sha256:3304bb72b43b5c20504c138acc8ce5b49cbbd6ad4f9dedc7d044f993276ce92a done
+#12 exporting config sha256:9df402492fc43d980d967d8eaca21a0c20e0409f2e558de0d77124ad8a114dfe done
+#12 exporting attestation manifest sha256:2ed6e2435610ca5419b53e635c0a5becbf9e151a7012c2b6ddb554714116bf4f done
+#12 exporting manifest list sha256:4457f1b5fc60f3a2541863da9409fc25078bd7b17bf806b06d492a389ee4a008 done
+#12 naming to docker.io/library/image-test-4:latest done
+#12 unpacking to docker.io/library/image-test-4:latest
+#12 unpacking to docker.io/library/image-test-4:latest 0.4s done
+#12 DONE 2.9s
+[Sun May  3 22:47:54 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-test-4:latest   4457f1b5fc60       1.83GB          547MB        
+Untagged: image-test-1:latest
+Deleted: sha256:4d9b41556c2625395bd688c0ca0da53f99e67ec284cb6bc00d685ecd707e0fb6
+Error response from daemon: No such image: 4d9b41556c26:latest
+Error response from daemon: No such image: 4d9b41556c26:latest
+Error response from daemon: No such image: 4d9b41556c26:latest
+Error response from daemon: No such image: 4d9b41556c26:latest
+Error response from daemon: No such image: 4d9b41556c26:latest
+Error response from daemon: No such image: 4d9b41556c26:latest
+Untagged: image-test-4:latest
+Deleted: sha256:4457f1b5fc60f3a2541863da9409fc25078bd7b17bf806b06d492a389ee4a008
+Error response from daemon: page not found
+Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be forced) - image is being used by running container 6699c57f28ba
+Untagged: image-test-delete-3:latest
+Deleted: sha256:e90f29bbd158316742d27104ccd5f807084f7354a19c12b2b7e37992634e3b87
+Untagged: image-test-delete-2:latest
+Deleted: sha256:4420d0abae5ac59265797f849ecb9895a0115af875d60278f37b57eb755cfc9d
+Error response from daemon: No such image: 4420d0abae5a:latest
+Error response from daemon: No such image: 4420d0abae5a:latest
+Error response from daemon: No such image: 4420d0abae5a:latest
+Error response from daemon: No such image: 4420d0abae5a:latest
+Error response from daemon: page not found
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 ...
+
+#3 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 11.69kB 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY . /app/Docker
+#9 DONE 0.0s
+
+#10 [5/7] RUN chmod +rw /app/*
+#10 DONE 0.2s
+
+#11 [6/7] RUN chown -R jenkins:jenkins /app
+#11 DONE 0.2s
+
+#12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 21.64 Done
+#12 DONE 21.7s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.4s done
+#13 exporting manifest sha256:174e69782b25dd68d613971e30c54a3b22af74be3b55bc6e11ab2222b66cac1d done
+#13 exporting config sha256:bbc56201428c2e590b50131c75b1cac8379a7036de1441dfd6ecb6f4e28a7f09 done
+#13 exporting attestation manifest sha256:ad29cb09d05a8ce26b14c561468fac42db22143362a1aa0c270cc8c8ba29b11e done
+#13 exporting manifest list sha256:44ba53f76464b762d31090f55165815c2970ff35443366a48343b688a79d9aea done
+#13 naming to docker.io/library/image-test-container:latest done
+#13 unpacking to docker.io/library/image-test-container:latest
+#13 unpacking to docker.io/library/image-test-container:latest 4.4s done
+#13 DONE 6.8s
+[Sun May  3 22:51:23 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                         ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-test-container:latest   44ba53f76464       1.83GB          547MB        

@@ -1,0 +1,331 @@
+Sun May  3 21:10:44 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 ...
+
+#3 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 0.0s done
+#5 DONE 0.0s
+
+#6 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [4/7] COPY ../Docker /app
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+
+#9 [3/7] WORKDIR /app
+#9 DONE 0.0s
+------
+ > [4/7] COPY ../Docker /app:
+------
+Dockerfile:29
+--------------------
+  27 |     
+  28 |     WORKDIR /app
+  29 | >>> COPY ../Docker /app
+  30 |     RUN chmod +rw /app/* 
+  31 |     RUN chown jenkins:jenkis /app/*
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+[Sun May  3 21:10:57 CST 2026] - Failed to create Image
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#4 DONE 0.0s
+
+#5 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#5 CACHED
+
+#6 [3/7] WORKDIR /app
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [4/7] COPY /Docker /app
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+------
+ > [4/7] COPY /Docker /app:
+------
+Dockerfile:29
+--------------------
+  27 |     
+  28 |     WORKDIR /app
+  29 | >>> COPY /Docker /app
+  30 |     RUN chmod +rw /app/* 
+  31 |     RUN chown jenkins:jenkis /app/*
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+[Sun May  3 21:11:42 CST 2026] - Failed to create Image
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.82kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.9s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#5 CACHED
+
+#6 [3/7] WORKDIR /app
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [4/7] COPY Docker /app/Docker
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+------
+ > [4/7] COPY Docker /app/Docker:
+------
+Dockerfile:29
+--------------------
+  27 |     
+  28 |     WORKDIR /app
+  29 | >>> COPY Docker /app/Docker
+  30 |     RUN chmod +rw /app/* 
+  31 |     RUN chown -R jenkins:jenkis /app
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+[Sun May  3 21:13:04 CST 2026] - Failed to create Image
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.82kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 0.0s done
+#4 DONE 0.0s
+
+#5 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#5 CACHED
+
+#6 [3/7] WORKDIR /app
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [4/7] COPY Docker/ /app/Docker
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+------
+ > [4/7] COPY Docker/ /app/Docker:
+------
+Dockerfile:29
+--------------------
+  27 |     
+  28 |     WORKDIR /app
+  29 | >>> COPY Docker/ /app/Docker
+  30 |     RUN chmod +rw /app/* 
+  31 |     RUN chown -R jenkins:jenkis /app
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+[Sun May  3 21:14:25 CST 2026] - Failed to create Image
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.82kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#4 DONE 0.0s
+
+#5 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#5 CACHED
+
+#6 [3/7] WORKDIR /app
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [4/7] COPY ../Docker/ /app/Docker
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::q634cvc8hj6zvkti5wgpxo4de: "/Docker": not found
+------
+ > [4/7] COPY ../Docker/ /app/Docker:
+------
+Dockerfile:29
+--------------------
+  27 |     
+  28 |     WORKDIR /app
+  29 | >>> COPY ../Docker/ /app/Docker
+  30 |     RUN chmod +rw /app/* 
+  31 |     RUN chown -R jenkins:jenkis /app
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::q634cvc8hj6zvkti5wgpxo4de: "/Docker": not found
+[Sun May  3 21:14:37 CST 2026] - Failed to create Image
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::y4sh97edqn9e53ecpd4hwx4i1: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::lzpy9wmvxfpadcrpgt05zfbch: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::zmi69miz48xskz1kehbptjl49: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::vf68gyt4kmky2410tsd92le3m: "/Docker": not found
+#8 ERROR: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::q634cvc8hj6zvkti5wgpxo4de: "/Docker": not found
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref nb3fyk4543b390a3qpt4sv5vq::q634cvc8hj6zvkti5wgpxo4de: "/Docker": not found

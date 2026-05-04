@@ -1,0 +1,179 @@
+Sun May  3 21:16:08 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#3 DONE 0.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 6.76kB done
+#6 DONE 0.0s
+
+#7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY . /app/Docker
+#9 DONE 0.0s
+
+#10 [5/7] RUN chmod +rw /app/*
+#10 DONE 0.2s
+
+#11 [6/7] RUN chown -R jenkins:jenkins /app
+#11 DONE 0.2s
+
+#12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 71.48 May 04, 2026 3:17:24 AM org.apache.http.impl.execchain.RetryExec execute
+#12 71.48 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://ftp-chi.osuosl.org:443: The target server failed to respond
+#12 71.48 May 04, 2026 3:17:24 AM org.apache.http.impl.execchain.RetryExec execute
+#12 71.48 INFO: Retrying request to {s}->https://ftp-chi.osuosl.org:443
+#12 87.63 Done
+#12 DONE 87.7s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.7s done
+#13 exporting manifest sha256:67eca989d93af9c2e8062b464c42b4df98193b990d5316a9af58759f6ab46d7f done
+#13 exporting config sha256:9666f56b5570522d4d4855e23429c5d8459241db19a230753c228e6a9f28dcd7 done
+#13 exporting attestation manifest sha256:c4f254bc03f2850f2d10ce7db1a0547610d48a78df9b21dd677a05c00cdffb51 done
+#13 exporting manifest list sha256:e9a3204a21dd08fde026eb29410898bf2e1fad101fd0cf4653118f2e8bfe8247 done
+#13 naming to docker.io/library/image-test-delete-1:latest done
+#13 unpacking to docker.io/library/image-test-delete-1:latest
+#13 unpacking to docker.io/library/image-test-delete-1:latest 0.5s done
+#13 DONE 3.3s
+[Sun May  3 21:17:43 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                        ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-test-delete-1:latest   e9a3204a21dd       1.83GB          547MB        
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 5.62kB done
+#5 DONE 0.0s
+
+#6 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [3/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] COPY . /app/Docker
+#8 DONE 0.0s
+
+#9 [5/7] RUN chmod +rw /app/*
+#9 DONE 0.2s
+
+#10 [6/7] RUN chown -R jenkins:jenkins /app
+#10 DONE 0.2s
+
+#11 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#11 27.56 May 04, 2026 3:19:36 AM org.apache.http.impl.execchain.RetryExec execute
+#11 27.56 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://mirror.dst.ca:443: The target server failed to respond
+#11 27.56 May 04, 2026 3:19:36 AM org.apache.http.impl.execchain.RetryExec execute
+#11 27.56 INFO: Retrying request to {s}->https://mirror.dst.ca:443
+#11 58.44 May 04, 2026 3:20:07 AM org.apache.http.impl.execchain.RetryExec execute
+#11 58.44 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://ftp-chi.osuosl.org:443: The target server failed to respond
+#11 58.44 May 04, 2026 3:20:07 AM org.apache.http.impl.execchain.RetryExec execute
+#11 58.44 INFO: Retrying request to {s}->https://ftp-chi.osuosl.org:443
+#11 163.9 May 04, 2026 3:21:52 AM org.apache.http.impl.execchain.RetryExec execute
+#11 163.9 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://mirror.xmission.com:443: The target server failed to respond
+#11 163.9 May 04, 2026 3:21:52 AM org.apache.http.impl.execchain.RetryExec execute
+#11 163.9 INFO: Retrying request to {s}->https://mirror.xmission.com:443
+#11 327.6 Unable to resolve plugin URL https://updates.jenkins.io/download/plugins/durable-task/664.v2b_e7a_dfff66c/durable-task.hpi, or download plugin durable-task to file: Premature end of Content-Length delimited message body (expected: 7,099,399; received: 212,732)
+#11 327.6 Tried downloading durable-task from https://mirror.xmission.com/jenkins/plugins/durable-task/664.v2b_e7a_dfff66c/durable-task.hpi (attempt 1 of 3)
+#11 CANCELED
+ERROR: failed to build: failed to solve: Canceled: context canceled
+[Sun May  3 21:24:55 CST 2026] - Failed to create Image
+ERROR: failed to build: failed to solve: Canceled: context canceled
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#3 DONE 1.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 9.91kB done
+#6 DONE 0.0s
+
+#7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY . /app/Docker
+#9 DONE 0.0s
+
+#10 [5/7] RUN chmod +rw /app/*
+#10 DONE 0.2s
+
+#11 [6/7] RUN chown -R jenkins:jenkins /app
+#11 DONE 0.2s
+
+#12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 28.97 May 04, 2026 3:25:43 AM org.apache.http.impl.execchain.RetryExec execute
+#12 28.97 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://ftp-nyc.osuosl.org:443: The target server failed to respond
+#12 28.97 May 04, 2026 3:25:43 AM org.apache.http.impl.execchain.RetryExec execute
+#12 28.97 INFO: Retrying request to {s}->https://ftp-nyc.osuosl.org:443
+#12 53.88 Done
+#12 DONE 54.0s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.5s done
+#13 exporting manifest sha256:6f44343a44e45eb8c165f005b4f0bfdd9db5a630287486220c7e3e63cc40119a done
+#13 exporting config sha256:f2cbad646fa417e92b4598b3e4d4e0a3458318d74c3c597bf4acd0c09b574552 done
+#13 exporting attestation manifest sha256:58eaaa07771c7234c254313459e198d6f1a65850f0017ca416b581e655f0c459 0.0s done
+#13 exporting manifest list sha256:9c1ff04ac92a711bfc074423917a3179ae8f149156af5227c1b51f9e4279693d done
+#13 naming to docker.io/library/image-test-delete-with-container-1:latest done
+#13 unpacking to docker.io/library/image-test-delete-with-container-1:latest
+#13 unpacking to docker.io/library/image-test-delete-with-container-1:latest 0.5s done
+#13 DONE 3.1s
+[Sun May  3 21:26:12 CST 2026] - Failed to create Image
+ERROR: failed to build: failed to solve: Canceled: context canceled
+ERROR: failed to build: failed to solve: Canceled: context canceled

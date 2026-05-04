@@ -1,0 +1,5 @@
+Sun May  3 21:54:36 CST 2026
+Untagged: image-test-delete-with-container-22:latest
+Deleted: sha256:eb948dceb17ad2eea943c4fb8cc01dec412a15370e47a15dbf449d86387faa76
+Error response from daemon: No such image: 1:latest
+Error response from daemon: No such image: 1:latest

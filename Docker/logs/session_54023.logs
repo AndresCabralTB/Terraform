@@ -1,0 +1,53 @@
+Sun May  3 21:15:21 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 done
+#4 DONE 0.0s
+
+#5 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#5 CACHED
+
+#6 [3/7] WORKDIR /app
+#6 CACHED
+
+#7 [internal] load build context
+#7 transferring context: 50.29kB 0.0s done
+#7 DONE 0.0s
+
+#8 [4/7] COPY . /app/Docker
+#8 DONE 0.0s
+
+#9 [5/7] RUN chmod +rw /app/*
+#9 DONE 0.4s
+
+#10 [6/7] RUN chown -R jenkins:jenkis /app
+#10 0.158 chown: invalid group: ‘jenkins:jenkis’
+#10 ERROR: process "/bin/sh -c chown -R jenkins:jenkis /app" did not complete successfully: exit code: 1
+------
+ > [6/7] RUN chown -R jenkins:jenkis /app:
+0.158 chown: invalid group: ‘jenkins:jenkis’
+------
+Dockerfile:31
+--------------------
+  29 |     COPY . /app/Docker
+  30 |     RUN chmod +rw /app/* 
+  31 | >>> RUN chown -R jenkins:jenkis /app
+  32 |     
+  33 |     USER jenkins
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c chown -R jenkins:jenkis /app" did not complete successfully: exit code: 1
+[Sun May  3 21:15:25 CST 2026] - Failed to create Image
+#10 ERROR: process "/bin/sh -c chown -R jenkins:jenkis /app" did not complete successfully: exit code: 1
+ERROR: failed to build: failed to solve: process "/bin/sh -c chown -R jenkins:jenkis /app" did not complete successfully: exit code: 1

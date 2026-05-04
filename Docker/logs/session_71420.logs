@@ -1,0 +1,4 @@
+Sun May  3 22:44:10 CST 2026
+Untagged: image-test-delete-1:latest
+Deleted: sha256:3302388124b6b598178cf56ab0641ce1e2c48a748284d6ff97944ca4f063ff34
+Error response from daemon: No such image: 3302388124b6:latest

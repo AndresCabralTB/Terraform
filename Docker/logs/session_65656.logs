@@ -1,0 +1,74 @@
+Sun May  3 22:15:13 CST 2026
+Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be forced) - image is being used by running container 6699c57f28ba
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 ...
+
+#3 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 1.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#5 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 8.25kB 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY . /app/Docker
+#9 DONE 0.0s
+
+#10 [5/7] RUN chmod +rw /app/*
+#10 DONE 0.2s
+
+#11 [6/7] RUN chown -R jenkins:jenkins /app
+#11 DONE 0.2s
+
+#12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 29.40 Done
+#12 DONE 29.5s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 2.5s done
+#13 exporting manifest sha256:aa9dd684adedaf33b4d93d27cb5afeb49777e5034b166c1269d1f5e5a06fa916 done
+#13 exporting config sha256:ab242f6093d93962641912e2dc9c41ee3a7afd96c9c84680d7e20f1f1f54436d done
+#13 exporting attestation manifest sha256:bd833cff822b96bad576fa623129e8053f327d4eb18a174d042472c4a3022f3f done
+#13 exporting manifest list sha256:560f6b3f9bd63b4a43d4d1bef8208b2a15471f49bf17d1f6a0d966d7b9f0dc16 done
+#13 naming to docker.io/library/image-test-4:latest done
+#13 unpacking to docker.io/library/image-test-4:latest
+#13 unpacking to docker.io/library/image-test-4:latest 0.5s done
+#13 DONE 3.1s
+[Sun May  3 22:16:11 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-test-4:latest   560f6b3f9bd6       1.83GB          547MB        
+Error response from daemon: page not found
+Error response from daemon: page not found
+Untagged: image-test-1:latest
+Deleted: sha256:0c9e3e270d971e88e213d933a8e0004333a273432db0f6b77fd53027674af578
+Error response from daemon: No such image: 0c9e3e270d97:latest
+Untagged: image-test-2:latest
+Deleted: sha256:dfd8299249dc7b65d29011f88242d0d8e1faf3964c70d1d467ee928608ac8a31
+Error response from daemon: No such image: dfd8299249dc:latest
+Error response from daemon: No such image: dfd8299249dc:latest
+Error response from daemon: No such image: dfd8299249dc:latest
+Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be forced) - image is being used by running container 6699c57f28ba

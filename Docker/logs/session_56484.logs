@@ -1,0 +1,51 @@
+Sun May  3 21:28:49 CST 2026
+ERROR: failed to build: invalid tag "image-test-delete-with-container-:latest": invalid reference format
+[Sun May  3 21:28:55 CST 2026] - Failed to create Image
+ERROR: failed to build: invalid tag "image-test-delete-with-container-:latest": invalid reference format
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/jenkins/jenkins:2.555.1-jdk21
+#2 DONE 6.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
+#4 resolve docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 13.81kB done
+#5 DONE 0.0s
+
+#6 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [3/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] COPY . /app/Docker
+#8 DONE 0.0s
+
+#9 [5/7] RUN chmod +rw /app/*
+#9 DONE 0.2s
+
+#10 [6/7] RUN chown -R jenkins:jenkins /app
+#10 DONE 0.2s
+
+#11 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#11 28.80 May 04, 2026 3:29:52 AM org.apache.http.impl.execchain.RetryExec execute
+#11 28.80 INFO: I/O exception (org.apache.http.NoHttpResponseException) caught when processing request to {s}->https://ftp-nyc.osuosl.org:443: The target server failed to respond
+#11 28.80 May 04, 2026 3:29:52 AM org.apache.http.impl.execchain.RetryExec execute
+#11 28.80 INFO: Retrying request to {s}->https://ftp-nyc.osuosl.org:443
+#11 CANCELED
+ERROR: failed to build: failed to solve: Canceled: context canceled
+[Sun May  3 21:30:34 CST 2026] - Failed to create Image
+ERROR: failed to build: invalid tag "image-test-delete-with-container-:latest": invalid reference format
+ERROR: failed to build: invalid tag "image-test-delete-with-container-:latest": invalid reference format
+ERROR: failed to build: failed to solve: Canceled: context canceled
