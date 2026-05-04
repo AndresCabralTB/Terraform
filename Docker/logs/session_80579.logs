@@ -60,3 +60,19 @@ Sun May  3 23:38:32 CST 2026
 WARNING: This output is designed for human readability. For machine-readable output, please use --format.
 IMAGE                       ID             DISK USAGE   CONTENT SIZE   EXTRA
 image-dockerignore:latest   39ca65528b2d       1.83GB          547MB        
+89a90afc4e17f010e2c6e1ded334a722552f93ff90d61dd44e26f9c58ffe6552
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint container-dockerignore (925d73740d9fd8c8a4b5b1b7cbe8936f2e696e06f4e08c3d11ad04eb0677072b): Bind for 0.0.0.0:7070 failed: port is already allocated
+
+Run 'docker run --help' for more information
+[Sun May  3 23:40:44 CST 2026] - Failed to create container-dockerignore
+[Sun May  3 23:40:44 CST 2026] - Stopping container container-dockerignore
+[Sun May  3 23:40:44 CST 2026] - Removing container container-dockerignore...
+Error response from daemon: conflict: unable to delete docker-images-v14:latest (must be forced) - container a2b153498c20 is using its referenced image 32e0dbe3f4b8
+add6c30bd0ac3f60644e8d6f256967c6e37a8fe77520290fb73ac0d25b901aa9
+[Sun May  3 23:42:02 CST 2026] - Failed to create container-dockerignore
+[Sun May  3 23:42:02 CST 2026] - Stopping container container-dockerignore
+[Sun May  3 23:42:02 CST 2026] - Removing container container-dockerignore...
+ec80b2a576d0b520afc20ba473ff2ecb92784f7d593b378333cae734b4d79a07
+[Sun May  3 23:43:46 CST 2026] - Failed to create container-dockerignore
+[Sun May  3 23:43:46 CST 2026] - Stopping container container-dockerignore
+[Sun May  3 23:43:46 CST 2026] - Removing container container-dockerignore...
