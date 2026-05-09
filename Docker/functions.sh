@@ -30,22 +30,25 @@ COMMAND=$1
 case $COMMAND in
     "List Images")
         echo '===================================================='
-        docker images
+        if [ -n "$(docker images -q)" ]; then
+            docker images
+        else
+            echo "There are no Images deployed"
+        fi
         echo '===================================================='
         ;;
     "List Containers")
         echo '===================================================='
-        docker ps -a
+        if [ -n "$(docker ps -q)" ]; then
+            docker ps -a
+        else
+            echo "There are no Containers deployed"
+        fi
         echo '===================================================='
         ;;
     "List Volumes")
         echo '===================================================='
         docker volume ls
-        echo '===================================================='
-        ;;
-    "List Filtererd Images")
-        echo '===================================================='
-        docker images --format {{.ID}}
         echo '===================================================='
         ;;
 esac

@@ -2,7 +2,7 @@
 source functions.sh
 export PIDP=$$
 export SESSION_LOGS=$(echo ./logs/session_"$PIDP".logs | tr :- _)
-
+chmod +rx ./*.sh
 echo "
 =================================
 WELCOME TO DOCKER CONFIGURATIONS
@@ -26,6 +26,7 @@ echo -e "
 \t======================
 "
     select opt in "${startup_options[@]}"; do
+    #@ means "all elements" of the array.
         case $opt in
             "List Images")
                 list_resources "List Images" 
@@ -40,19 +41,19 @@ echo -e "
                 break
                 ;;
             "Create Image")
-                ./create_image.sh
+                ./images.sh "Create"
                 break
                 ;;
             "Create Container")
-                ./create_container.sh
+                ./containers.sh "Create"
                 break
                 ;;
             "Delete Image")
-                ./delete_image.sh
+                ./images.sh "Delete"
                 break
                 ;;
             "Delete Container")
-                echo  "To be released" 
+                ./containers.sh "Delete"
                 break
                 ;;
             "Exit")
@@ -64,6 +65,4 @@ echo -e "
 done
 #Run select_image function
 
-echo "Next steps -->"
-exit
 

@@ -1,2 +1,0 @@
-# Ignore the log files to prevent the build from failing due to memory size
-./logs/*

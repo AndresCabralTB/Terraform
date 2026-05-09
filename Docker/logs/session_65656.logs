@@ -1,5 +1,9 @@
+<<<<<<<< Updated upstream:Docker/logs/session_65656.logs
 Sun May  3 22:15:13 CST 2026
 Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be forced) - image is being used by running container 6699c57f28ba
+========
+Sat May  9 14:47:25 CST 2026
+>>>>>>>> Stashed changes:Docker/logs/session_70216.logs
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
@@ -16,7 +20,11 @@ Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be f
 #2 DONE 1.3s
 
 #4 [internal] load .dockerignore
+<<<<<<<< Updated upstream:Docker/logs/session_65656.logs
 #4 transferring context: 2B done
+========
+#4 transferring context: 58B done
+>>>>>>>> Stashed changes:Docker/logs/session_70216.logs
 #4 DONE 0.0s
 
 #5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
@@ -24,7 +32,11 @@ Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be f
 #5 DONE 0.0s
 
 #6 [internal] load build context
+<<<<<<<< Updated upstream:Docker/logs/session_65656.logs
 #6 transferring context: 8.25kB 0.0s done
+========
+#6 transferring context: 14.24kB done
+>>>>>>>> Stashed changes:Docker/logs/session_70216.logs
 #6 DONE 0.0s
 
 #7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -40,9 +52,10 @@ Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be f
 #10 DONE 0.2s
 
 #11 [6/7] RUN chown -R jenkins:jenkins /app
-#11 DONE 0.2s
+#11 DONE 0.1s
 
 #12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+<<<<<<<< Updated upstream:Docker/logs/session_65656.logs
 #12 29.40 Done
 #12 DONE 29.5s
 
@@ -72,3 +85,26 @@ Error response from daemon: No such image: dfd8299249dc:latest
 Error response from daemon: No such image: dfd8299249dc:latest
 Error response from daemon: No such image: dfd8299249dc:latest
 Error response from daemon: conflict: unable to delete 32e0dbe3f4b8 (cannot be forced) - image is being used by running container 6699c57f28ba
+========
+#12 13.06 Done
+#12 DONE 13.2s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 1.6s done
+#13 exporting manifest sha256:fcccef92f8d95008fa5b92abb3852bb2fd84ebb05216276713b2369343f1b18b done
+#13 exporting config sha256:5c47c1afa13dcf1d5aec5589acf780c78cffe72ffc469a4d692b265de75e9be3 done
+#13 exporting attestation manifest sha256:85164a0a94d77722793aec186cac878e7d9c656c7ac771744d417654ef7e9091 done
+#13 exporting manifest list sha256:19d087716539cb369cb46f0683e14a35b14b0b6fc0fa90c4290c23691996467e done
+#13 naming to docker.io/library/image-test-4:latest done
+#13 unpacking to docker.io/library/image-test-4:latest
+#13 unpacking to docker.io/library/image-test-4:latest 0.3s done
+#13 DONE 2.0s
+[Sat May  9 14:47:50 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+image-test-4:latest   19d087716539       1.83GB          547MB        
+Untagged: image-test-4:latest
+Deleted: sha256:19d087716539cb369cb46f0683e14a35b14b0b6fc0fa90c4290c23691996467e
+Error response from daemon: conflict: unable to delete image-test-1:latest (must be forced) - container 74d408690dd9 is using its referenced image d1fc43a22c60
+>>>>>>>> Stashed changes:Docker/logs/session_70216.logs

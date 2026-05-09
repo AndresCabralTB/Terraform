@@ -1,4 +1,8 @@
+<<<<<<<< Updated upstream:Docker/logs/session_67363.logs
 Sun May  3 22:23:58 CST 2026
+========
+Sat May  9 15:03:43 CST 2026
+>>>>>>>> Stashed changes:Docker/logs/session_71911.logs
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
@@ -15,7 +19,7 @@ Sun May  3 22:23:58 CST 2026
 #2 DONE 0.9s
 
 #4 [internal] load .dockerignore
-#4 transferring context: 2B done
+#4 transferring context: 58B done
 #4 DONE 0.0s
 
 #5 [1/7] FROM docker.io/jenkins/jenkins:2.555.1-jdk21@sha256:7004d07dbcdc5439fdad8853acdb029c5e3ab7a3d8190184fbf89bec66786c02
@@ -23,7 +27,11 @@ Sun May  3 22:23:58 CST 2026
 #5 DONE 0.0s
 
 #6 [internal] load build context
+<<<<<<<< Updated upstream:Docker/logs/session_67363.logs
 #6 transferring context: 10.52kB 0.0s done
+========
+#6 transferring context: 13.87kB done
+>>>>>>>> Stashed changes:Docker/logs/session_71911.logs
 #6 DONE 0.0s
 
 #7 [2/7] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -42,6 +50,7 @@ Sun May  3 22:23:58 CST 2026
 #11 DONE 0.2s
 
 #12 [7/7] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+<<<<<<<< Updated upstream:Docker/logs/session_67363.logs
 #12 28.17 Done
 #12 DONE 28.3s
 
@@ -60,3 +69,23 @@ Sun May  3 22:23:58 CST 2026
 WARNING: This output is designed for human readability. For machine-readable output, please use --format.
 IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
 image-test-5:latest   ac482e81c803       1.83GB          547MB        
+========
+#12 14.78 Done
+#12 DONE 14.9s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 1.6s done
+#13 exporting manifest sha256:ef80db5dcc78d279f7322e5b7c48b5214bcd51a68c28ff2e0fbd2bca365a7cdb done
+#13 exporting config sha256:90d3dfb61d0b4a3cb3a2b1083e22054de0e04cf41d4098fea688e008224c7432 done
+#13 exporting attestation manifest sha256:00de31dbfc65760e918b0ff077eaa05acc128f4380352594b5a3c3accd72cb7a done
+#13 exporting manifest list sha256:88763baf89e2fd7b4d7534e94595d4342a456db26c900dcff97ec1723cc378a5 done
+#13 naming to docker.io/library/main-docker-image:latest done
+#13 unpacking to docker.io/library/main-docker-image:latest
+#13 unpacking to docker.io/library/main-docker-image:latest 3.5s done
+#13 DONE 5.1s
+[Sat May  9 15:05:14 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                      ID             DISK USAGE   CONTENT SIZE   EXTRA
+main-docker-image:latest   88763baf89e2       1.83GB          547MB        
+>>>>>>>> Stashed changes:Docker/logs/session_71911.logs
