@@ -15,7 +15,7 @@ touch "$SESSION_LOGS"
 echo "$(date)" >> "$SESSION_LOGS"
 
 PS3=$'\nChose an option: '
-startup_options=("List Images" "List Containers" "List Volumes" "Create Image" "Create Container" "Delete Image" "Delete Container" "Exit")
+startup_options=("List Images" "List Containers" "List Volumes" "Create Image" "Create Container" "Delete Image" "Delete Container" "Access Container" "Exit")
 
 COLUMNS=0 # Display menu in a single column
 
@@ -54,6 +54,10 @@ echo -e "
                 ;;
             "Delete Container")
                 ./containers.sh "Delete"
+                break
+                ;;
+            "Access Container")
+                ./containers.sh "Access"
                 break
                 ;;
             "Exit")

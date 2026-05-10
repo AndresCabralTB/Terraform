@@ -1,5 +1,0 @@
-Sun May  3 23:22:30 CST 2026
-a2b153498c20cf0ebd3155b5a83f2e45e03752675bf21d1ce24f37be4a8b2663
-[Sun May  3 23:23:06 CST 2026] - Container Created Successfully
-
-a2b153498c20   docker-images-v14          "/startup.sh"   Less than a second ago   Up Less than a second   0.0.0.0:7070->8080/tcp, [::]:7070->8080/tcp                                                    asdfasdfasd

@@ -148,11 +148,34 @@ else
 fi
 }
 
+access_container() {
+echo
+if [ -n "$(docker ps -q)" ]; then
+  docker ps
+  read -p $'\nEnter the Name of the Container you wish to acces: ' CONTAINER_NAME
+  CONTAINER_NAME=$(is_empty "$CONTAINER_NAME") 
+  if docker exec -it "$CONTAINER_NAME" bash
+  then
+    echo
+    echo -e "[$(date)] - Connection to "$CONTAINER_NAME" Complete" | tee -a "$SESSION_LOGS"
+  else
+    echo
+    echo -e "[$(date)] - Connection to "$CONTAINER_NAME" Failed" | tee -a "$SESSION_LOGS"
+  fi  
+else
+  echo -e "\nThere are no containers to access. Create a Container first.\nGoodbye."
+fi
+}
+
 ###################
 #     MAIN        #
 ###################
 if [ "$1"  == "Create" ]; then
-    create_container
+  create_container
+elif [ "$1"  == "Delete" ]; then
+  delete_container
+elif [ "$1"  == "Access" ]; then
+  access_container
 else
-    delete_container
+ echo
 fi
