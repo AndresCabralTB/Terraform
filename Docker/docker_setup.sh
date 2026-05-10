@@ -2,7 +2,7 @@
 source functions.sh
 export PIDP=$$
 export SESSION_LOGS=$(echo ./logs/session_"$PIDP".logs | tr :- _)
-
+chmod +rx ./*.sh
 echo "
 =================================
 WELCOME TO DOCKER CONFIGURATIONS
@@ -15,7 +15,7 @@ touch "$SESSION_LOGS"
 echo "$(date)" >> "$SESSION_LOGS"
 
 PS3=$'\nChose an option: '
-startup_options=("List Images" "List Containers" "List Volumes" "Create Image" "Create Container" "Delete Image" "Delete Container" "Exit")
+startup_options=("List Images" "List Containers" "List Volumes" "Create Image" "Create Container" "Delete Image" "Delete Container" "Access Container" "Exit")
 
 COLUMNS=0 # Display menu in a single column
 
@@ -26,6 +26,7 @@ echo -e "
 \t======================
 "
     select opt in "${startup_options[@]}"; do
+    #@ means "all elements" of the array.
         case $opt in
             "List Images")
                 list_resources "List Images" 
@@ -40,19 +41,23 @@ echo -e "
                 break
                 ;;
             "Create Image")
-                ./create_image.sh
+                ./images.sh "Create"
                 break
                 ;;
             "Create Container")
-                ./create_container.sh
+                ./containers.sh "Create"
                 break
                 ;;
             "Delete Image")
-                ./delete_image.sh
+                ./images.sh "Delete"
                 break
                 ;;
             "Delete Container")
-                echo  "To be released" 
+                ./containers.sh "Delete"
+                break
+                ;;
+            "Access Container")
+                ./containers.sh "Access"
                 break
                 ;;
             "Exit")
@@ -64,6 +69,4 @@ echo -e "
 done
 #Run select_image function
 
-echo "Next steps -->"
-exit
 

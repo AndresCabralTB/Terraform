@@ -122,7 +122,6 @@ pipeline {
                 sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
             }
         }
-
     }
     post {
         success {
@@ -135,7 +134,6 @@ pipeline {
                 } else {
                     echo "Pipeline failed - Skipping destroy"
                 }
-                
             }
         }
         changed {
