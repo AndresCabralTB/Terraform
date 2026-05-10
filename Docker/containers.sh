@@ -52,16 +52,19 @@ echo '''
 CREATING CONTAINER STAGE 2: CREATING THE CONTAINER
 ====================================================
 '''
+#Listing flags below:
 
-if $(
-  docker run --name "$CONTAINER_NAME" --restart=on-failure --detach \
+# --mount -> Mount the source directory (pwd) into the targe /app created in the Dockerfile (Does not auto-create any of them)
+CURRENT_DIR=$(pwd)
+
+if docker run --name "$CONTAINER_NAME" --restart=on-failure --detach \
   --network jenkins --env DOCKER_HOST=tcp://docker:2376 \
   --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 \
   --publish "$CONTAINER_PORT":8080 \
   --volume "$CONTAINER_VOLUME":/var/jenkins_home \
   --volume jenkins-docker-certs:/certs/client:ro \
+  --mount "type=bind,source=${CURRENT_DIR},target=/app/Docker" \
   "$CONTAINER_IMAGE" >> "$SESSION_LOGS" 2>&1
-); 
 then
   echo -e "[$(date)] - Container Created Successfully\n" | tee -a "$SESSION_LOGS"
   docker ps -a | grep -i "$CONTAINER_NAME" >> "$SESSION_LOGS" 2>&1
@@ -170,12 +173,38 @@ fi
 ###################
 #     MAIN        #
 ###################
-if [ "$1"  == "Create" ]; then
-  create_container
-elif [ "$1"  == "Delete" ]; then
-  delete_container
-elif [ "$1"  == "Access" ]; then
-  access_container
-else
- echo
-fi
+PS3=$'\nEnter the operation you wish to do: '
+options=("List Containers" "Create Container" "Delete Container" "Access Container" "Back")
+
+COLUMNS=0 # Display menu in a single column
+
+while true; do
+echo -e "
+\t======================
+\t      CONTAINERS
+\t======================
+"
+	select opt in "${options[@]}"; do
+		case $opt in
+			"List Containers")
+			list_resources "List Containers"
+			break
+			;;
+			"Create Container")
+			create_container
+			break
+			;;
+			"Delete Container")
+			delete_container
+			break
+			;;
+      "Access Container")
+      access_container
+      ;;
+			"Back")
+			exit 1
+			;;
+			*) echo "Value "$REPLY" not identified. Try again." ;;
+		esac
+	done
+done

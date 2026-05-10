@@ -25,10 +25,9 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
     apt-get update && apt-get install -y terraform docker-ce-cli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-COPY . /app/Docker
-RUN chmod +rw /app/* 
-RUN chown -R jenkins:jenkins /app
+WORKDIR /app/Docker
+RUN chmod +rw /app/Docker/
+RUN chown -R jenkins:jenkins /app/Docker
 
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"

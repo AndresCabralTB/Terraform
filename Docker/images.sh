@@ -101,13 +101,14 @@ delete_image() {
 
 if [ -n "$(docker images -q)" ]
 then
+	docker images
     read -p $'\nEnter the image ID or Name you wish to delete, or enter 1 to exit: ' DELETE_IMAGE
+	DELETE_IMAGE=$(is_empty "$DELETE_IMAGE")
+	
 	until [ "$DELETE_IMAGE" == "1" ]; do
 		if docker rmi "$DELETE_IMAGE" >>"$SESSION_LOGS" 2>&1; then
 			echo -e "\nImage deleted successfully"
 			read -p $'\nEnter the image ID or Name you wish to delete, or enter 1 to exit: ' DELETE_IMAGE
-		elif [ -z "$DELETE_IMAGE" ]; then
-			DELETE_IMAGE=$(is_empty "$DELETE_IMAGE")
 		elif docker rmi "$DELETE_IMAGE" 2>&1 | grep "container"; then
 			PARENT_CONTAINERS=($(docker ps -q --filter ancestor="$DELETE_IMAGE"))
 			# Format for display: join IDs with ", "
@@ -119,15 +120,17 @@ then
 				done
 				if docker rmi "$DELETE_IMAGE"; then
 					echo "Image '$DELETE_IMAGE' successfully deleted"
-					read -p $'\nEnter the image ID or Name you wish to delete, or any other key to exit: ' DELETE_IMAGE
+					exit 1;
 				else
 					echo "Failed to force delete image '$DELETE_IMAGE'" >&2
 				fi
 			else
 				exit 1
 			fi
+		elif docker rmi "$DELETE_IMAGE" 2>&1 | grep -i "no such image"; then
+			read -p $'\nNo such Image, try again, or enter 1 to exit: ' DELETE_IMAGE
 		else
-			read -p $'Error deleting image, try again, or enter 1 to exit: ' DELETE_IMAGE
+			echo -e "\nError deleting Image. Review logs"
 		fi
 	done
 else 
@@ -136,10 +139,38 @@ fi
 }
 
 ###################
-#     MAIN        #
+#     MENU        #
 ###################
-if [ $1 == "Create" ]; then
-    create_image
-else
-    delete_image
-fi
+
+PS3=$'\nEnter the operation you wish to do: '
+options=("List Images" "Create Image" "Delete Image" "Back")
+
+COLUMNS=0 # Display menu in a single column
+
+while true; do
+echo -e "
+\t======================
+\t      IMAGES
+\t======================
+"
+	select opt in "${options[@]}"; do
+		case $opt in
+			"List Images")
+			list_resources "List Images"
+			break
+			;;
+			"Create Image")
+			create_image
+			break
+			;;
+			"Delete Image")
+			delete_image
+			break
+			;;
+			"Back")
+			exit 1
+			;;
+			*) echo "Value "$REPLY" not identified. Try again." ;;
+		esac
+	done
+done

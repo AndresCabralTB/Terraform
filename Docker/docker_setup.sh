@@ -14,8 +14,8 @@ SESSION_LOGS=$(echo ./logs/session_"$PIDP".logs | tr :- _)
 touch "$SESSION_LOGS"
 echo "$(date)" >> "$SESSION_LOGS"
 
-PS3=$'\nChose an option: '
-startup_options=("List Images" "List Containers" "List Volumes" "Create Image" "Create Container" "Delete Image" "Delete Container" "Access Container" "Exit")
+PS3=$'\nWhat do you wish to work with: '
+startup_options=("Images" "Containers" "Volumes" "Exit")
 
 COLUMNS=0 # Display menu in a single column
 
@@ -28,36 +28,16 @@ echo -e "
     select opt in "${startup_options[@]}"; do
     #@ means "all elements" of the array.
         case $opt in
-            "List Images")
-                list_resources "List Images" 
+            "Images")
+                ./images.sh
                 break
                 ;;
-            "List Containers")
-                list_resources "List Containers"
+            "Containers")
+                ./containers.sh
                 break
                 ;;
-            "List Volumes")
-                list_resources "List Volumes" 
-                break
-                ;;
-            "Create Image")
-                ./images.sh "Create"
-                break
-                ;;
-            "Create Container")
-                ./containers.sh "Create"
-                break
-                ;;
-            "Delete Image")
-                ./images.sh "Delete"
-                break
-                ;;
-            "Delete Container")
-                ./containers.sh "Delete"
-                break
-                ;;
-            "Access Container")
-                ./containers.sh "Access"
+            "Volumes")
+                ./volumes.sh                 
                 break
                 ;;
             "Exit")
