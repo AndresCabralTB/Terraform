@@ -2,7 +2,7 @@
 #Increment the counter for when you want to force the pipeline
 #Counter: 16
 
-DELETE_INFRASTRUCTURE: 'true' 
+DEPLOY_RESOURCES: 'true'
+DELETE_INFRASTRUCTURE: 'false' 
 ENABLE_VPN: 'false'
 AWS_DEFAULT_REGION: 'us-east-1'
-ONLY_A_GIT_UPDATE: 'false'
