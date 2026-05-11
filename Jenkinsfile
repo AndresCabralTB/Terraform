@@ -17,7 +17,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY     = credentials('AWS_SECRET_ACCESS_KEY')
         TF_TOKEN_app_terraform_io = credentials('TERRAFORM_CLOUD_TOKEN')
         TF_VAR_cidr_ipv4_mac      = credentials('cidr_ipv4_mac')
-        TF_VAR_project_version    = "${BUILD_ID}-prod"
+        TF_VAR_project_version    = "19-prod"
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
     }
     stages {
