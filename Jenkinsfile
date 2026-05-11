@@ -12,6 +12,7 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
     environment {
+        //Tokens are in .env, but they need to be configured in JENKINS UI
         AWS_ACCESS_KEY_ID         = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY     = credentials('AWS_SECRET_ACCESS_KEY')
         TF_TOKEN_app_terraform_io = credentials('TERRAFORM_CLOUD_TOKEN')
