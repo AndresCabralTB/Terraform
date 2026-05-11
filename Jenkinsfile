@@ -30,48 +30,27 @@ pipeline {
                     env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
                     env.HOME_DIR = "Infrastructure"
                     env.TF_VAR_enable_vpn = config.ENABLE_VPN
-                    env.ONLY_A_GIT_UPDATE = config.ONLY_A_GIT_UPDATE
+                    env.DEPLOY_RESOURCES = config.DEPLOY_RESOURCES
                 }
             }
         }
 
-        /*
-        stage('Load AWS Configuration'){
-            steps {
-                withCredentials([[ 
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    credentialsId: 'my_aws_credential', 
-                    accessKeyVariable: 'CUSTOM_AWS_ACCESS_KEY_ID', 
-                    secretKeyVariable: 'CUSTOM_AWS_SECRET_ACCESS_KEY'
-                ]]){
-
-            }
-        } 
-        */
-
         stage('Update Code Only'){
             when {
-                expression { return env.ONLY_A_GIT_UPDATE == 'true' && env.ENABLE_VPN == 'false' && env.DELETE_INFRASTRUCTURE == 'false'}
+                expression { return env.DEPLOY_RESOURCES == 'false' }
             }
             steps{
-                sh "echo This is only an update to git main - no changes were made to the Infrastructure"
-            
+                sh "echo This is only an update to git branch - no changes were made to the Infrastructure"
             }
         }
         
         stage('Terraform Init') {
-            when {
-                expression { return env.ONLY_A_GIT_UPDATE == 'false' }
-            }
             steps {
                 sh "cd $env.HOME_DIR && terraform init && terraform plan "
             }
         }
 
         stage('Terraform Plan') {
-            when {
-                expression { return env.ONLY_A_GIT_UPDATE == 'false' }
-            }
             steps {
                 sh "cd $env.HOME_DIR && terraform plan "
             }
@@ -81,7 +60,7 @@ pipeline {
             when {
                 allOf{
                     branch 'main'
-                    expression { return env.DELETE_INFRASTRUCTURE == "false" && env.ONLY_A_GIT_UPDATE == 'false' }
+                    expression { return env.DEPLOY_RESOURCES == 'true' && env.DELETE_INFRASTRUCTURE == "false" }
                 }
             }
             steps {
@@ -92,7 +71,7 @@ pipeline {
             when {
                 allOf{
                     branch 'main'
-                    expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' && env.ONLY_A_GIT_UPDATE == 'false' }
+                    expression { return env.DEPLOY_RESOURCES == 'true' && env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
                 }
             }
             steps{
@@ -118,7 +97,7 @@ pipeline {
             when {
                 allOf{
                     branch 'main'
-                    expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' && env.ONLY_A_GIT_UPDATE == 'false' }
+                    expression { return env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'true' }
                 }
             }
             steps {
@@ -130,7 +109,7 @@ pipeline {
             when {
                 allOf{
                     branch 'main'
-                    expression { return env.DELETE_INFRASTRUCTURE == "true" && env.ONLY_A_GIT_UPDATE == 'false' }
+                    expression { return env.DELETE_INFRASTRUCTURE == "true"}
                 }
             }
             steps {
