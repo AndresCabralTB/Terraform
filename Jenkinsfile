@@ -30,6 +30,7 @@ pipeline {
                     env.AWS_DEFAULT_REGION = config.AWS_DEFAULT_REGION
                     env.HOME_DIR = "Infrastructure"
                     env.TF_VAR_enable_vpn = config.ENABLE_VPN
+                    env.TF_VAR_project_region = config.AWS_DEFAULT_REGION
                     env.DEPLOY_RESOURCES = config.DEPLOY_RESOURCES
                 }
             }

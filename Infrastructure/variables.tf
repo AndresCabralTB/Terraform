@@ -19,6 +19,11 @@ variable "enable_vpn" {
   default = "false"
 }
 
+variable "project_region" {
+  type = string
+  default = "us-east-1"
+}
+
 #==================================
 # Sensitive variables will be configured from Jenkins
 #==================================

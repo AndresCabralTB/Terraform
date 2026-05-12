@@ -1,8 +1,7 @@
 # Declare the configuration values for the AWS Resources created
 #Increment the counter for when you want to force the pipeline
-#Counter: 17
-
+#Counter: 18
 DEPLOY_RESOURCES: 'true'
 DELETE_INFRASTRUCTURE: 'false' 
 ENABLE_VPN: 'false'
-AWS_DEFAULT_REGION: 'us-east-1'
+AWS_DEFAULT_REGION: 'us-east-2'
