@@ -52,15 +52,11 @@ pipeline {
             when {
                 allOf{
                     branch 'main'
-<<<<<<< Updated upstream
-                    expression { return env.DEPLOY_RESOURCES == 'true' && env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' }
-=======
                     expression{
                         //read tfvars to check if VPN is enabled
                         def tfvars = readFile("${env.HOME_DIR}/envs/main.tfvars")
                         return tfvars.contains('enable_vpn = true')
                     }
->>>>>>> Stashed changes
                 }
             }
             steps{
@@ -121,13 +117,8 @@ pipeline {
         }
         unsuccessful {
             script {
-<<<<<<< Updated upstream
-                if(env.DELETE_INFRASTRUCTURE == "true"){
-                    sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
-=======
                 if (env.BRANCH_NAME == 'main') {
                     sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
->>>>>>> Stashed changes
                 } else {
                     echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
                 }

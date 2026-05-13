@@ -10,17 +10,10 @@ terraform {
   #cloud { 
   #  organization = "Andres-Cabral-Organization-Terraform" 
 
-<<<<<<< Updated upstream
-    workspaces { 
-      name = "Infrastructure-workspace" 
-    } 
-  } 
-=======
   #    workspaces { 
   #      name = "Infrastructure-workspace" 
   #    } 
   #  } 
->>>>>>> Stashed changes
 
   backend "s3"{
     bucket = "jenkins-project-718254829448-us-east-1-an"
