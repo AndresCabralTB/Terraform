@@ -26,21 +26,20 @@ module "RDS_Instance_Moduel" {
 }
 
 #Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN
-#module "Client_VPN_Module" {
-#  source            = "./Client-VPN-Conf"
-#  subnet_A_id       = module.VPC_Module.VPC_Subnet_A_Output.id
-#  subnet_A_cidr     = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
-#  subnet_B_id       = module.VPC_Module.VPC_Subnet_B_Output.id
-#  subnet_B_cidr     = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
-#  subnet_C_id       = module.VPC_Module.VPC_Subnet_C_Output.id
-#  subnet_C_cidr     = module.VPC_Module.VPC_Subnet_C_Output.cidr_block
-#  vpn_users         = var.enable_vpn == "true" ? ["alice", "bob", "charlie"] : []
-#  vpc_id            = module.VPC_Module.VPC_Terraform_Output.id
-#  privateHost_SecurityGroup_id = module.EC2_Module.PrivateHost_SecurityGroup_Id
-#  bastionHost_SecurityGroup_id = module.EC2_Module.BastionHost_SecurityGroup_Id
-#  create_resource = var.enable_vpn == "true" ? 1 : 0
-#  project_version = var.project_version
-#}
+module "ClientVPN" {
+  source                        = "./Client-VPN-Conf"
+  subnet_A_id                   = module.VPC_Module.VPC_Subnet_A_Output.id
+  subnet_A_cidr                 = module.VPC_Module.VPC_Subnet_A_Output.cidr
+  subnet_B_id                   = module.VPC_Module.VPC_Subnet_B_Output.id
+  subnet_B_cidr                 = module.VPC_Module.VPC_Subnet_B_Output.cidr
+  subnet_C_id                   = module.VPC_Module.VPC_Subnet_C_Output.id
+  subnet_C_cidr                 = module.VPC_Module.VPC_Subnet_C_Output.cidr
+  vpn_users                     = ["andres"]
+  vpc_id                        = module.VPC_Module.VPC_Terraform_Output.id
+  privateHost_SecurityGroup_id  = module.EC2_Module.PrivateHost_SecurityGroup_Id
+  bastionHost_SecurityGroup_id  = module.EC2_Module.BastionHost_SecurityGroup_Id
+  count                         = var.enable_vpn ? 1 : 0
+}
 
 module "EventBrideEC2_Module" {
   source = "./Events-Conf"
@@ -58,17 +57,6 @@ module "Route53_Module" {
   bastionhost_private_ip = module.EC2_Module.BastionHost_Output.private_ip
   privatehost_private_ip = module.EC2_Module.PrivateHost_Output.private_ip
 }
-
-# Commented out because the VPN configuration is also commented out
-#output "vpn_user_certs" {
-#  sensitive = true
-#  value     = module.Client_VPN_Module.vpn_user_certs
-#}
-
-#output "ca_cert" {
-#  sensitive = true
-#  value     = module.Client_VPN_Module.ca_cert
-#}
 
 output "bastionhost_output" {
   value     = module.EC2_Module.BastionHost_Name_Output

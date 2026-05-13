@@ -32,6 +32,7 @@ pipeline {
                     env.TF_VAR_enable_vpn = config.ENABLE_VPN
                     env.TF_VAR_project_region = config.AWS_DEFAULT_REGION
                     env.DEPLOY_RESOURCES = config.DEPLOY_RESOURCES
+                    
                 }
             }
         }
@@ -88,9 +89,8 @@ pipeline {
                     --client-vpn-endpoint-id \$ENDPOINT_ID \
                     --output text > downloaded.ovpn
                 """
-                sh "echo Current directory passed to ./generate_ovpn.sh - $env.WORKSPACE/$env.HOME_DIR/"
-                sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn $env.WORKSPACE/$env.HOME_DIR"
-                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
+                //sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn $env.WORKSPACE/$env.HOME_DIR"
+                //sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
             }
         }
 

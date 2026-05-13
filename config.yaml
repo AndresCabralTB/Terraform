@@ -3,5 +3,5 @@
 #Counter: 19
 DEPLOY_RESOURCES: 'true'
 DELETE_INFRASTRUCTURE: 'false' 
-ENABLE_VPN: 'false'
+ENABLE_VPN: 'true'
 AWS_DEFAULT_REGION: 'us-east-1'
