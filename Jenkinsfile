@@ -32,7 +32,6 @@ pipeline {
                     env.TF_VAR_enable_vpn = config.ENABLE_VPN
                     env.TF_VAR_project_region = config.AWS_DEFAULT_REGION
                     env.DEPLOY_RESOURCES = config.DEPLOY_RESOURCES
-                    env.MIGRATE = config.MIGRATE
                     
                 }
             }
@@ -63,7 +62,7 @@ pipeline {
             when {
                 allOf{
                     branch 'main'
-                    expression { return env.DEPLOY_RESOURCES == 'true' && env.DELETE_INFRASTRUCTURE == "false" && env.MIGRATE == "false"}
+                    expression { return env.DEPLOY_RESOURCES == 'true' && env.DELETE_INFRASTRUCTURE == "false" }
                 }
             }
             steps {
@@ -71,23 +70,11 @@ pipeline {
             }
         }
 
-        stage('Terraform Migrate') {
-            when {
-                allOf{
-                    branch 'main'
-                    expression { return env.DEPLOY_RESOURCES == 'true' && env.DELETE_INFRASTRUCTURE == "false" && env.MIGRATE == "true"}
-                }
-            }
-            steps {
-                sh "cd $env.HOME_DIR && terraform init -migrate-state"
-            }
-        }
-
         stage('OVPN File Configuration') {
             when {
                 allOf{
                     branch 'main'
-                    expression { return env.DEPLOY_RESOURCES == 'true' && env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false' && env.MIGRATE == 'false'}
+                    expression { return env.DEPLOY_RESOURCES == 'true' && env.ENABLE_VPN == 'true' && env.DELETE_INFRASTRUCTURE == 'false'}
                 }
             }
             steps{
