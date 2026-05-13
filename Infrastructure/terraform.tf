@@ -17,11 +17,7 @@ terraform {
 
   backend "s3"{
     bucket = "jenkins-project-718254829448-us-east-1-an"
-<<<<<<< Updated upstream
     key    = "Terraform_Backend/terraform.tfstate"
-=======
-    key    = "Terraform_Backend/${var.workspace}/terraform.tfstate"
->>>>>>> Stashed changes
     region = "us-east-1"
   }
     
