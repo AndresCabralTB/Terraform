@@ -124,7 +124,7 @@ pipeline {
         }
         unsuccessful {
             script {
-                if(env.DELETE_INFRASTRUCTURE == "true"){
+                if(env.DELETE_INFRASTRUCTURE == "false"){
                     sh "cd $env.HOME_DIR && terraform init && terraform destroy --auto-approve"
                 } else {
                     echo "Pipeline failed - Skipping destroy"
