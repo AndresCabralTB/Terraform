@@ -29,16 +29,17 @@ module "RDS_Instance_Moduel" {
 module "ClientVPN" {
   source                        = "./Client-VPN-Conf"
   subnet_A_id                   = module.VPC_Module.VPC_Subnet_A_Output.id
-  subnet_A_cidr                 = module.VPC_Module.VPC_Subnet_A_Output.cidr
+  subnet_A_cidr                 = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
   subnet_B_id                   = module.VPC_Module.VPC_Subnet_B_Output.id
-  subnet_B_cidr                 = module.VPC_Module.VPC_Subnet_B_Output.cidr
+  subnet_B_cidr                 = module.VPC_Module.VPC_Subnet_B_Output.cidr_block
   subnet_C_id                   = module.VPC_Module.VPC_Subnet_C_Output.id
-  subnet_C_cidr                 = module.VPC_Module.VPC_Subnet_C_Output.cidr
+  subnet_C_cidr                 = module.VPC_Module.VPC_Subnet_C_Output.cidr_block
   vpn_users                     = ["andres"]
   vpc_id                        = module.VPC_Module.VPC_Terraform_Output.id
   privateHost_SecurityGroup_id  = module.EC2_Module.PrivateHost_SecurityGroup_Id
   bastionHost_SecurityGroup_id  = module.EC2_Module.BastionHost_SecurityGroup_Id
   count                         = var.enable_vpn ? 1 : 0
+  project_version = var.project_version
 }
 
 module "EventBrideEC2_Module" {
