@@ -161,9 +161,11 @@ if [ -n "$(docker ps -q)" ]; then
   then
     echo
     echo -e "[$(date)] - Connection to "$CONTAINER_NAME" Complete" | tee -a "$SESSION_LOGS"
+    exit 1
   else
     echo
     echo -e "[$(date)] - Connection to "$CONTAINER_NAME" Failed" | tee -a "$SESSION_LOGS"
+    exit
   fi  
 else
   echo -e "\nThere are no containers to access. Create a Container first.\nGoodbye."

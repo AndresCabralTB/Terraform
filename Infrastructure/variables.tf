@@ -24,6 +24,10 @@ variable "project_region" {
   default = "us-east-1"
 }
 
+variable "workspace"{
+  type = string
+  default = "workspace"
+}
 #==================================
 # Sensitive variables will be configured from Jenkins
 #==================================
