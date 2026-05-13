@@ -79,7 +79,7 @@ pipeline {
                 }
             }
             steps {
-                sh "cd $env.HOME_DIR && terraform ini -migrate-state"
+                sh "cd $env.HOME_DIR && terraform init -migrate-state"
             }
         }
 
