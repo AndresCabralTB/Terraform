@@ -7,19 +7,19 @@ terraform {
   }
   #Modify to where you want the configuration from
   #Can also be a .tfstate file (located in S3 bucket)
-  cloud { 
-    organization = "Andres-Cabral-Organization-Terraform" 
+  #cloud { 
+  #  organization = "Andres-Cabral-Organization-Terraform" 
 
-      workspaces { 
-        name = "Infrastructure-workspace" 
-      } 
-    } 
+  #    workspaces { 
+  #      name = "Infrastructure-workspace" 
+  #    } 
+  #  } 
 
-  #backend "s3"{
-  #  bucket = "jenkins-project-718254829448-us-east-1-an"
-  #  key    = "Terraform_Backend/terraform.tfstate"
-  #  region = "us-east-1"
-  #}
+  backend "s3"{
+    bucket = "jenkins-project-718254829448-us-east-1-an"
+    key    = "Terraform_Backend/terraform.tfstate"
+    region = "us-east-1"
+  }
     
   required_version = ">= 1.2"
 }

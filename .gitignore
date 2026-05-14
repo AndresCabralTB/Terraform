@@ -11,8 +11,8 @@ echo ".terraform/" >> .gitignore
 .DS_Store
 
 # Optional: sensitive variable files
-*.tfvars
-*.tfvars.json
+#*.tfvars
+#*.tfvars.json
 secrets.tf
 
 #Certificates for Client VPN
