@@ -114,14 +114,6 @@ resource "aws_instance" "PrivateHost" {
     }
 }
 
-output "BastionHost_Output" {
-  value = aws_instance.BastionHost
-}
-
-output "PrivateHost_Output" {
-  value = aws_instance.PrivateHost
-}
-
 output "PrivateHost_SecurityGroup_Id" {
   value = module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output
 }
