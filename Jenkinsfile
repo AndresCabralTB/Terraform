@@ -8,9 +8,9 @@ Jenkins Plugins:
 // This trigger only kicks git-plugin internal polling algo for every incoming event against matched repo.
 pipeline {
     agent any
-    triggers {
+    //triggers {
         //pollSCM('H/5 * * * *')
-    }
+    //}
     environment {
         //Tokens are in .env, but they need to be configured in JENKINS UI
         HOME_DIR = "Infrastructure"
