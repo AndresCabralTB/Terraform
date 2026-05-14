@@ -25,10 +25,10 @@ variable "TerraformDB_SecurityGroup_Id" {
 
 
 locals {
-  BastionHost_InternalName = "bastionhost.cabral.cloud"
-  PrivateHost_InternalName = "privatehost.cabral.cloud"
-  BastionHost_Name = "BastionHost_Terraform_${var.project_version}"
-  PrivateHost_Name = "PrivateHost_Terraform_${var.project_version}"
+  BastionHost_InternalName = "bastionhost.${var.project_version}.cabral.cloud"
+  PrivateHost_InternalName = "privatehost.${var.project_version}.cabral.cloud"
+  BastionHost_Name = "BastionHost-Terraform-${var.project_version}"
+  PrivateHost_Name = "PrivateHost-Terraform-${var.project_version}"
 
 }
 
@@ -58,6 +58,7 @@ module "SecurityGroups_Module" {
   vpc_id                 = var.vpc_id
   cidr_ipv4_mac       = var.cidr_ipv4_mac
   TerraformDB_SecurityGroup_Id = var.TerraformDB_SecurityGroup_Id
+  project_version     = var.project_version
 }
 
 #Fetch the instance profile created in the bootstrap workspace

@@ -6,8 +6,8 @@ variable "privatehost_private_ip" {
   type = string
 }
 locals {
-  BastionHostName = "BastionHost" #The record name will be: bastionhost.cabral.cloud
-  PrivateHostName = "PrivateHost" #The record name will be: privatehost.cabral.cloud
+  BastionHostName = "BastionHost.${var.project_version}" #The record name will be: bastionhost.cabral.cloud
+  PrivateHostName = "PrivateHost.${var.project_version}" #The record name will be: privatehost.cabral.cloud
 }
 resource "aws_route53_record" "bastionhost_route53_record" {
   zone_id   = aws_route53_zone.Route53-Zone-A-Terraform.id

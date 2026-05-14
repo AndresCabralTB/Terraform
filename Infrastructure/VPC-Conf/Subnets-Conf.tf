@@ -8,7 +8,7 @@ resource "aws_subnet" "VPC_Subnet_A" {
   vpc_id = aws_vpc.VPC_Terraform.id #VPC is made inside the same module. Therefore, it can be referenced as such
 
   tags = {
-    Name = "VPC_Subnet_A_Terraform_${var.project_version}"
+    Name = "VPC-Subnet-A-Terraform-${var.project_version}"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "VPC_Subnet_B" {
   vpc_id = aws_vpc.VPC_Terraform.id #VPC is made inside the same module. Therefore, it can be referenced as such
 
   tags = {
-    Name = "VPC_Subnet_B_Terraform_${var.project_version}"
+    Name = "VPC-Subnet-B-Terraform-${var.project_version}"
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "VPC_Subnet_C" {
   vpc_id = aws_vpc.VPC_Terraform.id #VPC is made inside the same module. Therefore, it can be referenced as such
 
   tags = {
-    Name = "VPC_Subnet_C_Terraform_${var.project_version}"
+    Name = "VPC-Subnet-C-Terraform-${var.project_version}"
   }
 }
 

@@ -29,6 +29,10 @@ variable "vpc_id" {
   type = string
 }
 
+variable "project_version" {
+  type = string
+}
+
 
 
 # ─────────────────────────────────────────────
@@ -37,7 +41,7 @@ variable "vpc_id" {
 
 # The Client VPN endpoint is the resource that you create and configure to enable and manage client VPN sessions. It's the termination point for all client VPN sessions.
 resource "aws_ec2_client_vpn_endpoint" "ClientVPN_Endpoint" {
-  description            = "terraform-clientvpn"
+  description            = "terraform-clientvpn-${var.project_version}"
   server_certificate_arn = aws_acm_certificate.server.arn
   security_group_ids     = [aws_security_group.VPN_Security_Group.id]
 

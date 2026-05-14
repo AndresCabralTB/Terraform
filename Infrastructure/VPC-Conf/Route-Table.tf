@@ -3,7 +3,7 @@ resource "aws_route_table" "RouteTableVPC" {
     vpc_id = aws_vpc.VPC_Terraform.id
 
     tags = {
-        Name = "Public-Route-Table"
+        Name = "Public-Route-Table-${var.project_version}"
     }
 }
 
