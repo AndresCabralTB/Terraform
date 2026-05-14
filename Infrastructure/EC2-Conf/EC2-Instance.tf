@@ -71,9 +71,6 @@ resource "aws_instance" "BastionHost" {
     availability_zone           = "us-east-1a"
     iam_instance_profile        =  data.aws_iam_instance_profile.BastionHostProfile.name
     instance_type               = "t2.micro"
-    cpu_options {
-      core_count = "1"
-    }
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
@@ -101,9 +98,6 @@ resource "aws_instance" "PrivateHost" {
     instance_type               = "t2.micro"
     vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_B_id
-    cpu_options {
-      core_count = "1"
-    }
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
