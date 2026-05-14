@@ -70,6 +70,7 @@ pipeline {
                     --output text)
 
                 aws ec2 export-client-vpn-client-configuration \
+                    --region "$PROJECT_REGION" \
                     --client-vpn-endpoint-id \$ENDPOINT_ID \
                     --output text > downloaded.ovpn
                 """
