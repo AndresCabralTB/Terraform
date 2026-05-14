@@ -11,15 +11,17 @@ pipeline {
     stages {
         stage('Setup'){
             steps{
-                sh """ 
-                    echo 'SETUP - We are currently in ${env.HOME_DIR}'
+                sh """
+                    cd ${WORKSPACE}
+                    echo 'Setup - current directory is ${pwd}'
                 """
             }
         }
         stage('Terraform init'){
             steps{
                 sh """
-                    echo 'INIT - current directory is ${env.HOME_DIR}'
+                    cd ${WORKSPACE}
+                    echo 'init - current directory is ${pwd}'
                     terraform init
                 """
             }
@@ -28,17 +30,18 @@ pipeline {
         stage('Terraform Plan'){
             steps{
                 sh """
-                    echo 'PLAN - current directory is ${env.HOME_DIR}'
+                    cd ${WORKSPACE}
+                    echo 'Plan - current directory is ${pwd}'
                     terraform plan
                 """
             }
         }
 
         stage('Terraform Apply'){
-            steps {
+            steps{
                 sh """
-                    echo 'APPLY - current directory is ${env.HOME_DIR}'
-                    ls -ltr
+                    cd ${WORKSPACE}
+                    echo 'Apply - current directory is ${pwd}'
                     terraform apply --auto-approve
                 """
             }
