@@ -11,7 +11,7 @@ pipeline {
     parameters {
         booleanParam(
             name: 'RUN_DESTROY',
-            defaultValue: false,
+            defaultValue: true,
             description: 'Check this only when you want to destroy infrastructure.'
         )
     }
@@ -126,14 +126,16 @@ pipeline {
 
         stage('Terraform Destroy Plan') {
             when {
-                expression {
-                    env.PIPELINE_MODE == 'destroy'
+                anyOf{
+                    expression {
+                        env.PIPELINE_MODE == 'destroy'
+                    }
                 }
             }
             steps {
                 sh """
                     cd ${env.HOME_DIR}
-                    terraform workspace select main
+                    terraform workspace select ${env.DEPLOY_ENV}
                     echo "Running Terraform destroy..."
                     terraform destroy -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
                 """
