@@ -61,12 +61,12 @@ module "Route53_Module" {
 
 output "vpn_user_certs" {
   sensitive = true
-  value     = module.Client_VPN_Module.vpn_user_certs
+  value     = var.enable_vpn ? module.Client_VPN_Module[0].vpn_user_certs : null
 }
 
 output "ca_cert" {
   sensitive = true
-  value     = module.Client_VPN_Module.ca_cert
+  value     = var.enable_vpn ? module.Client_VPN_Module[0].ca_cert : null
 }
 
 output "ClientVPN_Endpoint_Output" {
