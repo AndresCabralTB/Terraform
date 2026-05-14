@@ -34,6 +34,12 @@ pipeline {
         }
 
         stage('Terraform Plan') {
+            when {
+                allOf{
+                    branch 'main'
+                    branch 'development'
+                }
+            }
             steps {
                 sh "cd ${env.HOME_DIR} && terraform plan -var-file=envs/${env.BRANCH_NAME}.tfvars"
             }
@@ -91,43 +97,15 @@ pipeline {
         sh """
             cd ${env.HOME_DIR}
             terraform workspace select main
+        """
 
-            echo "Fetching Client VPN Endpoint ID from Terraform state..."
-            ENDPOINT_ID=\$(terraform output -raw ClientVPN_Endpoint_Output 2>&1)
+        sh """
+            cd ${env.HOME_DIR}
+            ./Client-VPN-Conf/client_vpn_cleanup.sh "${env.TF_VAR_project_region}"
+        """
 
-            if [ \$? -ne 0 ]; then
-                echo "ERROR: Failed to get ClientVPN_Endpoint_Output from Terraform state"
-                echo "Output was: \$ENDPOINT_ID"
-                exit 1
-            fi
-
-            if [ -z "\$ENDPOINT_ID" ] || [ "\$ENDPOINT_ID" = "null" ] || [ "\$ENDPOINT_ID" = "None" ]; then
-                echo "WARNING: No Client VPN Endpoint found in state, skipping deletion..."
-            else
-                echo "Found Client VPN Endpoint: \$ENDPOINT_ID"
-                echo "Disassociating network associations first..."
-                aws ec2 describe-client-vpn-target-networks \
-                    --client-vpn-endpoint-id \$ENDPOINT_ID \
-                    --query 'ClientVpnTargetNetworks[*].AssociationId' \
-                    --output text | tr '\\t' '\\n' | while read ASSOC_ID; do
-                        if [ -n "\$ASSOC_ID" ]; then
-                            echo "Disassociating: \$ASSOC_ID"
-                            aws ec2 disassociate-client-vpn-target-network \
-                                --client-vpn-endpoint-id \$ENDPOINT_ID \
-                                --association-id \$ASSOC_ID
-                        fi
-                done
-
-                echo "Waiting for disassociations to complete..."
-                sleep 60
-
-                echo "Deleting Client VPN Endpoint: \$ENDPOINT_ID"
-                aws ec2 delete-client-vpn-endpoint --client-vpn-endpoint-id \$ENDPOINT_ID
-
-                echo "Waiting for endpoint deletion..."
-                sleep 30
-            fi
-
+        sh """
+            cd ${env.HOME_DIR}
             echo "Running Terraform destroy..."
             terraform destroy -var-file=envs/main.tfvars --auto-approve
         """
@@ -139,55 +117,7 @@ pipeline {
             echo 'Pipeline completed successfully'
         }
         unsuccessful {
-            script {
-                if (env.BRANCH_NAME == 'main') {
-                    sh """
-                        cd ${env.HOME_DIR}
-                        terraform workspace select main
-
-                        echo "Fetching Client VPN Endpoint ID from Terraform state..."
-                        ENDPOINT_ID=\$(terraform output -raw ClientVPN_Endpoint_Output 2>&1)
-
-                        if [ \$? -ne 0 ]; then
-                            echo "ERROR: Failed to get ClientVPN_Endpoint_Output from Terraform state"
-                            echo "Output was: \$ENDPOINT_ID"
-                            exit 1
-                        fi
-
-                        if [ -z "\$ENDPOINT_ID" ] || [ "\$ENDPOINT_ID" = "null" ] || [ "\$ENDPOINT_ID" = "None" ]; then
-                            echo "WARNING: No Client VPN Endpoint found in state, skipping deletion..."
-                        else
-                            echo "Found Client VPN Endpoint: \$ENDPOINT_ID"
-                            echo "Disassociating network associations first..."
-                            aws ec2 describe-client-vpn-target-networks \
-                                --client-vpn-endpoint-id \$ENDPOINT_ID \
-                                --query 'ClientVpnTargetNetworks[*].AssociationId' \
-                                --output text | tr '\\t' '\\n' | while read ASSOC_ID; do
-                                    if [ -n "\$ASSOC_ID" ]; then
-                                        echo "Disassociating: \$ASSOC_ID"
-                                        aws ec2 disassociate-client-vpn-target-network \
-                                            --client-vpn-endpoint-id \$ENDPOINT_ID \
-                                            --association-id \$ASSOC_ID
-                                    fi
-                            done
-
-                            echo "Waiting for disassociations to complete..."
-                            sleep 60
-
-                            echo "Deleting Client VPN Endpoint: \$ENDPOINT_ID"
-                            aws ec2 delete-client-vpn-endpoint --client-vpn-endpoint-id \$ENDPOINT_ID
-
-                            echo "Waiting for endpoint deletion..."
-                            sleep 30
-                        fi
-
-                        echo "Running Terraform destroy..."
-                        terraform destroy -var-file=envs/main.tfvars --auto-approve
-                    """
-                } else {
-                    echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
-                }
-            }
+            echo "Pipeline failed on ${env.BRANCH_NAME} - skipping automatic destroy"
         }
         changed {
             echo 'Environment changed'
