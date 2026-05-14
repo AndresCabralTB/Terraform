@@ -17,7 +17,7 @@ pipeline {
         AWS_ACCESS_KEY_ID         = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY     = credentials('AWS_SECRET_ACCESS_KEY')
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
-        TF_VAR_project_version    = "${BUILD_ID}-prod"
+        TF_VAR_project_version    = "prod"
         TF_VAR_workspace          = "${WORKSPACE}"
         TF_VAR_project_region     = "us-east-1"
     }
