@@ -8,35 +8,37 @@ pipeline {
         HOME_DIR                  = "Bootstrap"
     }
 
-    stages('Setup'){
-        script{
-            sh "We are currently in ${env.HOME_DIR}"
+    stages {
+        stage('Setup'){
+            steps{
+                sh "We are currently in ${env.HOME_DIR}"
+            }
         }
-    }
-    stages('Terraform init'){
-        script {
-            sh """
-            echo 'INIT - current directory is ${env.HOME_DIR}'
-            terraform init
-            """
+        stage('Terraform init'){
+            steps{
+                sh """
+                    echo 'INIT - current directory is ${env.HOME_DIR}'
+                    terraform init
+                """
+            }
         }
-    }
 
-    stages('Terraform Plan'){
-        script {
-            sh """
-            echo 'PLAN - current directory is ${env.HOME_DIR}'
-            terraform plan
-            """
+        stage('Terraform Plan'){
+            steps{
+                sh """
+                    echo 'PLAN - current directory is ${env.HOME_DIR}'
+                    terraform plan
+                """
+            }
         }
-    }
 
-    stages('Terraform Apply'){
-        script {
-            sh """
-            echo 'APPLY - current directory is ${env.HOME_DIR}'
-            terraform apply --auto-approve
-            """
+        stage('Terraform Apply'){
+            steps {
+                sh """
+                    echo 'APPLY - current directory is ${env.HOME_DIR}'
+                    terraform apply --auto-approve
+                """
+            }
         }
     }
 }
