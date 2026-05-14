@@ -35,7 +35,7 @@ pipeline {
 
         stage('Terraform Plan') {
             when {
-                allOf{
+                anyOf {
                     branch 'main'
                     branch 'development'
                 }
@@ -58,7 +58,7 @@ pipeline {
 
         stage('OVPN File Configuration') {
             when {
-                allOf{
+                allOf {
                     branch 'main'
                     expression{
                         //read tfvars to check if VPN is enabled
@@ -94,18 +94,14 @@ pipeline {
         }
     }
     steps {
+        //sh """
+        //    cd ${env.HOME_DIR}
+        //    ./Client-VPN-Conf/client_vpn_cleanup.sh "${env.TF_VAR_project_region}"
+        //"""
+
         sh """
             cd ${env.HOME_DIR}
             terraform workspace select main
-        """
-
-        sh """
-            cd ${env.HOME_DIR}
-            ./Client-VPN-Conf/client_vpn_cleanup.sh "${env.TF_VAR_project_region}"
-        """
-
-        sh """
-            cd ${env.HOME_DIR}
             echo "Running Terraform destroy..."
             terraform destroy -var-file=envs/main.tfvars --auto-approve
         """
