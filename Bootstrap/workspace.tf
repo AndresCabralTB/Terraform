@@ -11,7 +11,7 @@ terraform {
 
         bucket = "jenkins-project-bootstrap"
         key    = "Terraform_Backend/terraform.tfstate"
-        region = var.project_region
+        region = "us-east-1"
 
     }
 
