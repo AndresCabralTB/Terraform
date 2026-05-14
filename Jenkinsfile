@@ -9,7 +9,7 @@ Jenkins Plugins:
 pipeline {
     agent any
     triggers {
-        pollSCM('H/5 * * * *')
+        //pollSCM('H/5 * * * *')
     }
     environment {
         //Tokens are in .env, but they need to be configured in JENKINS UI
@@ -26,6 +26,7 @@ pipeline {
             steps {
                 sh """
                     cd ${env.HOME_DIR}
+                    chmod -R +rx *
                     terraform init
                     terraform workspace select ${env.BRANCH_NAME} || terraform workspace new ${env.BRANCH_NAME}
                 """
@@ -80,21 +81,21 @@ pipeline {
             }
         }
 
-        stage('Destroy OVPN Files') {
+        stage('Terraform Destroy') {
             when {
-                allOf{
+                allOf {
                     branch 'destroy'
-                    expression{
-                        //read tfvars to check if VPN is enabled
-                        def tfvars = readFile("${env.HOME_DIR}/envs/main.tfvars")
-                        return tfvars.contains('enable_vpn = true')
-                    }
                 }
             }
             steps {
                 sh """
                     cd ${env.HOME_DIR}/Client-VPN-Conf/
-                    rm -rf *.ovpn
+                    ./cleanup_vpn.sh "${env.TF_VAR_project_region}"
+                """
+                sh """
+                    cd ${env.HOME_DIR}
+                    terraform workspace select main
+                    terraform destroy -var-file=envs/main.tfvars --auto-approve
                 """
             }
         }
@@ -121,6 +122,7 @@ pipeline {
         unsuccessful {
             script {
                 if (env.BRANCH_NAME == 'main') {
+                    sh "${env.HOME_DIR}/Client-VPN-Conf/cleanup_vpn.sh ${env.TF_VAR_project_region}"
                     sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
                 } else {
                     echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
