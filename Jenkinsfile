@@ -88,46 +88,36 @@ pipeline {
         }
 
         stage('Terraform Destroy') {
-            when {
-                allOf {
-                    branch 'destroy'
-                }
-            }
-            steps {
-                sh """
-                    cd ${env.HOME_DIR}/Client-VPN-Conf/
-                    ./cleanup_vpn.sh "${env.TF_VAR_project_region}"
-                """
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform workspace select main
-                    terraform destroy -var-file=envs/main.tfvars --auto-approve
-                """
-            }
+    when {
+        allOf {
+            branch 'destroy'
         }
+    }
+    steps {
+        sh """
+            cd ${env.HOME_DIR}
+            terraform workspace select main
+        """
+
+        sh """
+            cd ${env.HOME_DIR}
+            ./Client-VPN-Conf/client_vpn_cleanup.sh "${env.TF_VAR_project_region}"
+        """
+
+        sh """
+            cd ${env.HOME_DIR}
+            echo "Running Terraform destroy..."
+            terraform destroy -var-file=envs/main.tfvars --auto-approve
+        """
+    }                           
+}
     }
     post {
         success {
             echo 'Pipeline completed successfully'
         }
         unsuccessful {
-            script {
-                if (env.BRANCH_NAME == 'main') {
-                    sh "${env.HOME_DIR}/Client-VPN-Conf/cleanup_vpn.sh ${env.TF_VAR_project_region}"
-                    sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
-                } else {
-                    echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
-                }
-            }
-        }
-        aborted {
-            script {
-                if (env.BRANCH_NAME == 'main') {
-                    sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
-                } else {
-                    echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
-                }
-            }
+            echo "Pipeline failed on ${env.BRANCH_NAME} - skipping automatic destroy"
         }
         changed {
             echo 'Environment changed'
