@@ -7,7 +7,7 @@ terraform {
     }
   }
 
-    backend "S3" {
+    backend "s3" {
 
         bucket = "jenkins-project-bootstrap"
         key    = "Terraform_Backend/terraform.tfstate"
