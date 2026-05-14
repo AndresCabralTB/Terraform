@@ -100,21 +100,6 @@ pipeline {
             }
         }
 
-        stage('Terraform Destroy') {
-            when {
-                allOf{
-                    branch 'destroy'
-                }
-            }
-            steps {
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform workspace select main
-                    terraform destroy -var-file=envs/main.tfvars --auto-approve
-                """
-            }
-        }
-    }
     post {
         success {
             echo 'Pipeline completed successfully'
