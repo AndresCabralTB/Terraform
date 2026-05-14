@@ -33,6 +33,12 @@ pipeline {
         }
 
         stage('Terraform Plan') {
+            when {
+                allOf{
+                    branch 'main'
+                    branch 'development'
+                }
+            }
             steps {
                 sh "cd ${env.HOME_DIR} && terraform plan -var-file=envs/${env.BRANCH_NAME}.tfvars"
             }
@@ -119,6 +125,15 @@ pipeline {
             echo 'Pipeline completed successfully'
         }
         unsuccessful {
+            script {
+                if (env.BRANCH_NAME == 'main') {
+                    sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
+                } else {
+                    echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
+                }
+            }
+        }
+        aborted {
             script {
                 if (env.BRANCH_NAME == 'main') {
                     sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
