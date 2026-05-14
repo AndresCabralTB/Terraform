@@ -12,7 +12,7 @@ resource "aws_security_group" "TerraformDB-SecurityGroup" {
     description = "Security Group for the RDS Terraform Database"
 
     tags = {
-      Name = "Terraform-Database-Security-Group-${env.project_version}"
+      Name = "Terraform-Database-Security-Group"
     }
 }
 
@@ -25,7 +25,7 @@ resource "aws_vpc_security_group_ingress_rule" "TerraformDBIngress" {
   referenced_security_group_id = var.PrivateHostSG_ID   
 
   tags = {
-    Name = "IngressRule-TerraformDB-SG-${env.project_version}"
+    Name = "IngressRule-TerraformDB-SG"
   }
 }
 
