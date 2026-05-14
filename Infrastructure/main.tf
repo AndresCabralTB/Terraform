@@ -45,8 +45,8 @@ module "ClientVPN" {
 module "EventBrideEC2_Module" {
   source = "./Events-Conf"
   project_version = var.project_version
-  BastionHost = module.EC2_Module.BastionHost_Output.id
-  PrivateHost = module.EC2_Module.PrivateHost_Output.id
+  BastionHost = module.EC2_Module.BastionHost_Output_Id
+  PrivateHost = module.EC2_Module.PrivateHost_Output_Id
   start_crontab = var.start_crontab
   stop_crontab = var.stop_crontab
 }
@@ -55,15 +55,6 @@ module "Route53_Module" {
   source = "./Route-53-Conf"
   project_version = var.project_version
   vpc_id = module.VPC_Module.VPC_Terraform_Output.id
-  bastionhost_private_ip = module.EC2_Module.BastionHost_Output.private_ip
-  privatehost_private_ip = module.EC2_Module.PrivateHost_Output.private_ip
-}
-
-output "bastionhost_output" {
-  value     = module.EC2_Module.BastionHost_Name_Output
-}
-
-output "privatehost_output" {
-  sensitive = true
-  value     = module.EC2_Module.PrivateHost_Name_Output
+  bastionhost_private_ip = module.EC2_Module.BastionHost_PrivateIp_Output
+  privatehost_private_ip = module.EC2_Module.PrivateHost_PrivateIp_Output
 }

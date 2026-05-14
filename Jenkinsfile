@@ -3,21 +3,21 @@ Jenkins Plugins:
 - GitHub plugin
 - Pipeline As YAML (Incubated)
 */
-
+//Forcing pipeline
 // We set up a webhook to our repository so that when we push our code, Jenkins Git Plugin detects the push and begins the pipeline using the repository 
 // This trigger only kicks git-plugin internal polling algo for every incoming event against matched repo.
 pipeline {
     agent any
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
+    //triggers {
+        //pollSCM('H/5 * * * *')
+    //}
     environment {
         //Tokens are in .env, but they need to be configured in JENKINS UI
         HOME_DIR = "Infrastructure"
         AWS_ACCESS_KEY_ID         = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY     = credentials('AWS_SECRET_ACCESS_KEY')
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
-        TF_VAR_project_version    = "${BUILD_ID}-prod"
+        TF_VAR_project_version    = "prod"
         TF_VAR_workspace          = "${WORKSPACE}"
         TF_VAR_project_region     = "us-east-1"
     }
@@ -26,6 +26,7 @@ pipeline {
             steps {
                 sh """
                     cd ${env.HOME_DIR}
+                    chmod -R +rx *
                     terraform init
                     terraform workspace select ${env.BRANCH_NAME} || terraform workspace new ${env.BRANCH_NAME}
                 """
@@ -81,37 +82,22 @@ pipeline {
                     --client-vpn-endpoint-id \$ENDPOINT_ID \
                     --output text > downloaded.ovpn
                 """
-                //sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh alice downloaded.ovpn $env.WORKSPACE/$env.HOME_DIR"
-                //sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/alice.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/alice.ovpn"
-            }
-        }
-
-        stage('Destroy OVPN Files') {
-            when {
-                allOf{
-                    branch 'destroy'
-                    expression{
-                        //read tfvars to check if VPN is enabled
-                        def tfvars = readFile("${env.HOME_DIR}/envs/main.tfvars")
-                        return tfvars.contains('enable_vpn = true')
-                    }
-                }
-            }
-            steps {
-                sh """
-                    cd ${env.HOME_DIR}/Client-VPN-Conf/
-                    rm -rf *.ovpn
-                """
+                sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
+                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/andres.ovpn"
             }
         }
 
         stage('Terraform Destroy') {
             when {
-                allOf{
+                allOf {
                     branch 'destroy'
                 }
             }
             steps {
+                sh """
+                    cd ${env.HOME_DIR}/Client-VPN-Conf/
+                    ./cleanup_vpn.sh "${env.TF_VAR_project_region}"
+                """
                 sh """
                     cd ${env.HOME_DIR}
                     terraform workspace select main
@@ -127,6 +113,7 @@ pipeline {
         unsuccessful {
             script {
                 if (env.BRANCH_NAME == 'main') {
+                    sh "${env.HOME_DIR}/Client-VPN-Conf/cleanup_vpn.sh ${env.TF_VAR_project_region}"
                     sh "cd ${env.HOME_DIR} && terraform destroy --auto-approve -var-file=envs/main.tfvars"
                 } else {
                     echo "Pipeline failed on ${env.BRANCH_NAME} - skipping destroy"
