@@ -120,7 +120,7 @@ pipeline {
                     --output text > downloaded.ovpn
                 """
                 sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
-                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/vpn-configs/andres.ovpn"
+                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files-${env.DEPLOY_ENV}/vpn-configs/andres.ovpn"
             }
         }
 
