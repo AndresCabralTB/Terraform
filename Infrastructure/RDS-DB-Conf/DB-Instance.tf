@@ -34,7 +34,7 @@ resource "aws_kms_key" "secrets_key" {
 resource "aws_db_instance" "ProjectDatabasePROD" {
     allocated_storage       = 10
     availability_zone       = "us-east-1b"
-    db_name                 = "TerraformDB-prod"
+    db_name                 = "TerraformDB"
     db_subnet_group_name    = aws_db_subnet_group.terraform_db_SubnetGroup.name #The subnets where the DB will be deployed
     engine                  = "mysql"
     engine_version          = "8.4.8"
