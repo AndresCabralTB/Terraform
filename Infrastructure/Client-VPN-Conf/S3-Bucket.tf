@@ -1,7 +1,3 @@
-variable "project_version" {
-  type = string
-}
-
 resource "aws_s3_bucket" "vpn_configs_bucket" {
   bucket = "cloud-cabral-ovpn-files-${var.project_version}"
   force_destroy = true
