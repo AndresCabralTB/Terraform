@@ -15,14 +15,14 @@ locals {
 }
 
 resource "aws_db_subnet_group" "terraform_db_SubnetGroup" {
-  name = "db-subnetgrou-${var.project_version}"
+  name = "db-subnetgroup"
   subnet_ids = [var.vpc_subnet_B_id, var.vpc_subnet_C_id]
   
 }
 
 #We will be using an already-existing KMS secret key - but remove this if you want to create a brand new onw
 resource "aws_kms_key" "secrets_key" {
-  description             = "KMS 03/05/2026 pipeline${var.project_version}"
+  description             = "KMS 03/05/2026 pipeline ${var.project_version}"
   deletion_window_in_days = 7
 }
 
@@ -34,7 +34,7 @@ resource "aws_kms_key" "secrets_key" {
 resource "aws_db_instance" "ProjectDatabasePROD" {
     allocated_storage       = 10
     availability_zone       = "us-east-1b"
-    db_name                 = "TerraformDB-${env.project_version}"
+    db_name                 = "TerraformDB-prod"
     db_subnet_group_name    = aws_db_subnet_group.terraform_db_SubnetGroup.name #The subnets where the DB will be deployed
     engine                  = "mysql"
     engine_version          = "8.4.8"
@@ -44,7 +44,7 @@ resource "aws_db_instance" "ProjectDatabasePROD" {
     manage_master_user_password = true
     master_user_secret_kms_key_id = aws_kms_key.secrets_key.id
     parameter_group_name    = "default.mysql8.4"
-    identifier = "terraform-db-${var.project_version}"
+    identifier = "terraform-db"
     instance_class          = "db.t4g.micro"
     vpc_security_group_ids  = [aws_security_group.TerraformDB-SecurityGroup.id] #The Security groups for the DB
     skip_final_snapshot = true
