@@ -19,7 +19,7 @@ pipeline {
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
         TF_VAR_project_version    = "${BUILD_ID}-prod"
         TF_VAR_workspace          = "${WORKSPACE}"
-
+        TF_VAR_project_region     = "us-east-1"
     }
     stages {
         stage('Terraform Init') {
@@ -66,11 +66,12 @@ pipeline {
                 cd "${env.HOME_DIR}/Client-VPN-Conf/" 
 
                 ENDPOINT_ID=\$(aws ec2 describe-client-vpn-endpoints \
+                    --region "${env.TF_VAR_project_region}" \
                     --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
                     --output text)
 
                 aws ec2 export-client-vpn-client-configuration \
-                    --region "$PROJECT_REGION" \
+                    --region "${env.TF_VAR_project_region}" \
                     --client-vpn-endpoint-id \$ENDPOINT_ID \
                     --output text > downloaded.ovpn
                 """
