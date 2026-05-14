@@ -16,6 +16,7 @@ variable "subnet_B_cidr" {
 variable "subnet_C_id" {
   type = string
 }
+
 variable "subnet_C_cidr" {
   type = string
 }
@@ -23,6 +24,7 @@ variable "vpn_users" {
   type    = list(string)
   default = ["alice", "bob"]
 }
+
 variable "vpc_id" {
   type = string
 }
