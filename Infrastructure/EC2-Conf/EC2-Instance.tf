@@ -71,9 +71,6 @@ resource "aws_instance" "BastionHost" {
     availability_zone           = "us-east-1a"
     iam_instance_profile        =  data.aws_iam_instance_profile.BastionHostProfile.name
     instance_type               = "t2.micro"
-    cpu_options {
-      core_count = "1"
-    }
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
@@ -101,9 +98,6 @@ resource "aws_instance" "PrivateHost" {
     instance_type               = "t2.micro"
     vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_B_id
-    cpu_options {
-      core_count = "1"
-    }
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
@@ -120,13 +114,22 @@ resource "aws_instance" "PrivateHost" {
     }
 }
 
-output "BastionHost_Output" {
-  value = aws_instance.BastionHost
+output "BastionHost_Output_Id" {
+  value = aws_instance.BastionHost.id
 }
 
-output "PrivateHost_Output" {
-  value = aws_instance.PrivateHost
+output "PrivateHost_Output_Id" {
+  value = aws_instance.PrivateHost.id
 }
+
+output "BastionHost_PrivateIp_Output" {
+  value = aws_instance.BastionHost.private_ip
+}
+
+output "PrivateHost_PrivateIp_Output" {
+  value = aws_instance.PrivateHost.private_ip
+}
+
 
 output "PrivateHost_SecurityGroup_Id" {
   value = module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output
@@ -134,12 +137,4 @@ output "PrivateHost_SecurityGroup_Id" {
 
 output "BastionHost_SecurityGroup_Id" {
   value = module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output
-}
-
-output "BastionHost_Name_Output" {
-  value = aws_instance.BastionHost.tags_all
-}
-
-output "PrivateHost_Name_Output" {
-  value = aws_instance.PrivateHost.tags_all
 }
