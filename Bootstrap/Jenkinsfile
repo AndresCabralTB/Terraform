@@ -11,7 +11,9 @@ pipeline {
     stages {
         stage('Setup'){
             steps{
-                sh "We are currently in ${env.HOME_DIR}"
+                sh """ 
+                    echo 'SETUP - We are currently in ${env.HOME_DIR}'
+                """
             }
         }
         stage('Terraform init'){
