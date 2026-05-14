@@ -15,7 +15,7 @@ locals {
 }
 
 resource "aws_db_subnet_group" "terraform_db_SubnetGroup" {
-  name = "project_db_subnetgroup"
+  name = "db-subnetgrou-${var.project_version}"
   subnet_ids = [var.vpc_subnet_B_id, var.vpc_subnet_C_id]
   
 }
@@ -34,7 +34,7 @@ resource "aws_kms_key" "secrets_key" {
 resource "aws_db_instance" "ProjectDatabasePROD" {
     allocated_storage       = 10
     availability_zone       = "us-east-1b"
-    db_name                 = "TerraformDB"
+    db_name                 = "TerraformDB-${env.project_version}"
     db_subnet_group_name    = aws_db_subnet_group.terraform_db_SubnetGroup.name #The subnets where the DB will be deployed
     engine                  = "mysql"
     engine_version          = "8.4.8"
