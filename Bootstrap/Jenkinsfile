@@ -38,6 +38,7 @@ pipeline {
             steps {
                 sh """
                     echo 'APPLY - current directory is ${env.HOME_DIR}'
+                    ls -ltr
                     terraform apply --auto-approve
                 """
             }
