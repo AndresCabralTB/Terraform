@@ -13,7 +13,7 @@ pipeline {
             steps{
                 sh """
                     cd ${WORKSPACE}
-                    echo 'Setup - current directory is ${pwd}'
+                    echo 'Setup - current directory is ${WORKSPACE}'
                 """
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             steps{
                 sh """
                     cd ${WORKSPACE}
-                    echo 'init - current directory is ${pwd}'
+                    echo 'init - current directory is ${WORKSPACE}'
                     terraform init
                 """
             }
@@ -31,7 +31,7 @@ pipeline {
             steps{
                 sh """
                     cd ${WORKSPACE}
-                    echo 'Plan - current directory is ${pwd}'
+                    echo 'Plan - current directory is ${WORKSPACE}'
                     terraform plan
                 """
             }
@@ -41,7 +41,7 @@ pipeline {
             steps{
                 sh """
                     cd ${WORKSPACE}
-                    echo 'Apply - current directory is ${pwd}'
+                    echo 'Apply - current directory is ${WORKSPACE}'
                     terraform apply --auto-approve
                 """
             }
