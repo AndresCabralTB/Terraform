@@ -26,7 +26,7 @@ module "RDS_Instance_Moduel" {
 }
 
 #Comment out to save resources, but this part of the code will deploy a Client VPN Configuration that allows clients to connect to the VPC through a VPN
-module "ClientVPN" {
+module "Client_VPN_Module" {
   source                        = "./Client-VPN-Conf"
   subnet_A_id                   = module.VPC_Module.VPC_Subnet_A_Output.id
   subnet_A_cidr                 = module.VPC_Module.VPC_Subnet_A_Output.cidr_block
@@ -57,4 +57,18 @@ module "Route53_Module" {
   vpc_id = module.VPC_Module.VPC_Terraform_Output.id
   bastionhost_private_ip = module.EC2_Module.BastionHost_PrivateIp_Output
   privatehost_private_ip = module.EC2_Module.PrivateHost_PrivateIp_Output
+}
+
+output "vpn_user_certs" {
+  sensitive = true
+  value     = module.Client_VPN_Module.vpn_user_certs
+}
+
+output "ca_cert" {
+  sensitive = true
+  value     = module.Client_VPN_Module.ca_cert
+}
+
+output "ClientVPN_Endpoint_Output" {
+  value = var.enable_vpn ? module.ClientVPN[0].ClientVPN_Endpoint_Output : null
 }
