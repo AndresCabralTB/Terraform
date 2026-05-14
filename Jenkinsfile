@@ -136,10 +136,15 @@ pipeline {
                 sh """
                     cd ${env.HOME_DIR}
                     terraform workspace select ${env.DEPLOY_ENV}
-                    echo "Running Terraform destroy..."
-                    terraform destroy -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
+
+                    terraform plan \
+                        -destroy \
+                        -var-file=envs/${env.DEPLOY_ENV}.tfvars \
+                        -out=destroy.tfplan
+
+                    terraform apply -auto-approve destroy.tfplan
                 """
-            }                           
+            }                          
         }
     }
     post {
