@@ -3,7 +3,7 @@ pipeline {
     parameters {
         string(
             name: 'USERNAME',
-            defaultValue: 'test_user_1',
+            defaultValue: 'Jenkins-Infrastructure',
             description: 'Enter your username for IAM access.'
         )
     }
