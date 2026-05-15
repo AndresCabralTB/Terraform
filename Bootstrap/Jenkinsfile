@@ -4,9 +4,8 @@ pipeline {
         string(
             name: 'USERNAME',
             defaultValue: 'test_user_1',
-            description 'Enter your username for IAM access.'
+            description: 'Enter your username for IAM access.'
         )
-
     }
     environment{
         AWS_ACCESS_KEY_ID         = credentials('AWS_ACCESS_KEY_ID')
