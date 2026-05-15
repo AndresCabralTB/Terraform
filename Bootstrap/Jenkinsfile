@@ -52,7 +52,21 @@ pipeline {
                     cd ${env.HOME_DIR}
                     echo 'Apply - current directory is ${env.HOME_DIR}'
                     terraform apply --auto-approve
+                    
                 """
+            }
+        }
+        stage('Show Outputs') {
+            steps {
+                script {
+                    def newUsername = sh(
+                        script: "cd ${env.HOME_DIR} && terraform output -raw new_username_output",
+                        returnStdout: true
+                    ).trim()
+                    
+                    echo "New IAM Username: ${newUsername}"
+                    env.NEW_USERNAME = newUsername  // store it for later stages
+                }
             }
         }
     }

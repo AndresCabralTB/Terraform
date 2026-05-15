@@ -17,3 +17,7 @@ module "S3_Bucket_Module" {
     source = "./S3-Bucket-Conf"
     project_region = var.project_region
 }
+
+output "new_username_output" {
+    value = module.IAM_User_Module.new_user_output
+}
