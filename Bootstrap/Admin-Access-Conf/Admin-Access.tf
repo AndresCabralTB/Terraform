@@ -26,12 +26,9 @@ resource "aws_iam_group_policy_attachment" "AdminAccessGroupPolicies" {
     policy_arn = each.value
 }
 
-resource "aws_iam_group_membership" "AdminAccessTeam" {
-  name = "AdminAccessTeam"
-
-  users = [
-    var.iam_user
+resource "aws_iam_user_group_membership" "AdminAccessTeam" {
+  user = var.iam_user
+  groups = [
+    aws_iam_group.AdminAccessGroup.name
   ]
-
-  group = aws_iam_group.AdminAccessGroup.name
 }
