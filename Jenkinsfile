@@ -29,7 +29,7 @@ pipeline {
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
         TF_VAR_workspace          = "${WORKSPACE}"
         TF_VAR_project_region     = "us-east-1"
-        TF_VAR_enable_vpn         = params.DEPLOY_VPN
+        TF_VAR_enable_vpn         = "${params.DEPLOY_VPN}"
     }
     stages {
         
