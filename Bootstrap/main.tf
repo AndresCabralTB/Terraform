@@ -1,12 +1,11 @@
 module "IAM_User_Module" {
     source = "./New-User-Conf"
-    project_env = var.project_env
     new_username = var.new_username
 }
 
 module "AdminAccessGroup_Module" {
     source = "./Admin-Access-Conf"
-    iam_user = module.IAM_User_Module.new_user_output
+    iam_user_name = module.IAM_User_Module.new_user_output
 }
 
 module "IAMInstanceProfile_Module" {

@@ -1,6 +1,6 @@
 #Stand-alone script to create the Admin Access Group with a few AWS Managed Policies to gain access to the most important resources for this project
 
-variable "iam_user" {
+variable "iam_user_name" {
   type = string
 }
 
@@ -27,7 +27,7 @@ resource "aws_iam_group_policy_attachment" "AdminAccessGroupPolicies" {
 }
 
 resource "aws_iam_user_group_membership" "AdminAccessTeam" {
-  user = var.iam_user
+  user = var.iam_user_name
   groups = [
     aws_iam_group.AdminAccessGroup.name
   ]

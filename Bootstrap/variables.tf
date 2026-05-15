@@ -3,11 +3,6 @@ variable "project_region" {
     default = "us-east-1"
 }
 
-variable "project_env" {
-    type    = string
-    default = "unkown"
-}
-
 variable "new_username" {
     type    = string
     default = "" 
