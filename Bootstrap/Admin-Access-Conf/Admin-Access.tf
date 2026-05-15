@@ -30,7 +30,7 @@ resource "aws_iam_group_membership" "AdminAccessTeam" {
   name = "AdminAccessTeam"
 
   users = [
-    var.iam_user.user_name
+    var.iam_user
   ]
 
   group = aws_iam_group.AdminAccessGroup.name
