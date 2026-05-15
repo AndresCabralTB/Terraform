@@ -1,0 +1,41 @@
+pipeline{
+    agent any
+
+    stages {
+        stage('Terraform Init'){
+            steps{
+                sh """
+                    terraform init
+                """
+            }
+        }
+
+        stage('Create Docker Image') {
+
+        }
+    }
+
+}
+
+/*
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 718254829448.dkr.ecr.us-east-1.amazonaws.com
+
+
+docker images
+
+
+docker tag dc33c60d532f 718254829448.dkr.ecr.us-east-1.amazonaws.com/ecr-repo-unkown:tag
+
+docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/ecr-repo-unkown:tag
+
+MANIFEST=$(aws ecr batch-get-image --repository-name --image-ids imageTag=tag --output text --query 'images[].imageManifest')
+
+aws ecr put-image --repository-name ecr-repo-unkown --image-tag docker-image-test1 --image-manifest "$MANIFEST"
+
+aws ecr describe-images --repository-name ecr-repo-unkown
+
+aws ecr batch-delete-image --repository-name ecr-repo-unkown --image-ids 718254829448 imageTag=tag
+
+
+
+*/
