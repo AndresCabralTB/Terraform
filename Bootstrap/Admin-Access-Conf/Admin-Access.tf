@@ -13,6 +13,7 @@ resource "aws_iam_group_policy_attachment" "AdminAccessGroupPolicies" {
     for_each = toset ([
         #AWS Managed
                # --- Compute ---
+        "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
         "arn:aws:iam::aws:policy/AmazonEC2FullAccess",        # Full EC2 management — instances, AMIs, key pairs
         "arn:aws:iam::aws:policy/EC2InstanceConnect",         # Allows browser-based SSH via EC2 Instance Connect
         "arn:aws:iam::aws:policy/AmazonRDSFullAccess",        # Full RDS management — instances, snapshots, parameter groups
