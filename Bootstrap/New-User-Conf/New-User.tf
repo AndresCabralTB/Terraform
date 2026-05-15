@@ -10,5 +10,5 @@ resource "aws_iam_user" "new_user" {
 }
 
 output "new_user_output" {
-    value = aws_iam_user.new_user.name
+    value = aws_iam_user.new_user
 }
