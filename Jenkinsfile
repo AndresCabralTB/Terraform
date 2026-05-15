@@ -106,8 +106,7 @@ pipeline {
                     expression { env.PIPELINE_MODE == 'deploy' }
                     expression{
                         //read tfvars to check if VPN is enabled
-                        def tfvars = readFile("${env.HOME_DIR}/envs/${env.DEPLOY_ENV}.tfvars")
-                        return tfvars.contains('enable_vpn = true')
+                        params.DEPLOY_VPN == 'true'
                     }
                 }
             }
