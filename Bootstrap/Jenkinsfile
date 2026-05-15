@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+    parameters {
+        string(
+            name: 'USERNAME',
+            defaultValue: 'test_user_1',
+            description: 'Enter your username for IAM access.'
+        )
+    }
+    environment{
+        AWS_ACCESS_KEY_ID         = credentials('Jenkins-bootstrap-access-key')
+        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-bootstrap-secret-access-key')
+        TF_VAR_project_region     = "us-east-1"
+        TF_VAR_new_username       = "${params.USERNAME}"
+        HOME_DIR                  = "Bootstrap"
+    }
+
+
+    stages {
+        stage('Disclaimer') {
+            steps {
+                echo """
+                    ==========================================
+                    INFRASTRUCTURE DEPLOYMENT PIPELINE ONLY
+                    ==========================================
+                    This pipeline manages AWS infrastructure.
+                    Do not use for application deployments.
+
+                    WARNING - IAM USERS:
+                    Redeploying with a new username WILL DELETE
+                    the previous IAM user and replace it with
+                    the new one. To keep existing users, include
+                    ALL usernames in the input.
+
+                    Updates: We are still working on creating many users at a time
+                    ==========================================
+                """
+            }
+        }
+        stage('Setup'){
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    echo 'Setup - current directory is ${env.HOME_DIR}'
+                """
+            }
+        }
+        stage('Terraform init'){
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    echo 'init - current directory is ${env.HOME_DIR}'
+                    terraform init
+                """
+            }
+        }
+
+        stage('Terraform Plan'){
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    echo 'Plan - current directory is ${env.HOME_DIR}'
+                    terraform plan
+                """
+            }
+        }
+
+        stage('Terraform Apply'){
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    echo 'Apply - current directory is ${env.HOME_DIR}'
+                    terraform apply --auto-approve
+                    
+                """
+            }
+        }
+        stage('Show Outputs') {
+            steps {
+                script {
+                    def newUsername = sh(
+                        script: "cd ${env.HOME_DIR} && terraform output -raw new_username_output",
+                        returnStdout: true
+                    ).trim()
+                    
+                    echo "New IAM Username: ${newUsername}"
+                    env.NEW_USERNAME = newUsername  // store it for later stages
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            sh "echo 'Pipeline Successfully Deployed.' "
+        }
+        unsuccessful {
+            sh """
+                echo 'Pipeline Failed - Review logs.'
+            """
+        }
+    }
+}

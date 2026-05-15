@@ -7,14 +7,12 @@ terraform {
     }
   }
 
-  cloud { 
-    
-    organization = "Andres-Cabral-Organization-Terraform" 
+    backend "s3" {
+        bucket = "jenkins-project-bootstrap"
+        key    = "Terraform_Backend/terraform.tfstate"
+        region = "us-east-1"
+    }
 
-    workspaces { 
-      name = "Bootstrap-workspace" 
-    } 
-  } 
 }
 
 provider "aws" {
