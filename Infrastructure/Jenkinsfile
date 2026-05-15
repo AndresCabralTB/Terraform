@@ -73,12 +73,7 @@ pipeline {
                 """
             }
         }
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 5acc61b888ce4faa2162c793605d4e711a996b2a
-        stage('Terraform Plan') {
+    stage('Terraform Plan') {
             when {
                 expression {
                     env.PIPELINE_MODE == 'deploy'
