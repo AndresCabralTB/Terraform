@@ -10,7 +10,7 @@ terraform {
   
 
   backend "s3"{
-    bucket = "jenkins-project-infrastructure"
+    bucket = "jenkins-project-docker"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }

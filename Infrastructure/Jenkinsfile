@@ -24,8 +24,13 @@ pipeline {
     environment {
         //Tokens are in .env, but they need to be configured in JENKINS UI
         HOME_DIR = "Infrastructure"
+<<<<<<< HEAD
         AWS_ACCESS_KEY_ID         = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY     = credentials('AWS_SECRET_ACCESS_KEY')
+=======
+        AWS_ACCESS_KEY_ID         = credentials('Jenkins-infrastructure-access-key')
+        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-infrastructure-secret-access-key')
+>>>>>>> 5acc61b888ce4faa2162c793605d4e711a996b2a
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
         TF_VAR_workspace          = "${WORKSPACE}"
         TF_VAR_project_region     = "us-east-1"
@@ -66,12 +71,16 @@ pipeline {
                 sh """
                     cd ${env.HOME_DIR}
                     chmod -R +rx *
-                    terraform init
+                    terraform init 
                     terraform workspace select ${env.DEPLOY_ENV} || terraform workspace new ${env.DEPLOY_ENV}
                 """
             }
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 5acc61b888ce4faa2162c793605d4e711a996b2a
         stage('Terraform Plan') {
             when {
                 expression {
