@@ -24,8 +24,8 @@ pipeline {
     environment {
         //Tokens are in .env, but they need to be configured in JENKINS UI
         HOME_DIR = "Infrastructure"
-        AWS_ACCESS_KEY_ID         = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY     = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_ACCESS_KEY_ID         = credentials('Jenkins-infrastructure-access-key')
+        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-infrastructure-secret-access-key')
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
         TF_VAR_workspace          = "${WORKSPACE}"
         TF_VAR_project_region     = "us-east-1"
@@ -126,7 +126,7 @@ pipeline {
                     --output text > downloaded.ovpn
                 """
                 sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
-                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files-${env.DEPLOY_ENV}/vpn-configs/andres.ovpn"
+                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/${env.DEPLOY_ENV}/andres.ovpn"
             }
         }
 
