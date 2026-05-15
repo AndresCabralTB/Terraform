@@ -71,9 +71,12 @@ pipeline {
     }
 
     post {
+        success {
+            sh "echo 'Pipeline Successfully Deployed."
+        }
         unsuccessful {
             sh """
-                echo 'Pipeline Failed - Review logs'
+                echo 'Pipeline Failed - Review logs.'
             """
         }
     }
