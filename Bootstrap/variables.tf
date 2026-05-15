@@ -5,5 +5,5 @@ variable "project_region" {
 
 variable "new_username" {
     type    = string
-    default = "" 
+    default = "Jenkins-Infrastructure" 
 }
