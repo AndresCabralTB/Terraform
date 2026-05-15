@@ -66,12 +66,12 @@ pipeline {
                 sh """
                     cd ${env.HOME_DIR}
                     chmod -R +rx *
-                    terraform init -migrate-state
+                    terraform init 
                     terraform workspace select ${env.DEPLOY_ENV} || terraform workspace new ${env.DEPLOY_ENV}
                 """
             }
         }
-
+        
         stage('Terraform Plan') {
             when {
                 expression {
