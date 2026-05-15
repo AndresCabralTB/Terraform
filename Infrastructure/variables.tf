@@ -16,7 +16,7 @@ variable "project_version" {
 
 variable "enable_vpn" {
   type = bool 
-  default = "false"
+  default = false
 }
 
 variable "project_region" {
