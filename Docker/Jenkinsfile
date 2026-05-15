@@ -1,17 +1,120 @@
 pipeline{
     agent any
 
+    environment{
+        HOME_DIR = "Infrastructure"
+        AWS_ACCESS_KEY_ID         = credentials('Jenkins-infrastructure-access-key')
+        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-infrastructure-secret-access-key')
+    }
+
+    parameters{
+        booleanParam(
+            name: 'RUN_DESTROY'
+            defaultValue: false
+            description: 'Toggle to destroy the pipeline.'
+        )
+    }
     stages {
+
+        stage( 'Resolve Environment') {
+            steps{
+                script {
+
+                    def branchEnvMap = [
+                        'main': 'prod',
+                        'devl': 'devl',
+                        'test': 'test',
+                        'trng': 'trng'
+                    ]
+
+                    env.DEPLOY_ENV = branchEnvMap[env.BRANCH_NAME] ?: 'unknown'
+                    env.PIPELINE_MODE = params.RUN_DESTROY ? 'destroy' : 'deploy'
+
+                    echo "Branch: ${env.BRANCH_NAME}"
+                    echo "Deploy environment: ${env.DEPLOY_ENV}"
+                    echo "Pipeline mode: ${env.PIPELINE_MODE}"
+
+                    if (env.DEPLOY_ENV == 'unknown') {
+                        error "Branch ${env.BRANCH_NAME} is not mapped to a deployable environment."
+                    }
+
+                    echo "Branch: ${env.BRANCH_NAME}"
+                    echo "Deploy environment: ${env.DEPLOY_ENV}"
+                }
+            }
+        }
+
         stage('Terraform Init'){
+            when {
+                allOf{
+                    expression {env.PIPELINE_MODE == 'deploy'}
+                }
+            }
             steps{
                 sh """
+                    cd ${env.HOME_DIR}
                     terraform init
+                    terraform workspace select ${env.DEPLOY_ENV} || terraform workspace new ${env.DEPLOY_ENV}
+                """
+            }
+        }
+
+        stage('Terraform Plan'){
+            when {
+                allOf{
+                    expression {env.PIPELINE_MODE == 'deploy'}
+                }
+            }
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    terraform plan
+                """
+            }
+        }
+
+        stage('Terraform Apply'){
+            when {
+                allOf{
+                    expression {env.PIPELINE_MODE == 'deploy'}
+                }
+            }
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    terraform apply -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
+                """
+            }
+        }
+
+        stage('Terraform Destroy'){
+            when {
+                allOf{
+                    expression {params.RUN_DESTROY}
+                }
+            }
+            steps{
+                sh """
+                    cd ${env.HOME_DIR}
+                    terraform destroy -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
                 """
             }
         }
 
         stage('Create Docker Image') {
 
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline ${env.DEPLOY_ENV} completed successfully"
+        }
+        unsuccessful {
+            echo "Pipeline failed on ${env.DEPLOY_ENV} - skipping automatic destroy"
+        }
+        changed {
+            echo 'Environment changed'
         }
     }
 
