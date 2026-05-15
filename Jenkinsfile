@@ -14,6 +14,12 @@ pipeline {
             defaultValue: false,
             description: 'Check this only when you want to destroy infrastructure.'
         )
+
+        booleanParam(
+            name: 'DEPLOY_VPN',
+            defaultValue: false,
+            description: 'Check this only when you want to deploy the VPN'
+        )
     }
     environment {
         //Tokens are in .env, but they need to be configured in JENKINS UI
@@ -23,6 +29,7 @@ pipeline {
         NGROK_TOKEN               = credentials('NGROK_TOKEN')
         TF_VAR_workspace          = "${WORKSPACE}"
         TF_VAR_project_region     = "us-east-1"
+        TF_VAR_enable_vpn         = params.DEPLOY_VPN
     }
     stages {
         
