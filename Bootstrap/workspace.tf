@@ -8,11 +8,9 @@ terraform {
   }
 
     backend "s3" {
-
         bucket = "jenkins-project-bootstrap"
         key    = "Terraform_Backend/terraform.tfstate"
         region = "us-east-1"
-
     }
 
 }
