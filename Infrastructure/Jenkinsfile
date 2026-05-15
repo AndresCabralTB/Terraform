@@ -6,6 +6,8 @@ Jenkins Plugins:
 
 // We set up a webhook to our repository so that when we push our code, Jenkins Git Plugin detects the push and begins the pipeline using the repository 
 // This trigger only kicks git-plugin internal polling algo for every incoming event against matched repo.
+// AUDIT TRAIL - version 5.0.0 May 15th 2025
+
 pipeline {
     agent any
     parameters {
