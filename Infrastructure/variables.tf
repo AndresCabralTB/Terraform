@@ -15,7 +15,7 @@ variable "project_version" {
 }
 
 variable "enable_vpn" {
-  type = string
+  type = bool 
   default = "false"
 }
 

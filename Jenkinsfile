@@ -106,7 +106,7 @@ pipeline {
                     expression { env.PIPELINE_MODE == 'deploy' }
                     expression{
                         //read tfvars to check if VPN is enabled
-                        params.DEPLOY_VPN == 'true'
+                        params.DEPLOY_VPN == true
                     }
                 }
             }
