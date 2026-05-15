@@ -70,4 +70,12 @@ pipeline {
             }
         }
     }
+
+    post {
+        unsuccessful {
+            sh """
+                echo 'Pipeline Failed - Review logs'
+            """
+        }
+    }
 }
