@@ -5,7 +5,7 @@ module "IAM_User_Module" {
 
 module "AdminAccessGroup_Module" {
     source = "./Admin-Access-Conf"
-    iam_user_name = module.IAM_User_Module.new_user_output
+    iam_user_name = module..new_user_output
 }
 
 module "IAMInstanceProfile_Module" {
