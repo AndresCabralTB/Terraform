@@ -61,6 +61,7 @@ resource "aws_ec2_client_vpn_endpoint" "ClientVPN_Endpoint" {
 
   tags = {
     Name = "Clinet-VPN-${var.project_environment}"
+    Environment = "${var.project_environment}"
   }
 }
 

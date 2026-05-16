@@ -81,7 +81,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Terraform Init & Deploy') {
             when {
                 expression { env.DEPLOY_TARGETS?.trim() }
@@ -120,6 +120,7 @@ pipeline {
 
                                 ENDPOINT_ID=\$(aws ec2 describe-client-vpn-endpoints \
                                     --region "${env.TF_VAR_project_region}" \
+                                    --filters "Name=tag:Environment,Values=${deployEnv}" \
                                     --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
                                     --output text)
 
