@@ -1,4 +1,4 @@
-variable "project_version" {
+variable "project_environment" {
     type = string
 }
 
@@ -21,7 +21,7 @@ resource  "aws_iam_role" "EventBridgeRole" {
 }
 
 resource "aws_iam_role_policy" "EventBridgeRolePolicy" {
-    name = "EventBridgeRolePolicy-${var.project_version}"
+    name = "EventBridgeRolePolicy-${var.project_environment}"
     policy = jsonencode({
         Version = "2012-10-17"
         Statement = [

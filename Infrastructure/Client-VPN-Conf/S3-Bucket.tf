@@ -4,5 +4,5 @@ data "aws_s3_bucket" "vpn_configs_bucket" {
 
 resource "aws_s3_object" "folder" {
   bucket = data.aws_s3_bucket.vpn_configs_bucket.id
-  key    = "${var.project_version}/"  # Trailing slash makes it a folder
+  key    = "${var.project_environment}/"  # Trailing slash makes it a folder
 }

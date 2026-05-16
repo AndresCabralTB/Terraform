@@ -3,7 +3,7 @@ resource "aws_internet_gateway" "InternetGateway" {
   vpc_id = aws_vpc.VPC_Terraform.id
 
   tags = {
-    Name = "Internet-Gateway-Terraform-${var.project_version}"
+    Name = "Internet-Gateway-Terraform-${var.project_environment}"
   }
   
 }

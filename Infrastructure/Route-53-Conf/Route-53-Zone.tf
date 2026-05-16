@@ -1,4 +1,4 @@
-variable "project_version" {
+variable "project_environment" {
     type = string
 }
 
@@ -7,7 +7,7 @@ variable "vpc_id" {
 }
 
 resource "aws_route53_zone" "Route53-Zone-A-Terraform"{
-  name = "cabral.cloud.${var.project_version}"
+  name = "cabral.cloud.${var.project_environment}"
   vpc {
     vpc_id = var.vpc_id
   }

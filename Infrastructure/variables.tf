@@ -8,10 +8,16 @@ variable "stop_crontab" {
   default = "cron(30 5 * * ? *)"
 }
 
+variable "project_environment" {
+    type = string 
+    default = "unknown"
+    description = "This is the environment control"
+}
+
 variable "project_version" {
     type = string 
-    default = "v4"
-    description = "This is the version control"
+    default = "unknown"
+    description = "This is the environment control"
 }
 
 variable "enable_vpn" {

@@ -7,12 +7,12 @@ variable "PrivateHostSG_ID" {
 }
 
 resource "aws_security_group" "TerraformDB-SecurityGroup" {
-    name = "Terraform-Database-Security-Group-${var.project_version}"
+    name = "Terraform-Database-Security-Group-${var.project_environment}"
     vpc_id = var.vpc_id
     description = "Security Group for the RDS Terraform Database"
 
     tags = {
-      Name = "Terraform-Database-Security-Group-${var.project_version}"
+      Name = "Terraform-Database-Security-Group-${var.project_environment}"
     }
 }
 
@@ -25,7 +25,7 @@ resource "aws_vpc_security_group_ingress_rule" "TerraformDBIngress" {
   referenced_security_group_id = var.PrivateHostSG_ID   
 
   tags = {
-    Name = "IngressRule-TerraformDB-SG-${var.project_version}"
+    Name = "IngressRule-TerraformDB-SG-${var.project_environment}"
   }
 }
 

@@ -6,31 +6,31 @@ variable "cidr_ipv4_mac" {
   type = string
 }
 
-variable "project_version" {
+variable "project_environment" {
   type = string
 }
 
 
 resource "aws_security_group" "BastionHostSG" {
-    name = "Bastion-Host-Security-Group-${var.project_version}"
+    name = "Bastion-Host-Security-Group-${var.project_environment}"
     vpc_id = var.vpc_id
-    description = "Security Group for the Bastion Host - ${var.project_version}"
+    description = "Security Group for the Bastion Host - ${var.project_environment}"
 
     tags = {
-      Name = "Bastion-Host-Security-Group-${var.project_version}"
+      Name = "Bastion-Host-Security-Group-${var.project_environment}"
     }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress" {
   cidr_ipv4 = var.cidr_ipv4_mac
-  description = "Allow connections from Mac - ${var.project_version}"
+  description = "Allow connections from Mac - ${var.project_environment}"
   from_port = 22
   ip_protocol = "tcp"
   to_port = 22
   security_group_id = aws_security_group.BastionHostSG.id
 
   tags = {
-    Name = "IngressRule-BastionHost-SG--${var.project_version}"
+    Name = "IngressRule-BastionHost-SG--${var.project_environment}"
   }
 }
 resource "aws_vpc_security_group_egress_rule" "BastionHostEgress" {
@@ -39,7 +39,7 @@ resource "aws_vpc_security_group_egress_rule" "BastionHostEgress" {
     security_group_id = aws_security_group.BastionHostSG.id
     #referenced_security_group_id = aws_security_group.PrivateHostSG.id
     tags = {
-      Name = "EgressRule-BastionHost-SG-${var.project_version}"
+      Name = "EgressRule-BastionHost-SG-${var.project_environment}"
     }
 }
 

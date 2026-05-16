@@ -1,4 +1,4 @@
-variable "project_version" {
+variable "project_environment" {
     type = string
 }
 resource "aws_vpc" "VPC_Terraform" {
@@ -7,7 +7,7 @@ resource "aws_vpc" "VPC_Terraform" {
   enable_dns_hostnames  = true
 
   tags = {
-    Name = "VPC-Terraform-${var.project_version}"
+    Name = "VPC-Terraform-${var.project_environment}"
   }
 }
 

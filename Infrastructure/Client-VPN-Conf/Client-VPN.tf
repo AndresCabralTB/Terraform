@@ -29,7 +29,7 @@ variable "vpc_id" {
   type = string
 }
 
-variable "project_version" {
+variable "project_environment" {
   type = string
 }
 
@@ -41,7 +41,7 @@ variable "project_version" {
 
 # The Client VPN endpoint is the resource that you create and configure to enable and manage client VPN sessions. It's the termination point for all client VPN sessions.
 resource "aws_ec2_client_vpn_endpoint" "ClientVPN_Endpoint" {
-  description            = "terraform-clientvpn-${var.project_version}"
+  description            = "terraform-clientvpn-${var.project_environment}"
   server_certificate_arn = aws_acm_certificate.server.arn
   security_group_ids     = [aws_security_group.VPN_Security_Group.id]
 
@@ -58,6 +58,10 @@ resource "aws_ec2_client_vpn_endpoint" "ClientVPN_Endpoint" {
   client_cidr_block = "10.0.0.0/22"
   dns_servers       = ["172.16.0.2"] # VPC DNS resolver (always VPC base IP + 2)
   vpc_id             = var.vpc_id
+
+  tags = {
+    Name = "Clinet-VPN-${var.project_environment}"
+  }
 }
 
 # ─────────────────────────────────────────────
