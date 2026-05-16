@@ -23,13 +23,13 @@ variable "PrivateHost" {
 # EventBridge rule that fires on the start schedule.
 # role_arn grants EventBridge permission to invoke the SSM automation target.
 resource "aws_cloudwatch_event_rule" "StartEC2Instances" {
-  name                = "StartEC2InstancesEventRule-${var.project_version}"
+  name                = "StartEC2InstancesEventRule-${var.project_environment}"
   schedule_expression = var.start_crontab
   state               = "ENABLED"
   #role_arn            = aws_iam_role.EventBridgeRole.arn #Not needed as it's declared in the target
 
   tags = {
-    Name = "StartEC2InstancesEventRule-${var.project_version}"
+    Name = "StartEC2InstancesEventRule-${var.project_environment}"
   }
 }
 
@@ -65,13 +65,13 @@ resource "aws_cloudwatch_event_target" "StartEC2InstancesTarget" {
 
 # Mirror of StartBastion — fires on the stop schedule.
 resource "aws_cloudwatch_event_rule" "StopEC2Instances" {
-  name                = "StopEC2InstancesEventRule-${var.project_version}"
+  name                = "StopEC2InstancesEventRule-${var.project_environment}"
   schedule_expression = var.stop_crontab
   state               = "ENABLED"
   #role_arn            = aws_iam_role.EventBridgeRole.arn #Not needed as it's declared in the target
 
   tags = {
-    Name = "StopEC2InstancesEventRule-${var.project_version}"
+    Name = "StopEC2InstancesEventRule-${var.project_environment}"
   }
 }
 

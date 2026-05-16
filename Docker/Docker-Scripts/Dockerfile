@@ -1,7 +1,7 @@
 FROM jenkins/jenkins:2.555.1-jdk21
 USER root
 
-RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq && \
+RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq less && \
     # Terraform repo
     wget -O- https://apt.releases.hashicorp.com/gpg | \
     gpg --dearmor | \
@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
     | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     # Install packages
     apt-get update && apt-get install -y terraform docker-ce-cli && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 WORKDIR /app/Docker
 RUN chmod +rw /app/Docker/

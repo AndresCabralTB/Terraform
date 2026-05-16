@@ -12,10 +12,10 @@ variable "TerraformDB_SecurityGroup_Id" {
 # ─────────────────────────────────────────────
 
 resource "aws_security_group" "PrivateHostSG" {
-  name   = "Private-Host-Security-Group-${var.project_version}"
+  name   = "Private-Host-Security-Group-${var.project_environment}"
   vpc_id = var.vpc_id
   tags = {
-    Name = "Private-Host-Security-Group-${var.project_version}"
+    Name = "Private-Host-Security-Group-${var.project_environment}"
   }
 }
 
@@ -23,14 +23,14 @@ resource "aws_security_group" "PrivateHostSG" {
 # Users SSH into the bastion first, then jump to this private host.
 # No direct public SSH access is permitted.
 resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
-  description                  = "Allow SSH connections from Bastion Host - ${var.project_version}"
+  description                  = "Allow SSH connections from Bastion Host - ${var.project_environment}"
   from_port                    = 22
   ip_protocol                  = "tcp"
   to_port                      = 22
   security_group_id            = aws_security_group.PrivateHostSG.id
   referenced_security_group_id = aws_security_group.BastionHostSG.id
   tags = {
-    Name = "IngressRule-PrivateHost-SG-${var.project_version}"
+    Name = "IngressRule-PrivateHost-SG-${var.project_environment}"
   }
 }
 

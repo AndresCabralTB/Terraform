@@ -4,7 +4,7 @@ resource "aws_route_table" "PrivateRouteTableVPC" {
     vpc_id = var.vpc_id
 
     tags = {
-        Name = "Private-Route-Table-${var.project_version}"
+        Name = "Private-Route-Table-${var.project_environment}"
     }
 }
 
