@@ -14,7 +14,7 @@ pipeline {
     }
 
     environment {
-        HOME_DIR              = "infrastructure"
+        HOME_DIR              = "Infrastructure"
         AWS_ACCESS_KEY_ID     = credentials('Jenkins-infrastructure-access-key')
         AWS_SECRET_ACCESS_KEY = credentials('Jenkins-infrastructure-secret-access-key')
         NGROK_TOKEN           = credentials('NGROK_TOKEN')
@@ -28,7 +28,7 @@ pipeline {
         stage('Resolve Environments') {
             steps {
                 script {
-                    def envFiles = findFiles(glob: "${env.HOME_DIR}/Infrastructure/envs/*.tfvars")
+                    def envFiles = findFiles(glob: "${env.HOME_DIR}/envs/*.tfvars")
 
                     // Build a list of envs to deploy/destroy based on flags
                     def deployTargets  = []
