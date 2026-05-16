@@ -59,7 +59,29 @@ pipeline {
                 }
             }
         }
+        stage('Terraform Destroy') {
+            when {
+                expression { env.DESTROY_TARGETS?.trim() }
+            }
+            steps {
+                script {
+                    env.DESTROY_TARGETS.split(',').each { deployEnv ->
+                        sh """
+                            cd ${env.HOME_DIR}
+                            terraform workspace select ${deployEnv}
 
+                            terraform plan \
+                                -destroy \
+                                -var-file=envs/${deployEnv}.tfvars \
+                                -out=destroy.tfplan
+
+                            terraform apply -auto-approve destroy.tfplan
+                        """
+                    }
+                }
+            }
+        }
+        
         stage('Terraform Init & Deploy') {
             when {
                 expression { env.DEPLOY_TARGETS?.trim() }
@@ -115,30 +137,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Terraform Destroy') {
-            when {
-                expression { env.DESTROY_TARGETS?.trim() }
-            }
-            steps {
-                script {
-                    env.DESTROY_TARGETS.split(',').each { deployEnv ->
-                        sh """
-                            cd ${env.HOME_DIR}
-                            terraform workspace select ${deployEnv}
-
-                            terraform plan \
-                                -destroy \
-                                -var-file=envs/${deployEnv}.tfvars \
-                                -out=destroy.tfplan
-
-                            terraform apply -auto-approve destroy.tfplan
-                        """
-                    }
-                }
-            }
-        }
-
     }
 
     post {
