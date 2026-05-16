@@ -129,7 +129,7 @@ pipeline {
                                     --client-vpn-endpoint-id \$ENDPOINT_ID \
                                     --output text > downloaded-${deployEnv}.ovpn
                             """
-                            sh "cd ${env.HOME_DIR}/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
+                            sh "cd ${env.HOME_DIR}/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded-${deployEnv}.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
                             sh "aws s3 cp ${env.HOME_DIR}/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/${deployEnv}/andres.ovpn"
                         } else {
                             echo "${deployEnv}: enable_vpn = false → skipping OVPN"
