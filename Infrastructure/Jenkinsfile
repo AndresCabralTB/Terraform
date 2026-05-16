@@ -1,171 +1,175 @@
-/*
-Jenkins Plugins:
-- GitHub plugin
-- Pipeline As YAML (Incubated)
-*/
-
-// We set up a webhook to our repository so that when we push our code, Jenkins Git Plugin detects the push and begins the pipeline using the repository 
-// This trigger only kicks git-plugin internal polling algo for every incoming event against matched repo.
-
 /******************************************************************************************/
-// AUDIT TRAIL - version 5.0.0 May 15th 2025
+// AUDIT TRAIL - version 2.0.0 May 16th 2026
 /******************************************************************************************/
 
 pipeline {
     agent any
-    parameters {
-        booleanParam(
-            name: 'RUN_DESTROY',
-            defaultValue: false,
-            description: 'Check this only when you want to destroy infrastructure.'
-        )
 
+    parameters {
         booleanParam(
             name: 'DEPLOY_VPN',
             defaultValue: false,
             description: 'Check this only when you want to deploy the VPN'
         )
     }
+
     environment {
-        //Tokens are in .env, but they need to be configured in JENKINS UI
-        HOME_DIR = "Infrastructure"
-        AWS_ACCESS_KEY_ID         = credentials('Jenkins-infrastructure-access-key')
-        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-infrastructure-secret-access-key')
-        NGROK_TOKEN               = credentials('NGROK_TOKEN')
-        TF_VAR_workspace          = "${WORKSPACE}"
-        TF_VAR_project_region     = "us-east-1"
-        TF_VAR_enable_vpn         = "${params.DEPLOY_VPN}"
+        HOME_DIR              = "infrastructure"
+        AWS_ACCESS_KEY_ID     = credentials('Jenkins-infrastructure-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('Jenkins-infrastructure-secret-access-key')
+        NGROK_TOKEN           = credentials('NGROK_TOKEN')
+        TF_VAR_workspace      = "${WORKSPACE}"
+        TF_VAR_project_region = "us-east-1"
+        TF_VAR_enable_vpn     = "${params.DEPLOY_VPN}"
     }
+
     stages {
-        
-        stage( 'Resolve Environment') {
-            steps{
+
+        stage('Resolve Environments') {
+            steps {
                 script {
+                    def envFiles = findFiles(glob: "${env.HOME_DIR}/environments/*.tfvars")
 
-                    def branchEnvMap = [
-                        'main': 'prod',
-                        'devl': 'devl',
-                        'test': 'test',
-                        'trng': 'trng'
-                    ]
+                    // Build a list of envs to deploy/destroy based on flags
+                    def deployTargets  = []
+                    def destroyTargets = []
 
-                    env.DEPLOY_ENV = branchEnvMap[env.BRANCH_NAME] ?: 'unknown'
-                    env.PIPELINE_MODE = params.RUN_DESTROY ? 'destroy' : 'deploy'
+                    envFiles.each { file ->
+                        def content   = readFile(file.path)
+                        def deployEnv = file.name.replace('.tfvars', '')
 
-                    echo "Branch: ${env.BRANCH_NAME}"
-                    echo "Deploy environment: ${env.DEPLOY_ENV}"
-                    echo "Pipeline mode: ${env.PIPELINE_MODE}"
+                        def forceRedeploy = content =~ /force_redeploy\s*=\s*true/
+                        def forceDestroy  = content =~ /force_destroy\s*=\s*true/
 
-                    if (env.DEPLOY_ENV == 'unknown') {
-                        error "Branch ${env.BRANCH_NAME} is not mapped to a deployable environment."
+                        if (forceRedeploy) {
+                            echo "${deployEnv}: force_redeploy = true → queued for deploy"
+                            deployTargets << deployEnv
+                        } else if (forceDestroy) {
+                            echo "${deployEnv}: force_destroy = true → queued for destroy"
+                            destroyTargets << deployEnv
+                        } else {
+                            echo "${deployEnv}: no flags set → skipping"
+                        }
                     }
 
-                    echo "Branch: ${env.BRANCH_NAME}"
-                    echo "Deploy environment: ${env.DEPLOY_ENV}"
+                    if (deployTargets.isEmpty() && destroyTargets.isEmpty()) {
+                        echo "No environments flagged — nothing to do"
+                        currentBuild.result = 'NOT_BUILT'
+                        return
+                    }
+
+                    // Store as comma-separated strings for downstream stages
+                    env.DEPLOY_TARGETS  = deployTargets.join(',')
+                    env.DESTROY_TARGETS = destroyTargets.join(',')
+
+                    echo "Deploy targets:  ${env.DEPLOY_TARGETS}"
+                    echo "Destroy targets: ${env.DESTROY_TARGETS}"
                 }
             }
         }
 
-        stage('Terraform Init') {
-            steps {
-                sh """
-                    cd ${env.HOME_DIR}
-                    chmod -R +rx *
-                    terraform init 
-                    terraform workspace select ${env.DEPLOY_ENV} || terraform workspace new ${env.DEPLOY_ENV}
-                """
-            }
-        }
-    stage('Terraform Plan') {
+        stage('Terraform Init & Deploy') {
             when {
-                expression {
-                    env.PIPELINE_MODE == 'deploy'
-                }
+                expression { env.DEPLOY_TARGETS?.trim() }
             }
             steps {
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform plan -var-file=envs/${env.DEPLOY_ENV}.tfvars
-                """
-            }
-        }
+                script {
+                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
 
-        stage('Terraform Apply') {
-            when {
-                expression {
-                    env.PIPELINE_MODE == 'deploy'
+                        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+                        echo "Deploying: ${deployEnv}"
+                        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+                        if (deployEnv == 'prod') {
+                            input message: "You are about to deploy to PROD. Are you sure?",
+                                  ok: "Yes, deploy to prod"
+                        }
+
+                        sh """
+                            cd ${env.HOME_DIR}
+                            chmod -R +rx *
+                            terraform init
+                            terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
+                            terraform plan    -var-file=environments/${deployEnv}.tfvars
+                            terraform apply   -var-file=environments/${deployEnv}.tfvars --auto-approve
+                        """
+                    }
                 }
-            }
-            steps {
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform apply -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
-                """
             }
         }
 
         stage('OVPN File Configuration') {
             when {
                 allOf {
-                    expression { env.PIPELINE_MODE == 'deploy' }
-                    expression{
-                        //read tfvars to check if VPN is enabled
-                        params.DEPLOY_VPN == true
-                    }
-                }
-            }
-            steps{
-                //Create .ovpn file for users
-                sh """ 
-                cd "${env.HOME_DIR}/Client-VPN-Conf/" 
-
-                ENDPOINT_ID=\$(aws ec2 describe-client-vpn-endpoints \
-                    --region "${env.TF_VAR_project_region}" \
-                    --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
-                    --output text)
-
-                aws ec2 export-client-vpn-client-configuration \
-                    --region "${env.TF_VAR_project_region}" \
-                    --client-vpn-endpoint-id \$ENDPOINT_ID \
-                    --output text > downloaded.ovpn
-                """
-                sh "cd $env.HOME_DIR/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
-                sh "aws s3 cp $env.HOME_DIR/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/${env.DEPLOY_ENV}/andres.ovpn"
-            }
-        }
-
-        stage('Terraform Destroy Plan') {
-            when {
-                anyOf{
-                    expression {
-                        env.PIPELINE_MODE == 'destroy'
-                    }
+                    expression { env.DEPLOY_TARGETS?.trim() }
+                    expression { params.DEPLOY_VPN == true }
                 }
             }
             steps {
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform workspace select ${env.DEPLOY_ENV}
+                script {
+                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
+                        sh """
+                            cd "${env.HOME_DIR}/Client-VPN-Conf/"
 
-                    terraform plan \
-                        -destroy \
-                        -var-file=envs/${env.DEPLOY_ENV}.tfvars \
-                        -out=destroy.tfplan
+                            ENDPOINT_ID=\$(aws ec2 describe-client-vpn-endpoints \
+                                --region "${env.TF_VAR_project_region}" \
+                                --query 'ClientVpnEndpoints[0].ClientVpnEndpointId' \
+                                --output text)
 
-                    terraform apply -auto-approve destroy.tfplan
-                """
-            }                          
+                            aws ec2 export-client-vpn-client-configuration \
+                                --region "${env.TF_VAR_project_region}" \
+                                --client-vpn-endpoint-id \$ENDPOINT_ID \
+                                --output text > downloaded.ovpn
+                        """
+                        sh "cd ${env.HOME_DIR}/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
+                        sh "aws s3 cp ${env.HOME_DIR}/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/${deployEnv}/andres.ovpn"
+                    }
+                }
+            }
         }
+
+        stage('Terraform Destroy') {
+            when {
+                expression { env.DESTROY_TARGETS?.trim() }
+            }
+            steps {
+                script {
+                    env.DESTROY_TARGETS.split(',').each { deployEnv ->
+
+                        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+                        echo "Destroying: ${deployEnv}"
+                        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+                        input message: "You are about to DESTROY ${deployEnv}. Are you sure?",
+                              ok: "Yes, destroy ${deployEnv}"
+
+                        sh """
+                            cd ${env.HOME_DIR}
+                            terraform workspace select ${deployEnv}
+
+                            terraform plan \
+                                -destroy \
+                                -var-file=environments/${deployEnv}.tfvars \
+                                -out=destroy.tfplan
+
+                            terraform apply -auto-approve destroy.tfplan
+                        """
+                    }
+                }
+            }
+        }
+
     }
+
     post {
         success {
-            echo "Pipeline ${env.DEPLOY_ENV} completed successfully"
+            echo "Pipeline completed successfully — deployed: ${env.DEPLOY_TARGETS} | destroyed: ${env.DESTROY_TARGETS}"
         }
         unsuccessful {
-            echo "Pipeline failed on ${env.DEPLOY_ENV} - skipping automatic destroy"
+            echo "Pipeline failed — deployed: ${env.DEPLOY_TARGETS} | destroyed: ${env.DESTROY_TARGETS}"
         }
         changed {
-            echo 'Environment changed'
+            echo "Infrastructure state changed"
         }
     }
 }
