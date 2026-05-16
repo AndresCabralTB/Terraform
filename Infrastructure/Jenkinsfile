@@ -110,7 +110,7 @@ pipeline {
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                         def content    = readFile("${env.HOME_DIR}/envs/${deployEnv}.tfvars")
-                        def deployVpn  = content =~ /enable_vpn\s*=\s*true/
+                        def deployVpn = content.contains('enable_vpn = true')
 
                         if (deployVpn) {
                             echo "${deployEnv}: enable_vpn = true → configuring OVPN"
