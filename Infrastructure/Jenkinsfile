@@ -28,7 +28,7 @@ pipeline {
         stage('Resolve Environments') {
             steps {
                 script {
-                    def envFiles = findFiles(glob: "${env.HOME_DIR}/environments/*.tfvars")
+                    def envFiles = findFiles(glob: "${env.HOME_DIR}/envs/*.tfvars")
 
                     // Build a list of envs to deploy/destroy based on flags
                     def deployTargets  = []
