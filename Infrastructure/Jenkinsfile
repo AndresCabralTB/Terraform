@@ -79,19 +79,13 @@ pipeline {
                         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
                         echo "Deploying: ${deployEnv}"
                         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-                        if (deployEnv == 'prod') {
-                            input message: "You are about to deploy to PROD. Are you sure?",
-                                  ok: "Yes, deploy to prod"
-                        }
-
                         sh """
                             cd ${env.HOME_DIR}
                             chmod -R +rx *
                             terraform init
                             terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
-                            terraform plan    -var-file=environments/${deployEnv}.tfvars
-                            terraform apply   -var-file=environments/${deployEnv}.tfvars --auto-approve
+                            terraform plan    -var-file=envs/${deployEnv}.tfvars
+                            terraform apply   -var-file=envs/${deployEnv}.tfvars --auto-approve
                         """
                     }
                 }
@@ -135,21 +129,13 @@ pipeline {
             steps {
                 script {
                     env.DESTROY_TARGETS.split(',').each { deployEnv ->
-
-                        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-                        echo "Destroying: ${deployEnv}"
-                        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-                        input message: "You are about to DESTROY ${deployEnv}. Are you sure?",
-                              ok: "Yes, destroy ${deployEnv}"
-
                         sh """
                             cd ${env.HOME_DIR}
                             terraform workspace select ${deployEnv}
 
                             terraform plan \
                                 -destroy \
-                                -var-file=environments/${deployEnv}.tfvars \
+                                -var-file=envs/${deployEnv}.tfvars \
                                 -out=destroy.tfplan
 
                             terraform apply -auto-approve destroy.tfplan
