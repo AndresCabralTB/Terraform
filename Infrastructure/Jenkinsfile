@@ -100,10 +100,10 @@ pipeline {
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                         def content    = readFile("${env.HOME_DIR}/envs/${deployEnv}.tfvars")
-                        def deployVpn  = content =~ /deploy_vpn\s*=\s*true/
+                        def deployVpn  = content =~ /enable_vpn\s*=\s*true/
 
                         if (deployVpn) {
-                            echo "${deployEnv}: deploy_vpn = true → configuring OVPN"
+                            echo "${deployEnv}: enable_vpn = true → configuring OVPN"
 
                             sh """
                                 cd "${env.HOME_DIR}/Client-VPN-Conf/"
@@ -121,7 +121,7 @@ pipeline {
                             sh "cd ${env.HOME_DIR}/Client-VPN-Conf/ && ./generate_ovpn.sh andres downloaded.ovpn ${env.WORKSPACE}/${env.HOME_DIR}"
                             sh "aws s3 cp ${env.HOME_DIR}/Client-VPN-Conf/andres.ovpn s3://cloud-cabral-ovpn-files/${deployEnv}/andres.ovpn"
                         } else {
-                            echo "${deployEnv}: deploy_vpn = false → skipping OVPN"
+                            echo "${deployEnv}: enable_vpn = false → skipping OVPN"
                         }
                     }
                 }
