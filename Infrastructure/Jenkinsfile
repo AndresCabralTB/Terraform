@@ -12,6 +12,7 @@ pipeline {
         NGROK_TOKEN           = credentials('NGROK_TOKEN')
         TF_VAR_workspace      = "${WORKSPACE}"
         TF_VAR_project_region = "us-east-1"
+        SKIP_PIPELINE         = false
     }
 
     stages {
@@ -40,6 +41,7 @@ pipeline {
                             deployTargets << deployEnv
                         } else {
                             echo "${deployEnv}: no flags set → skipping"
+                            env.SKIP_PIPELINE = true
                         }
                     }
 
@@ -56,6 +58,16 @@ pipeline {
                     echo "Deploy targets:  ${env.DEPLOY_TARGETS}"
                     echo "Destroy targets: ${env.DESTROY_TARGETS}"
                 }
+            }
+        }
+        stage('Skip pipeline') {
+            when {
+                expression { env.SKIP_PIPELINE }
+            }
+            steps {
+                sh """
+                echo 'Skipping pipeline - No changes made'
+                """
             }
         }
         stage('Terraform Destroy') {
