@@ -97,8 +97,8 @@ pipeline {
                             chmod -R +rx *
                             terraform init
                             terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
-                            terraform plan    -var-file=envs/${deployEnv}.tfvars
-                            terraform apply   -var-file=envs/${deployEnv}.tfvars --auto-approve
+                            terraform plan    -var-file=envs/${deployEnv}.tfvars --out=tfplan
+                            terraform apply tfplan 
                         """
                     }
                 }
