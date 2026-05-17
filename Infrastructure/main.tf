@@ -39,7 +39,7 @@ module "Client_VPN_Module" {
   privateHost_SecurityGroup_id  = module.EC2_Module.PrivateHost_SecurityGroup_Id
   bastionHost_SecurityGroup_id  = module.EC2_Module.BastionHost_SecurityGroup_Id
   count                         = var.enable_vpn ? 1 : 0
-  project_environment               = var.project_environment
+  project_environment           = var.project_environment
 }
 
 module "EventBrideEC2_Module" {
