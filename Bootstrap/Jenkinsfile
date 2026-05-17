@@ -2,13 +2,6 @@
 
 pipeline {
     agent any
-    parameters {
-        string(
-            name: 'USERNAME',
-            defaultValue: 'Jenkins-Infrastructure',
-            description: 'Enter your username for IAM access.'
-        )
-    }
     environment{
         AWS_ACCESS_KEY_ID         = credentials('Jenkins-bootstrap-access-key')
         AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-bootstrap-secret-access-key')
