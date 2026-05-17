@@ -12,3 +12,16 @@ variable "project_environment" {
     type = string
     default = "Unknown"
 }
+
+#==================================
+#Variables to avoid warnings
+
+variable "force_redeploy" {
+    type = bool
+    default = false
+}
+
+variable "force_destroy" {
+    type = bool
+    default = false
+}

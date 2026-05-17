@@ -64,3 +64,13 @@ variable "db_password" {
   sensitive   = true
   default     = "test_password" #Filler so that pipeline executes
 }
+
+variable "force_redeploy" {
+    type = bool
+    default = false
+}
+
+variable "force_destroy" {
+    type = bool
+    default = false
+}
