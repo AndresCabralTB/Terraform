@@ -1,5 +1,5 @@
-
-#Beggin by declaring the Route Table for the VPC - They are in the same module, so it can be referenced directly.
+#Beggin by declaring the Route Table for the VPC
+# Declare the Route Table for the VPC (private - no internet gateway route)
 resource "aws_route_table" "PrivateRouteTableVPC" {
     vpc_id = var.vpc_id
 
@@ -8,7 +8,8 @@ resource "aws_route_table" "PrivateRouteTableVPC" {
     }
 }
 
-#Associate the Route Table to the subnet that you wish to have internet access to. The subnet needs to be public!
+# Associate the Route Table with private subnets.
+# This controls how traffic is routed for these subnets (VPC-local only).
 resource "aws_route_table_association" "SubnetB_Association" {
     subnet_id = var.subnet_B_id
     route_table_id = aws_route_table.PrivateRouteTableVPC.id
