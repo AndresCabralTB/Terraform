@@ -41,14 +41,14 @@ pipeline {
                             deployTargets << deployEnv
                         } else {
                             echo "${deployEnv}: no flags set → skipping"
-                            env.SKIP_PIPELINE = true
+                            
                         }
                     }
 
                     if (deployTargets.isEmpty() && destroyTargets.isEmpty()) {
                         echo "No environments flagged — nothing to do"
                         currentBuild.result = 'NOT_BUILT'
-                        return
+                        error('SKIP')
                     }
 
                     // Store as comma-separated strings for downstream stages
@@ -156,6 +156,13 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                if (currentBuild.result == 'NOT_BUILT') {
+                    echo "Pipeline skipped — no environments flagged"
+                }
+            }
+        }
         success {
             echo "Pipeline completed successfully — deployed: ${env.DEPLOY_TARGETS} | destroyed: ${env.DESTROY_TARGETS}"
         }
