@@ -49,7 +49,7 @@ module "EventBrideEC2_Module" {
   PrivateHost         = module.EC2_Module.PrivateHost_Output_Id
   start_crontab       = var.start_crontab
   stop_crontab        = var.stop_crontab
-  count               = var.enable_cloudwatch_rule ? 1 : 0
+  for_each            = var.enable_cloudwatch_rule ? { enabled = true } : {}
 }
 
 module "Route53_Module" {
