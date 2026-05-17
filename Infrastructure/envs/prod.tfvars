@@ -3,3 +3,4 @@ project_environment  = "prod"
 force_redeploy = true
 force_destroy = false
 enable_vpn = false
+enable_cloudwatch_rule = true

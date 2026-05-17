@@ -67,6 +67,9 @@ pipeline {
                 script {
                     env.DESTROY_TARGETS.split(',').each { deployEnv ->
                         sh """
+                            echo '================================'
+                            echo '      Destroying ${deployEnv}   '
+                            echo '================================'
                             aws s3 rm 3://cloud-cabral-ovpn-files/${deployEnv}/ --recursive --exclude ""
 
                             cd ${env.HOME_DIR}
@@ -92,6 +95,9 @@ pipeline {
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                         sh """
+                            echo '================================'
+                            echo '       Deploying ${deployEnv}   '
+                            echo '================================'
                             cd ${env.HOME_DIR}
                             chmod -R +rx *
                             terraform init
