@@ -86,17 +86,21 @@ pipeline {
                 expression { env.DESTROY_TARGETS?.trim() }
             }
             steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform workspace select ${deployEnv}
+                script {
+                    env.DESTROY_TARGETS.split(',').each { deployEnv ->
+                        sh """
+                            cd ${env.HOME_DIR}
+                            terraform workspace select ${deployEnv}
 
-                    terraform plan \
-                        -destroy \
-                        -var-file=envs/${deployEnv}.tfvars \
-                         -out=destroy.tfplan
+                            terraform plan \
+                                -destroy \
+                                -var-file=envs/${deployEnv}.tfvars \
+                                -out=destroy.tfplan
 
-                    terraform apply -auto-approve destroy.tfplan
-                """
+                            terraform apply -auto-approve destroy.tfplan
+                        """
+                    }
+                }
             }
         }
 
@@ -105,12 +109,16 @@ pipeline {
                 expression { env.DEPLOY_TARGETS?.trim() }
             }
             steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    echo 'init - current directory is ${env.HOME_DIR}'
-                    terraform init
-                    
-                """
+                script {
+                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
+                        sh """
+                            cd ${env.HOME_DIR}
+                            echo 'init - current directory is ${env.HOME_DIR}'
+                            terraform init
+                            
+                        """
+                    }
+                }
             }
         }
 
@@ -119,12 +127,16 @@ pipeline {
                 expression { env.DEPLOY_TARGETS?.trim() }
             }
             steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
-                    terraform plan    -var-file=envs/${deployEnv}.tfvars --out=tfplan
-                    terraform apply tfplan 
-                """
+                script{
+                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
+                        sh """
+                            cd ${env.HOME_DIR}
+                            terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
+                            terraform plan    -var-file=envs/${deployEnv}.tfvars --out=tfplan
+                            terraform apply tfplan 
+                        """
+                    }
+                }
             }
         }
         stage('Show Outputs') {
