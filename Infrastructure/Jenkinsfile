@@ -32,13 +32,13 @@ pipeline {
 
                         def forceRedeploy = content =~ /force_redeploy\s*=\s*true/
                         def forceDestroy  = content =~ /force_destroy\s*=\s*true/
-
-                        if (forceRedeploy) {
-                            echo "${deployEnv}: force_redeploy = true → queued for deploy"
-                            deployTargets << deployEnv
-                        } else if (forceDestroy) {
+                
+                        if (forceDestroy) {
                             echo "${deployEnv}: force_destroy = true → queued for destroy"
                             destroyTargets << deployEnv
+                        } else if (forceRedeploy) {
+                            echo "${deployEnv}: force_redeploy = true → queued for deploy"
+                            deployTargets << deployEnv
                         } else {
                             echo "${deployEnv}: no flags set → skipping"
                         }
@@ -67,6 +67,8 @@ pipeline {
                 script {
                     env.DESTROY_TARGETS.split(',').each { deployEnv ->
                         sh """
+                            aws s3 rm 3://cloud-cabral-ovpn-files/${deployEnv}/ --recursive --exclude ""
+
                             cd ${env.HOME_DIR}
                             terraform workspace select ${deployEnv}
 
