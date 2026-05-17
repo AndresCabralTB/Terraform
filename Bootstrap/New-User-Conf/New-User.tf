@@ -2,7 +2,6 @@ variable "new_username" {
     type = string
 } 
 
-
 resource "aws_iam_user" "new_user" {
     name = "${var.new_username}"
 }

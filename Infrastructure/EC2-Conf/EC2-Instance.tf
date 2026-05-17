@@ -63,7 +63,7 @@ module "SecurityGroups_Module" {
 
 #Fetch the instance profile created in the bootstrap workspace
 data "aws_iam_instance_profile" "BastionHostProfile" {
-  name = "BastionHostProfile"
+  name = "BastionHostProfile-${var.project_environment}"
 }
 
 resource "aws_instance" "BastionHost" {

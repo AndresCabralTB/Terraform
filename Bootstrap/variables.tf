@@ -7,3 +7,8 @@ variable "new_username" {
     type    = string
     default = "Jenkins-Infrastructure" 
 }
+
+variable "project_environment" {
+    type = string
+    default = "Unknown"
+}

@@ -2,8 +2,12 @@ data "aws_caller_identity" "current" {}  # Gets Account ID
 data "aws_partition" "current" {}        # Gets partition (aws, aws-cn, aws-us-gov)
 data "aws_region" "current" {}           # Gets current region
 
+variable "project_environment" {
+    type = string 
+}
+
 resource "aws_iam_role" "SSMSessionManagerRole" {
-    name = "RoleBastionHost"
+    name = "RoleBastionHost-${var.project_environment}"
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
         Statement = [
@@ -32,7 +36,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2FullAccess" {
 }
 
 resource "aws_iam_role_policy" "BastionHostRolePolicy" {
-    name = "BastionHost_Policy"
+    name = "BastionHost-Policy--${var.project_environment}"
     role = aws_iam_role.SSMSessionManagerRole.id
     # Terraform's "jsonencode" function converts a
     # Terraform expression result to valid JSON syntax.
@@ -96,7 +100,7 @@ resource "aws_iam_role_policy" "BastionHostRolePolicy" {
 
 #Create the instance profile and assign it the role to take
 resource "aws_iam_instance_profile" "BastionHostProfile" {
-    name = "BastionHostProfile"
+    name = "BastionHostProfile-${var.project_environment}"
     role = aws_iam_role.SSMSessionManagerRole.name
 }
 
