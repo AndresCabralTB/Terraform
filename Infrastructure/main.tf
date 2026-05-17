@@ -43,12 +43,13 @@ module "Client_VPN_Module" {
 }
 
 module "EventBrideEC2_Module" {
-  source = "./Events-Conf"
+  source              = "./Events-Conf"
   project_environment = var.project_environment
-  BastionHost = module.EC2_Module.BastionHost_Output_Id
-  PrivateHost = module.EC2_Module.PrivateHost_Output_Id
-  start_crontab = var.start_crontab
-  stop_crontab = var.stop_crontab
+  BastionHost         = module.EC2_Module.BastionHost_Output_Id
+  PrivateHost         = module.EC2_Module.PrivateHost_Output_Id
+  start_crontab       = var.start_crontab
+  stop_crontab        = var.stop_crontab
+  count               = var.enable_cloudwatch_rule ? 1 : 0
 }
 
 module "Route53_Module" {

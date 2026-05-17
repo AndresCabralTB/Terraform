@@ -25,6 +25,11 @@ variable "enable_vpn" {
   default = false
 }
 
+variable "enable_cloudwatch_rule" {
+  type = bool
+  default = true
+}
+
 variable "project_region" {
   type = string
   default = "us-east-1"
