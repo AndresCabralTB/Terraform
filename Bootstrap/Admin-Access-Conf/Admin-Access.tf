@@ -4,8 +4,12 @@ variable "iam_user_name" {
   type = string
 }
 
+variable "project_environment"{
+  type = string
+}
+
 resource "aws_iam_group" "AdminAccessGroup" {
-    name = "AdminAccessGroup"
+    name = "Jenkins-Group-${var.project_environment}"
 }
 
 resource "aws_iam_group_policy_attachment" "AdminAccessGroupPolicies" {
