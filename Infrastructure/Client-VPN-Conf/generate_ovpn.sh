@@ -25,7 +25,7 @@ fi
 
 STRIPPED=$(sed '/<ca>/,/<\/ca>/d' "$BASE_OVPN" | grep -v "reneg-sec" | grep -v "verify-x509-name")
 
-cat > "$USER.ovpn" <<EOF
+cat > "$USER-$ENVIRONMENT.ovpn" <<EOF
 $STRIPPED
 <ca>
 $CA
