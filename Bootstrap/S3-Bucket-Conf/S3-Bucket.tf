@@ -23,11 +23,17 @@ resource "aws_s3_bucket" "jenkins-project-docker"{
     tags = {
         Name = "jenkins-project-docker"
     }
+    lifecycle {
+        prevent_destroy = true
+    }
 }
 
 resource "aws_s3_bucket" "jenkins-project-infrastructure"{
     bucket = "jenkins-project-infrastructure"
     tags = {
         Name = "jenkins-project-infrastructure"
+    }
+    lifecycle {
+        prevent_destroy = true
     }
 }
