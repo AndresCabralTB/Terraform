@@ -41,7 +41,7 @@ pipeline {
                             deployTargets << deployEnv
                         } else {
                             echo "${deployEnv}: no flags set → skipping"
-                            error('SKIP_PIPELINE')
+                            env.SKIP_PIPELINE = true
                         }
                     }
 
@@ -147,7 +147,7 @@ pipeline {
     post {
         always{
             script { 
-                if (currentBuild.result == 'NOT_BUILT') {
+                if (env.SKIP_PIPELINE) {
                     echo "Pipeline skipped — no environments flagged for deploy or destroy"
                 }
             }
