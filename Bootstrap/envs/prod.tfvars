@@ -1,4 +1,4 @@
 project_environment = "prod"
 
-force_redeploy = true
-force_destroy = false
+force_redeploy = null
+force_destroy = null
