@@ -1,6 +1,7 @@
 module "IAM_User_Module" {
-    source          = "./New-User-Conf"
-    new_username    = var.new_username
+    source              = "./New-User-Conf"
+    new_username        = var.new_username
+    project_environment = var.project_environment
 }
 
 module "AdminAccessGroup_Module" {
