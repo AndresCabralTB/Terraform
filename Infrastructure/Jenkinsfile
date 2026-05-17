@@ -41,6 +41,9 @@ pipeline {
                             deployTargets << deployEnv
                         } else {
                             echo "${deployEnv}: no flags set → skipping"
+                        }
+
+                        if (deployTargets.isEmpty() && destroyTargets.isEmpty()) {
                             env.SKIP_PIPELINE = true
                         }
                     }
