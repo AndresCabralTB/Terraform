@@ -6,7 +6,6 @@ pipeline {
         AWS_ACCESS_KEY_ID         = credentials('Jenkins-bootstrap-access-key')
         AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-bootstrap-secret-access-key')
         TF_VAR_project_region     = "us-east-1"
-        TF_VAR_new_username       = "${params.USERNAME}"
         HOME_DIR                  = "Bootstrap"
     }
 
