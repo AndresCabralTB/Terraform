@@ -8,5 +8,5 @@ backup_on_destroy = false
 enable_vpn = false
 enable_cloudwatch_rule = false
 
-BastionHostAMI = "BastionHostAMI"
-PrivateHostAMI = "PrivateHostAMI"
+BastionHostAMI = "Baseline-BastionHost-AMI"
+PrivateHostAMI = "Baseline-PrivateHost-AMI"
