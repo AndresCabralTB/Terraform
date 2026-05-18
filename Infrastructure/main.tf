@@ -12,6 +12,8 @@ module "EC2_Module" {
   vpc_id = module.VPC_Module.VPC_Terraform_Output.id
   cidr_ipv4_mac = var.cidr_ipv4_mac
   TerraformDB_SecurityGroup_Id = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
+  BastionHostAMI = var.BastionHostAMI
+  PrivateHostAMI = var.PrivateHostAMI
 }
 
 module "RDS_Instance_Moduel" {

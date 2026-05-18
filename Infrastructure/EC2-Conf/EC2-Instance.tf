@@ -23,6 +23,16 @@ variable "TerraformDB_SecurityGroup_Id" {
   type = string
 }
 
+variable "BastionHostAMI" {
+    type = string
+    default = "Baseline-BastionHost-AMI"
+}
+
+variable "PrivateHostAMI" {
+    type = string
+    default = "Baseline-PrivateHost-AMI"
+}
+
 
 locals {
   BastionHost_InternalName = "bastionhost.${var.project_environment}.cabral.cloud"
@@ -38,7 +48,7 @@ data "aws_ami" "bastion_ami" {
 
     filter {
     name   = "tag:Name"                  # The tag key
-    values = ["BastionHostAMI-24-04-2026"]  # The tag value
+    values = ["${var.BastionHostAMI}"]  # The tag value
   }
 }
 
@@ -48,7 +58,7 @@ data "aws_ami" "privatehost_ami" {
 
     filter {
     name   = "tag:Name"                  # The tag key
-    values = ["PrivateHostAMI-24-04-2026"]  # The tag value
+    values = ["${var.BastionHostAMI}"]  # The tag value
   }
 }
 
