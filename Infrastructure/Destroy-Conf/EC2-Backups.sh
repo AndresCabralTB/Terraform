@@ -12,7 +12,7 @@ IFS=$'\n' read -r -d '' -a INSTANCE_LIST < <(aws ec2 describe-instances \
 NEW_INSTANCE_LIST=$(IFS=','; echo "${INSTANCE_LIST[*]}")
 echo "List: ${NEW_INSTANCE_LIST}"
 
-if [ ! ${#INSTANCE_LIST[@] -eq 0} ] then
+if [ ! ${#INSTANCE_LIST[@] -eq 0} ]; then
     for instance in "${INSTANCE_LIST[@]}"; do
         InstanceName=$(aws ec2 describe-instances \
             --instance-ids "${instance}" \
