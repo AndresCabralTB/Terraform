@@ -12,36 +12,39 @@ IFS=$'\n' read -r -d '' -a INSTANCE_LIST < <(aws ec2 describe-instances \
 NEW_INSTANCE_LIST=$(IFS=','; echo "${INSTANCE_LIST[*]}")
 echo "List: ${NEW_INSTANCE_LIST}"
 
-for instance in "${INSTANCE_LIST[@]}"; do
-    InstanceName=$(aws ec2 describe-instances \
-        --instance-ids "${instance}" \
-        --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]" \
-        --output text)
+if [ ! ${#INSTANCE_LIST[@] -eq 0} ] then
+    for instance in "${INSTANCE_LIST[@]}"; do
+        InstanceName=$(aws ec2 describe-instances \
+            --instance-ids "${instance}" \
+            --query "Reservations[*].Instances[*].Tags[?Key=='Name'].Value[]" \
+            --output text)
 
-    AMI_NAME="${InstanceName}-backup-${date}"
+        AMI_NAME="${InstanceName}-backup-${date}"
 
-    # Deregister existing AMI with the same name
-    EXISTING_AMI=$(aws ec2 describe-images \
-        --owners self \
-        --filters "Name=name,Values=${AMI_NAME}" \
-        --query "Images[0].ImageId" \
-        --output text)
+        # Deregister existing AMI with the same name
+        EXISTING_AMI=$(aws ec2 describe-images \
+            --owners self \
+            --filters "Name=name,Values=${AMI_NAME}" \
+            --query "Images[0].ImageId" \
+            --output text)
 
-    if [ "${EXISTING_AMI}" != "None" ]; then
-        echo "Deregistering existing AMI ${EXISTING_AMI} for ${InstanceName}"
-        aws ec2 deregister-image --image-id "${EXISTING_AMI}"
-    fi
+        if [ "${EXISTING_AMI}" != "None" ]; then
+            echo "Deregistering existing AMI ${EXISTING_AMI} for ${InstanceName}"
+            aws ec2 deregister-image --image-id "${EXISTING_AMI}"
+        fi
 
-    AMI_ID=$(aws ec2 create-image \
-        --instance-id "${instance}" \
-        --name "${AMI_NAME}" \
-        --no-reboot \
-        --query "ImageId" \
-        --output text)
+        AMI_ID=$(aws ec2 create-image \
+            --instance-id "${instance}" \
+            --name "${AMI_NAME}" \
+            --no-reboot \
+            --query "ImageId" \
+            --output text)
 
-    aws ec2 create-tags \
-        --resources "${AMI_ID}" \
-        --tags "Key=Name,Value=${AMI_NAME}"
+        aws ec2 create-tags \
+            --resources "${AMI_ID}" \
+            --tags "Key=Name,Value=${AMI_NAME}"
 
-    echo "Created AMI ${AMI_ID} for ${InstanceName}"
-done
+        echo "Created AMI ${AMI_ID} for ${InstanceName}"
+    done
+else
+    echo "There are no Instances deployed"
