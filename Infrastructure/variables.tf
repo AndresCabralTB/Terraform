@@ -8,6 +8,16 @@ variable "stop_crontab" {
   default = "cron(30 5 * * ? *)"
 }
 
+variable "BastionHostAMI" {
+    type = string
+    default = "Baseline-BastionHost-AMI"
+}
+
+variable "PrivateHostAMI" {
+    type = string
+    default = "Baseline-PrivateHost-AMI"
+}
+
 variable "project_environment" {
     type = string 
     default = "unknown"

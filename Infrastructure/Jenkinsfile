@@ -69,9 +69,23 @@ pipeline {
             steps {
                 script {
                     env.DESTROY_TARGETS.split(',').each { deployEnv ->
+
+                        def content = readFile("${env.HOME_DIR}/envs/${deployEnv}.tfvars")
+                        def backup_on_destroy = content.contains ('backup_on_destroy = true')
+
+                        if(backup_on_destroy){
+                            sh """
+                            cd ${env.HOME_DIR}/Destroy-Conf && ./EC2-Backups.sh ${deployEnv}
+                            echo 'Successfully made EC2 Instance Backups'
+                            """
+                        } else {
+                            echo "${deployEnv}: backup_on_destroy = false - Skipping EC2 Instance Backups"
+                        }
+
                         sh """
                             echo 'Destroying ${deployEnv}'
                             aws s3 rm s3://cloud-cabral-ovpn-files/${deployEnv}/ --recursive --exclude ""
+                            echo 'Remove file from s3://cloud-cabral-ovpn-files/${deployEnv}'
 
                             cd ${env.HOME_DIR}
                             terraform workspace select ${deployEnv}
