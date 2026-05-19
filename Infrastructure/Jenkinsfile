@@ -120,7 +120,7 @@ pipeline {
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                         sh """
-                            echo 'Deploying ${deployEnv}   '
+                            echo 'Deploying ${deployEnv}'
                             cd ${env.HOME_DIR}
                             chmod -R +rx *
                             terraform init
