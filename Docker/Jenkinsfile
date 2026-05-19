@@ -3,8 +3,8 @@ pipeline{
 
     environment{
         HOME_DIR = "Docker"
-        AWS_ACCESS_KEY_ID         = credentials('Jenkins-infrastructure-access-key')
-        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-infrastructure-secret-access-key')
+        AWS_ACCESS_KEY_ID         = credentials('Jenkins-docker-access-key')
+        AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-docker-secret-access-key')
         SKIP_PIPELINE             = false
     }
     stages {
