@@ -51,12 +51,16 @@ pipeline{
         }
         stage('Terraform Destroy'){
             when {
-                expression{ env.DESTROY_TARGETS?.trim() }
+                allOf{
+                    changeset "Docker/*"
+                    expression{ env.DESTROY_TARGETS?.trim() }
+                }
             }
             steps{
                 script {
                     env.DESTROY_TARGETS.split(',').each{ destroyEnv ->
                     sh """
+                        echo 'Destroying ${destroy}'
                         cd ${env.HOME_DIR}
                         terraform plan \
                         -destroy \
@@ -71,13 +75,15 @@ pipeline{
         }
 
         stage('Terraform Init'){
-            when { 
-                expression { env.DEPLOY_TARGETS?.trim() }
-            }
+            allOf{
+                    changeset "Docker/*"
+                    expression{ env.DEPLOY_TARGETS?.trim() }
+                }
             steps{
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                     sh """
+                        echo 'Deploying ${destroy}'
                         cd ${env.HOME_DIR}
                         terraform init
                         terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}

@@ -75,7 +75,10 @@ pipeline {
         }
         stage('Terraform Destroy'){
             when {
-                expression { env.DESTROY_TARGETS?.trim() }
+                allOf{
+                    changeset "Bootstrap/*"
+                    expression { env.DESTROY_TARGETS?.trim() }
+                }
             }
             steps{
                 script {
@@ -98,7 +101,10 @@ pipeline {
 
         stage('Terraform init'){
             when {
-                expression { env.DEPLOY_TARGETS?.trim() }
+                allOf{
+                    changeset "Bootstrap/*"
+                    expression { env.DEPLOY_TARGETS?.trim() }
+                }
             }
             steps{
                 script {
@@ -116,7 +122,10 @@ pipeline {
 
         stage('Terraform Plan & Apply'){
             when {
-                expression { env.DEPLOY_TARGETS?.trim() }
+                allOf{
+                    changeset "Bootstrap/*"
+                    expression { env.DEPLOY_TARGETS?.trim() }
+                }
             }
             steps{
                 script{
@@ -132,6 +141,12 @@ pipeline {
             }
         }
         stage('Show Outputs') {
+            when {
+                allOf{
+                    changeset "Bootstrap/*"
+                    expression { env.DEPLOY_TARGETS?.trim() }
+                }
+            }
             steps {
                 script {
                     def newUsername = sh(

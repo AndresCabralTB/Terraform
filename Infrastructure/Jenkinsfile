@@ -18,6 +18,9 @@ pipeline {
     stages {
 
         stage('Resolve Environments') {
+            when {
+                changeset "Infrastructure/*"
+            }
             steps {
                 script {
                     def envFiles = findFiles(glob: "${env.HOME_DIR}/envs/*.tfvars")
@@ -64,7 +67,10 @@ pipeline {
         }
         stage('Terraform Destroy') {
             when {
-                expression { env.DESTROY_TARGETS?.trim() }
+                allOf {
+                    changeset "Infrastructure/*"
+                    expression { env.DESTROY_TARGETS?.trim() }
+                }
             }
             steps {
                 script {
@@ -104,7 +110,11 @@ pipeline {
 
         stage('Terraform Init & Deploy') {
             when {
-                expression { env.DEPLOY_TARGETS?.trim() }
+                allOf{
+                    changeset "Infrastructure/*"
+                    expression { env.DEPLOY_TARGETS?.trim() }
+                }
+                
             }
             steps {
                 script {
@@ -125,7 +135,11 @@ pipeline {
 
         stage('OVPN File Configuration') {
             when {
-                expression { env.DEPLOY_TARGETS?.trim() }
+                allOf{
+                    changeset "Infrastructure/*"
+                    expression { env.DEPLOY_TARGETS?.trim() }
+                }
+                
             }
             steps {
                 script {
