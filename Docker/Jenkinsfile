@@ -54,16 +54,18 @@ pipeline{
                 expression{ env.DESTROY_TARGETS?.trim() }
             }
             steps{
-                env.DESTROY_TARGETS.split(',').each{ destroyEnv ->
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform plan \
-                    -destroy \
-                    -var-file=envs/${destroyEnv}.tfvars \
-                    --out=destroy.tfplan
-                    
-                    terraform apply -auto-approve destroy.tfplan 
-                """
+                script {
+                    env.DESTROY_TARGETS.split(',').each{ destroyEnv ->
+                    sh """
+                        cd ${env.HOME_DIR}
+                        terraform plan \
+                        -destroy \
+                        -var-file=envs/${destroyEnv}.tfvars \
+                        --out=destroy.tfplan
+                        
+                        terraform apply -auto-approve destroy.tfplan 
+                    """
+                    }
                 }
             }
         }
