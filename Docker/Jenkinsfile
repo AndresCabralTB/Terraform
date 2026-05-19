@@ -2,111 +2,106 @@ pipeline{
     agent any
 
     environment{
-        HOME_DIR = "Infrastructure"
+        HOME_DIR = "Docker"
         AWS_ACCESS_KEY_ID         = credentials('Jenkins-infrastructure-access-key')
         AWS_SECRET_ACCESS_KEY     = credentials('Jenkins-infrastructure-secret-access-key')
-    }
-
-    parameters{
-        booleanParam(
-            name: 'RUN_DESTROY'
-            defaultValue: false
-            description: 'Toggle to destroy the pipeline.'
-        )
+        SKIP_PIPELINE             = false
     }
     stages {
 
-        stage( 'Resolve Environment') {
-            steps{
+        stage( 'Resolve Environments') {
+            steps {
                 script {
+                    def envFiles = findFiles(glob: "${env.HOME_DIR}/envs/*.tfvars")
 
-                    def branchEnvMap = [
-                        'main': 'prod',
-                        'devl': 'devl',
-                        'test': 'test',
-                        'trng': 'trng'
-                    ]
+                    // Build a list of envs to deploy/destroy based on flags
+                    def deployTargets  = []
+                    def destroyTargets = []
 
-                    env.DEPLOY_ENV = branchEnvMap[env.BRANCH_NAME] ?: 'unknown'
-                    env.PIPELINE_MODE = params.RUN_DESTROY ? 'destroy' : 'deploy'
+                    envFiles.each { file ->
+                        def content   = readFile(file.path)
+                        def deployEnv = file.name.replace('.tfvars', '')
 
-                    echo "Branch: ${env.BRANCH_NAME}"
-                    echo "Deploy environment: ${env.DEPLOY_ENV}"
-                    echo "Pipeline mode: ${env.PIPELINE_MODE}"
+                        def forceRedeploy = content =~ /force_redeploy\s*=\s*true/
+                        def forceDestroy  = content =~ /force_destroy\s*=\s*true/
+                
+                        if (forceDestroy) {
+                            echo "${deployEnv}: force_destroy = true → queued for destroy"
+                            destroyTargets << deployEnv
+                        } else if (forceRedeploy) {
+                            echo "${deployEnv}: force_redeploy = true → queued for deploy"
+                            deployTargets << deployEnv
+                        } else {
+                            echo "${deployEnv}: no flags set → skipping"
+                        }
 
-                    if (env.DEPLOY_ENV == 'unknown') {
-                        error "Branch ${env.BRANCH_NAME} is not mapped to a deployable environment."
+                        if (deployTargets.isEmpty() && destroyTargets.isEmpty()) {
+                            env.SKIP_PIPELINE = true
+                        }
                     }
 
-                    echo "Branch: ${env.BRANCH_NAME}"
-                    echo "Deploy environment: ${env.DEPLOY_ENV}"
+                    // Store as comma-separated strings for downstream stages
+                    env.DEPLOY_TARGETS  = deployTargets.join(',')
+                    env.DESTROY_TARGETS = destroyTargets.join(',')
+
+                    echo "Deploy targets:  ${env.DEPLOY_TARGETS}"
+                    echo "Destroy targets: ${env.DESTROY_TARGETS}"
+                }
+            }
+        }
+        stage('Terraform Destroy'){
+            when {
+                expression{ env.DESTROY_TARGETS?.trim() }
+            }
+            steps{
+                env.DESTROY_TARGETS.split(',').each{ destroyEnv ->
+                sh """
+                    cd ${env.HOME_DIR}
+                    terraform plan \
+                    -destroy \
+                    -var-file=envs/${destroyEnv}.tfvars \
+                    --out=destroy.tfplan
+                    
+                    terraform apply -auto-approve destroy.tfplan 
+                """
                 }
             }
         }
 
         stage('Terraform Init'){
-            when {
-                allOf{
-                    expression {env.PIPELINE_MODE == 'deploy'}
-                }
+            when { 
+                expression { env.DEPLOY_TARGETS?.trim() }
             }
             steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform init
-                    terraform workspace select ${env.DEPLOY_ENV} || terraform workspace new ${env.DEPLOY_ENV}
-                """
-            }
-        }
+                script {
+                    env.DEPLOY_TARGETS.spli(',').each { deployEnv ->
+                    sh """
+                        cd ${env.HOME_DIR}
+                        terraform init
+                        terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
+                        terraform plan -var-file=envs/${deployEnv}.tfvars --out=tfplan
+                        terraform apply tfplan
+                    """
 
-        stage('Terraform Plan'){
-            when {
-                allOf{
-                    expression {env.PIPELINE_MODE == 'deploy'}
+                    }
                 }
             }
-            steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform plan
-                """
-            }
         }
+        
 
-        stage('Terraform Apply'){
-            when {
-                allOf{
-                    expression {env.PIPELINE_MODE == 'deploy'}
-                }
-            }
-            steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform apply -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
-                """
-            }
-        }
+        /*stage('Create Docker Image') {
 
-        stage('Terraform Destroy'){
-            when {
-                allOf{
-                    expression {params.RUN_DESTROY}
-                }
-            }
-            steps{
-                sh """
-                    cd ${env.HOME_DIR}
-                    terraform destroy -var-file=envs/${env.DEPLOY_ENV}.tfvars --auto-approve
-                """
-            }
-        }
-
-        stage('Create Docker Image') {
-
-        }
+        */}
     }
 
     post {
+        always {
+            script {
+                if(env.SKIP_PIPELINE){
+                    echo "Skipping pipeline - Nothing was modified"
+                }
+            }
+        }
         success {
             echo "Pipeline ${env.DEPLOY_ENV} completed successfully"
         }
