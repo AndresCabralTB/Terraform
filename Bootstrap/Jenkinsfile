@@ -99,27 +99,6 @@ pipeline {
             }
         }
 
-        stage('Terraform init'){
-            when {
-                allOf{
-                    changeset "Bootstrap/*"
-                    expression { env.DEPLOY_TARGETS?.trim() }
-                }
-            }
-            steps{
-                script {
-                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
-                        sh """
-                            cd ${env.HOME_DIR}
-                            echo 'init - current directory is ${env.HOME_DIR}'
-                            terraform init
-                            
-                        """
-                    }
-                }
-            }
-        }
-
         stage('Terraform Plan & Apply'){
             when {
                 allOf{
@@ -132,8 +111,9 @@ pipeline {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                         sh """
                             cd ${env.HOME_DIR}
+                            terraform init
                             terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
-                            terraform plan    -var-file=envs/${deployEnv}.tfvars --out=tfplan
+                            terraform plan -var-file=envs/${deployEnv}.tfvars --out=tfplan
                             terraform apply tfplan 
                         """
                     }
