@@ -51,10 +51,7 @@ pipeline{
         }
         stage('Terraform Destroy'){
             when {
-                allOf{
-                    changeset "Docker/*"
-                    expression{ env.DESTROY_TARGETS?.trim() }
-                }
+                expression{ env.DESTROY_TARGETS?.trim() }
             }
             steps{
                 script {
@@ -75,10 +72,9 @@ pipeline{
         }
 
         stage('Terraform Init'){
-            allOf{
-                    changeset "Docker/*"
-                    expression{ env.DEPLOY_TARGETS?.trim() }
-                }
+            when{
+                expression{ env.DEPLOY_TARGETS?.trim() }
+            }
             steps{
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
