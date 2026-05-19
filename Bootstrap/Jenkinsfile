@@ -129,13 +129,15 @@ pipeline {
             }
             steps {
                 script {
-                    def newUsername = sh(
-                        script: "cd ${env.HOME_DIR} && terraform output -raw new_username_output",
-                        returnStdout: true
-                    ).trim()
-                    
-                    echo "New IAM Username: ${newUsername}"
-                    env.NEW_USERNAME = newUsername  // store it for later stages
+                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
+
+                        sh """
+                        cd ${env.HOME_DIR}
+                        terraform workspace select ${deployEnv}
+                        echo 'Infrastructure user - ${deployEnv}: '$(terraform output -raw infrastructure_user_output)''
+                        echo 'Docker user - ${deployEnv}: '$(terraform output -raw docker_user_output)''
+                        """
+                    }
                 }
             }
         }
