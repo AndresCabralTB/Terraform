@@ -8,6 +8,7 @@ module "IAM_User_Module" {
 module "AdminAccessGroup_Module" {
     source              = "./Admin-Access-Conf"
     infrastructure_user       = module.IAM_User_Module.infrastructure_user_output
+    docker_user             = var.docker_user
     project_environment = var.project_environment
 }
 
@@ -21,6 +22,10 @@ module "S3_Bucket_Module" {
     project_region  = var.project_region
 }
 
-output "new_username_output" {
-    value = module.IAM_User_Module.new_user_output
+output "infrastructure_user_output" {
+    value = module.IAM_User_Module.infrastructure_user_output
+}
+
+output "docker_user_output" {
+    value = module.IAM_User_Module.docker_user_output
 }
