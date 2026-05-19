@@ -8,7 +8,7 @@ module "IAM_User_Module" {
 module "AdminAccessGroup_Module" {
     source              = "./Admin-Access-Conf"
     infrastructure_user       = module.IAM_User_Module.infrastructure_user_output
-    docker_user             = var.docker_user
+    docker_user             = module.IAM_User_Module.docker_user_output
     project_environment = var.project_environment
 }
 
