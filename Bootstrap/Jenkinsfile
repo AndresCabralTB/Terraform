@@ -130,12 +130,11 @@ pipeline {
             steps {
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
-
                         sh """
                         cd ${env.HOME_DIR}
                         terraform workspace select ${deployEnv}
-                        echo 'Infrastructure user - '${deployEnv}': '$(terraform output -raw infrastructure_user_output)''
-                        echo 'Docker user - '${deployEnv}': '$(terraform output -raw docker_user_output)''
+                        echo 'Infrastructure user - ${deployEnv}: '"\$(terraform output -raw infrastructure_user_output)"
+                        echo 'Docker user - ${deployEnv}: '"\$(terraform output -raw docker_user_output)"
                         """
                     }
                 }
