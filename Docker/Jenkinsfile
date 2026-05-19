@@ -78,15 +78,14 @@ pipeline{
             steps{
                 script {
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
-                    sh """
-                        echo 'Deploying ${destroy}'
-                        cd ${env.HOME_DIR}
-                        terraform init
-                        terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
-                        terraform plan -var-file=envs/${deployEnv}.tfvars --out=tfplan
-                        terraform apply tfplan
-                    """
-
+                        sh """
+                            echo 'Deploying ${deployEnv}'
+                            cd ${env.HOME_DIR}
+                            terraform init
+                            terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
+                            terraform plan -var-file=envs/${deployEnv}.tfvars --out=tfplan
+                            terraform apply tfplan
+                        """
                     }
                 }
             }
