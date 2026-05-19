@@ -1,12 +1,13 @@
 module "IAM_User_Module" {
-    source              = "./New-User-Conf"
-    new_username        = var.new_username
-    project_environment = var.project_environment
+    source                  = "./New-User-Conf"
+    infrastructure_user     = var.infrastructure_user
+    docker_user             = var.docker_user
+    project_environment     = var.project_environment
 }
 
 module "AdminAccessGroup_Module" {
     source              = "./Admin-Access-Conf"
-    iam_user_name       = module.IAM_User_Module.new_user_output
+    infrastructure_user       = module.IAM_User_Module.infrastructure_user_output
     project_environment = var.project_environment
 }
 
