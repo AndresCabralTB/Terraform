@@ -76,7 +76,7 @@ pipeline{
             }
             steps{
                 script {
-                    env.DEPLOY_TARGETS.spli(',').each { deployEnv ->
+                    env.DEPLOY_TARGETS.split(',').each { deployEnv ->
                     sh """
                         cd ${env.HOME_DIR}
                         terraform init
