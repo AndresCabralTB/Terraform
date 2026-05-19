@@ -47,5 +47,5 @@ if [ ${#INSTANCE_LIST[@]} -gt 0 ]; then
         echo "Created AMI ${AMI_ID} for ${InstanceName}"
     done
 else
-    echo "There are no Instances deployed on ${ENVIRONMENT}"
+    echo "There are no instances deployed on ${ENVIRONMENT} - Exiting backup"
 fi
