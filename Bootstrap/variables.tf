@@ -3,9 +3,14 @@ variable "project_region" {
     default = "us-east-1"
 }
 
-variable "new_username" {
+variable "infrastructure_user" {
     type    = string
     default = "Jenkins-Infrastructure" 
+}
+
+variable "docker_user" {
+    type    = string
+    default = "Jenkins-Docker" 
 }
 
 variable "project_environment" {
