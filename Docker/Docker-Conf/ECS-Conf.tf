@@ -46,7 +46,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     requires_compatibilities = ["FARGATE"]     # required for Fargate
     cpu                      = "256"           # task-level, not container-level
     memory                   = "512"           # task-level
-
+    execution_role_arn       = "arn:aws:iam::718254829448:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
