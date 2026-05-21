@@ -34,10 +34,10 @@ pipeline{
                         } else {
                             echo "${deployEnv}: no flags set → skipping"
                         }
+                    }
 
-                        if (deployTargets.isEmpty() && destroyTargets.isEmpty()) {
-                            env.SKIP_PIPELINE = true
-                        }
+                    if (deployTargets.isEmpty() && destroyTargets.isEmpty()) {
+                        env.SKIP_PIPELINE = true
                     }
 
                     // Store as comma-separated strings for downstream stages
@@ -100,19 +100,20 @@ pipeline{
     post {
         always {
             script {
-                if(env.SKIP_PIPELINE){
+                if (env.SKIP_PIPELINE.toBoolean()) {
                     echo "Skipping pipeline - Nothing was modified"
                 }
             }
         }
         success {
-            echo "Pipeline ${env.DEPLOY_ENV} completed successfully"
+            script {
+                if (!env.SKIP_PIPELINE.toBoolean()) {
+                    echo "Pipeline ${env.DEPLOY_TARGETS} completed successfully"  // use DEPLOY_TARGETS, not DEPLOY_ENV
+                }
+            }
         }
-        unsuccessful {
-            echo "Pipeline failed on ${env.DEPLOY_ENV} - skipping automatic destroy"
-        }
-        changed {
-            echo 'Environment changed'
+        failure {       // use failure, not unsuccessful (that's not valid)
+            echo "Pipeline failed on ${env.DEPLOY_TARGETS}"
         }
     }
 
