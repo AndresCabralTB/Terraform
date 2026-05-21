@@ -34,15 +34,17 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                 Effect = "Allow"
                 Resource = ["*"]
             },
-            {
-                # ---- Logging permissions ----
+                {
+                Effect = "Allow",
                 Action = [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                    "logs:DescribeLogStreams"
+                ],
+                Resource = [
+                    "arn:aws:logs:*:*:*"
                 ]
-                Effect   = "Allow"
-                Resource = ["*"]
             },
             {
                 # ---- ECR Permissions ----
