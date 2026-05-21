@@ -48,7 +48,7 @@ resource "aws_ecs_service" "ECS-Service" {
     launch_type     = "FARGATE"  # or "EC2"
     
     network_configuration {                                        # block, not = {}
-        assign_public_ip = false
+        assign_public_ip = true
         security_groups  = [aws_security_group.ecs_task_securitygroup.id]
         subnets          = [data.aws_subnet.subnet_A.id]             # must be a list
     }
