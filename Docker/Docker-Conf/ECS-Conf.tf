@@ -22,6 +22,24 @@ resource "aws_security_group" "ecs_task_securitygroup" {
   }
 }
 
+resource "aws_vpc_security_group_ingress_rule" "ecs_task_securitygroup_ingress" {
+  security_group_id = aws_security_group.ecs_task_securitygroup.id
+  cidr_ipv6         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+  tags = {
+      Name = "IngressRule-ECS-Task-SG-${var.project_environment}"
+    }
+}
+
+resource "aws_vpc_security_group_egress_rule" "ecs_task_securitygroup_egress" {
+  security_group_id = aws_security_group.ecs_task_securitygroup.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1" # semantically equivalent to all ports
+  tags = {
+      Name = "EgressRule-ECS-Task-SG-${var.project_environment}"
+    }
+}
+
 resource "aws_ecs_service" "ECS-Service" {
     name    = "Docker-container-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
@@ -60,6 +78,15 @@ resource "aws_ecs_task_definition" "docker-task" {
             hostPort      = 443
             }
         ]
+        # Logging config
+        logConfiguration = {
+            logDriver = "awslogs"
+            options = {
+            awslogs-group         = "/ecs/${var.project_environment}"
+            awslogs-region        = "us-east-1"
+            awslogs-stream-prefix = "ecs"
+            }
+        }
         }
     ])
 }
