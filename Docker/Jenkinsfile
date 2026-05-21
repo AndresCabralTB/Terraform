@@ -122,22 +122,24 @@ pipeline{
 /*
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 718254829448.dkr.ecr.us-east-1.amazonaws.com
 
-
 docker images
 
+docker tag 158c95faac5b 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:tag
 
-docker tag dc33c60d532f 718254829448.dkr.ecr.us-east-1.amazonaws.com/ecr-repo-unkown:tag
+docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod
 
-docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/ecr-repo-unkown:tag
+MANIFEST=$(aws ecr batch-get-image --repository-name docker-images-repo-prod --image-ids imageTag=tag --output text --query 'images[].imageManifest')
+aws ecr put-image --repository-name docker-images-repo-prod --image-tag 2017.03 --image-manifest "$MANIFEST"
 
-MANIFEST=$(aws ecr batch-get-image --repository-name --image-ids imageTag=tag --output text --query 'images[].imageManifest')
-
-aws ecr put-image --repository-name ecr-repo-unkown --image-tag docker-image-test1 --image-manifest "$MANIFEST"
+aws ecr put-image --repository-name docker-images-repo-prod --image-tag docker-image-prod-v1 --image-manifest "$MANIFEST"
 
 aws ecr describe-images --repository-name ecr-repo-unkown
 
-aws ecr batch-delete-image --repository-name ecr-repo-unkown --image-ids 718254829448 imageTag=tag
+aws ecr batch-delete-image --repository-name docker-images-repo-prod --image-ids imageTag=tag
 
-
-
+/*
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 718254829448.dkr.ecr.us-east-1.amazonaws.com
+docker images
+docker tag <image-id> 718254829448.dkr.ecr.us-east-1.amazonaws.com/<ecr-repo>:tag
+docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/<ecr-repo>:tag
 */
