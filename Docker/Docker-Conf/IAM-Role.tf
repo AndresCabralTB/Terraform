@@ -43,6 +43,12 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                 ]
                 Effect   = "Allow"
                 Resource = ["*"]
+            },
+            {
+                # ---- ECR Permissions ----
+                Action = ["ecr:*"]
+                Effect   = "Allow"
+                Resource = ["*"]
             }
             
         ]
