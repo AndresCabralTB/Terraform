@@ -81,13 +81,14 @@ resource "aws_ecs_task_definition" "docker-task" {
     task_role_arn            = aws_iam_role.ecs-task-role.arn  # runtime permissions
 
     volume {
-        name = "efs-jenkins-volume-${var.project_environment}"
+        name = "jenkins-home"
 
         efs_volume_configuration {
         file_system_id = "fs-00b141153110f6e72"
-        root_directory = "/opt/data"
+        root_directory = "/"
         }
     }
+
 
     container_definitions = jsonencode([
         {
@@ -102,6 +103,15 @@ resource "aws_ecs_task_definition" "docker-task" {
             hostPort      = 443
             }
         ]
+        
+        mountPoints = [
+            {
+                sourceVolume  = "jenkins-home"    # must match volume name above
+                containerPath = "/var/jenkins_home"
+                readOnly      = false
+            }
+        ]
+
         # Logging config
         logConfiguration = {
             logDriver = "awslogs"
