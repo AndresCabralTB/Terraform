@@ -78,6 +78,9 @@ resource "aws_ecs_task_definition" "docker-task" {
     cpu                      = "256"           # task-level, not container-level
     memory                   = "512"           # task-level
     execution_role_arn       = aws_iam_role.ecs-task-role.arn
+    task_role_arn            = aws_iam_role.ecs-task-role.arn  # runtime permissions
+
+
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
