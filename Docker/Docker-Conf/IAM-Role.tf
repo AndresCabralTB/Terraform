@@ -43,7 +43,7 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                     "logs:DescribeLogStreams",
                     "logs:TagResource",
                     "logs:*"
-                ],
+                ]
                 Resource = [
                     "arn:aws:logs:*:*:*"
                 ]
@@ -55,16 +55,15 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                 Resource = ["*"]
             },
             {
-                Effect = "Allow",
+                Effect = "Allow"
                 Action = [
-                        "ssmmessages:CreateControlChannel",
-                        "ssmmessages:CreateDataChannel",
-                        "ssmmessages:OpenControlChannel",
-                        "ssmmessages:OpenDataChannel"
-                ],
+                    "ssmmessages:CreateControlChannel",
+                    "ssmmessages:CreateDataChannel",
+                    "ssmmessages:OpenControlChannel",
+                    "ssmmessages:OpenDataChannel"
+                ]
                 Resource = ["*"]
-                }
-            
+            }
         ]
     })
     role = aws_iam_role.ecs-task-role.id
