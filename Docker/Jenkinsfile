@@ -57,7 +57,7 @@ pipeline{
                 script {
                     env.DESTROY_TARGETS.split(',').each{ destroyEnv ->
                     sh """
-                        echo 'Destroying ${destroy}'
+                        echo 'Destroying ${destroyEnv}'
                         cd ${env.HOME_DIR}
                         terraform plan \
                         -destroy \
