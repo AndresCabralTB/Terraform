@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
-        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:docker-image-prod-v1"
+        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:docker-image-${var.project_environment}"
         cpu       = 256
         memory    = 512
         essential = true
