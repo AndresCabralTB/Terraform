@@ -24,7 +24,7 @@ resource "aws_security_group" "ecs_task_securitygroup" {
 
 resource "aws_vpc_security_group_ingress_rule" "ecs_task_securitygroup_ingress" {
   security_group_id = aws_security_group.ecs_task_securitygroup.id
-  cidr_ipv6         = "0.0.0.0/0"
+  cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
   tags = {
       Name = "IngressRule-ECS-Task-SG-${var.project_environment}"
