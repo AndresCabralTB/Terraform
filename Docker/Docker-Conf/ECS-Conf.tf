@@ -41,7 +41,7 @@ resource "aws_vpc_security_group_egress_rule" "ecs_task_securitygroup_egress" {
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = "/ecs/${env.project_environment}"
+  name              = "/ecs/${var.project_environment}"
   retention_in_days = 30
 
   tags = {
