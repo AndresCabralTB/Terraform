@@ -33,6 +33,16 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                 Action = ["iam:PassRole"]
                 Effect = "Allow"
                 Resource = ["*"]
+            },
+            {
+                # ---- Logging permissions ----
+                Action = [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+                ]
+                Effect   = "Allow"
+                Resource = ["*"]
             }
             
         ]
