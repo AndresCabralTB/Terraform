@@ -40,6 +40,17 @@ resource "aws_vpc_security_group_egress_rule" "ecs_task_securitygroup_egress" {
     }
 }
 
+resource "aws_cloudwatch_log_group" "log_group" {
+  name              = "/ecs/${env.project_environment}"
+  retention_in_days = 30
+
+  tags = {
+    Environment = "production"
+    Service     = "api"
+    ManagedBy   = "terraform"
+  }
+}
+
 resource "aws_ecs_service" "ECS-Service" {
     name    = "Docker-container-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
@@ -68,7 +79,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
-        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/ecr-repo-unkown:docker-image-test1"
+        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:docker-image-prod-v1"
         cpu       = 256
         memory    = 512
         essential = true
