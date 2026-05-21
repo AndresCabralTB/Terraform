@@ -1,7 +1,3 @@
-variable "project_environment" {
-    type = string
-}
-
 resource "aws_ecs_service" "ECS-Service" {
     name    = "Docker-container-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
@@ -15,7 +11,7 @@ resource "aws_ecs_cluster" "docker-cluster" {
 
 }
 resource "aws_ecs_task_definition" "docker-task" {
-    family = "${project_environment}"
+    family = "${var.project_environment}"
     container_definitions = jsonencode([
         {
             name    =  "docker-task-${var.project_environment}"
