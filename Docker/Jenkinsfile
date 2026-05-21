@@ -58,6 +58,8 @@ pipeline{
                     env.DESTROY_TARGETS.split(',').each{ destroyEnv ->
                     sh """
                         echo 'Destroying ${destroyEnv}'
+
+                        # Create script to delete images in ECR
                         cd ${env.HOME_DIR}
                         terraform plan \
                         -destroy \
