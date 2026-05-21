@@ -45,8 +45,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
   retention_in_days = 30
 
   tags = {
-    Environment = "production"
-    Service     = "api"
+    Environment = "${var.project_environment}"
     ManagedBy   = "terraform"
   }
 }
@@ -57,6 +56,9 @@ resource "aws_ecs_service" "ECS-Service" {
     task_definition = aws_ecs_task_definition.docker-task.arn
     desired_count = 1
     launch_type     = "FARGATE"  # or "EC2"
+    enable_execute_command = true        # add to allow connections to the docker container
+
+    
     
     network_configuration {                                        # block, not = {}
         assign_public_ip = true

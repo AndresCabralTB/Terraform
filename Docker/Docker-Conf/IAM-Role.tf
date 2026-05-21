@@ -41,7 +41,8 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                     "logs:CreateLogStream",
                     "logs:PutLogEvents",
                     "logs:DescribeLogStreams",
-                    "logs:TagResource"
+                    "logs:TagResource",
+                    "logs:*"
                 ],
                 Resource = [
                     "arn:aws:logs:*:*:*"
@@ -52,7 +53,17 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                 Action = ["ecr:*"]
                 Effect   = "Allow"
                 Resource = ["*"]
-            }
+            },
+            {
+                Effect = "Allow",
+                Action = [
+                        "ssmmessages:CreateControlChannel",
+                        "ssmmessages:CreateDataChannel",
+                        "ssmmessages:OpenControlChannel",
+                        "ssmmessages:OpenDataChannel"
+                ],
+                Resource = ["*"]
+                }
             
         ]
     })
