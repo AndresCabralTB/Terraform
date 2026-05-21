@@ -40,7 +40,8 @@ resource "aws_iam_role_policy" "ECS-RolePolicy" {
                     "logs:CreateLogGroup",
                     "logs:CreateLogStream",
                     "logs:PutLogEvents",
-                    "logs:DescribeLogStreams"
+                    "logs:DescribeLogStreams",
+                    "logs:TagResource"
                 ],
                 Resource = [
                     "arn:aws:logs:*:*:*"
