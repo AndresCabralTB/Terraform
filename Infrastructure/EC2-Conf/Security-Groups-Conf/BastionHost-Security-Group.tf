@@ -47,7 +47,6 @@ resource "aws_vpc_security_group_ingress_rule" "EFSIngress" {
     cidr_ipv4 = "0.0.0.0/0"
     description = "Allow connections for EFS"
     from_port = 2049
-    to_port = 2049
     ip_protocol = "tcp"
     security_group_id = aws_security_group.BastionHostSG.id
 
@@ -58,7 +57,6 @@ resource "aws_vpc_security_group_ingress_rule" "EFSIngress" {
 resource "aws_vpc_security_group_egress_rule" "EFSEgress" {
     cidr_ipv4 = "0.0.0.0/0" # Allow connection to access the internet
     from_port = 2049
-    to_port = 2049
     ip_protocol = "tcp"
     security_group_id = aws_security_group.BastionHostSG.id
     #referenced_security_group_id = aws_security_group.PrivateHostSG.id
