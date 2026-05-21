@@ -81,14 +81,14 @@ resource "aws_ecs_task_definition" "docker-task" {
     task_role_arn            = aws_iam_role.ecs-task-role.arn  # runtime permissions
 
     volume {
-        name = "service-storage"
+        name = "efs-jenkins-volume-${var.project_environment}"
 
         efs_volume_configuration {
-        file_system_id = aws_efs_file_system.fs.id
+        file_system_id = "fs-00b141153110f6e72"
         root_directory = "/opt/data"
         }
     }
-    
+
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
