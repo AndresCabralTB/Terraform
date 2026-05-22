@@ -35,8 +35,11 @@ resource "aws_s3_bucket" "jenkins-project-infrastructure"{
 }
 
 resource "aws_s3_bucket" "docker-volumes" {
-    bucket = "docker-volumes"
+    bucket = "docker-volumes-bucket-cabral"
     tags = {
-        Name = "docker-volumes"
+        Name = "docker-volumes-bucket-cabral"
+    }
+    lifecycle {
+        prevent_destroy = true
     }
 }
