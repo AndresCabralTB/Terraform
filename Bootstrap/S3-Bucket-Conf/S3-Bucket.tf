@@ -1,7 +1,3 @@
-variable "project_region"{
-    type = string
-}
-
 resource "aws_s3_bucket" "vpn_config_bucket"{
     bucket = "cloud-cabral-ovpn-files"
     tags = {
@@ -39,20 +35,11 @@ resource "aws_s3_bucket" "jenkins-project-infrastructure"{
 }
 
 resource "aws_s3_bucket" "docker-volumes"{
-    bucket = "docker-volumes"
+    bucket = "docker-volumes-bucket"
     tags = {
-        Name = "docker-volumes"
+        Name = "docker-volumes-bucket"
     }
     lifecycle {
         prevent_destroy = true
     }
-}
-
-resource "aws_s3_bucket_public_access_block" "docker-volumes-config" {
-  bucket                  = aws_s3_bucket.docker-volumes.id
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-  depends_on              = [aws_s3_bucket.docker-volumes]
 }
