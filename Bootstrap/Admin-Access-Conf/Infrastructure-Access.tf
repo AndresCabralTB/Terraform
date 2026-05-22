@@ -28,7 +28,7 @@ resource "aws_iam_group_policy_attachment" "InfrastructureAccessGroupPolicies" {
         "arn:aws:iam::aws:policy/AWSCloudShellFullAccess",    # Browser-based terminal access to AWS CLI
         "arn:aws:iam::718254829448:policy/AdminAccess_Policy",
         "arn:aws:iam::718254829448:policy/New_Systems_Manager_Policy",
-        "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientFullAccess"
+        "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"
     ])
     policy_arn = each.value
 }

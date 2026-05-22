@@ -15,7 +15,7 @@ resource "aws_iam_group_policy_attachment" "DockerAccessGroupPolicies" {
         "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess",
         "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
         "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
-        "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientFullAccess"
+        "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"
     ])
     policy_arn = each.value
 }
