@@ -75,10 +75,7 @@ pipeline {
         }
         stage('Terraform Destroy'){
             when {
-                allOf{
-                    changeset "Bootstrap/*"
-                    expression { env.DESTROY_TARGETS?.trim() }
-                }
+                expression { env.DESTROY_TARGETS?.trim() }
             }
             steps{
                 script {
@@ -101,11 +98,8 @@ pipeline {
 
         stage('Terraform Plan & Apply'){
             when {
-                allOf{
-                    changeset "Bootstrap/*"
-                    expression { env.DEPLOY_TARGETS?.trim() }
+                expression { env.DEPLOY_TARGETS?.trim() }
                 }
-            }
             steps{
                 script{
                     env.DEPLOY_TARGETS.split(',').each { deployEnv ->
@@ -122,10 +116,7 @@ pipeline {
         }
         stage('Show Outputs') {
             when {
-                allOf{
-                    changeset "Bootstrap/*"
-                    expression { env.DEPLOY_TARGETS?.trim() }
-                }
+                expression { env.DEPLOY_TARGETS?.trim() }
             }
             steps {
                 script {
