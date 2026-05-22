@@ -95,7 +95,6 @@ resource "aws_ecs_task_definition" "docker-task" {
 
     volume {
         name = "jenkins-home"
-
         efs_volume_configuration {
         file_system_id = data.aws_efs_file_system.efs_file_system.file_system_id 
         root_directory = "/"
@@ -107,8 +106,8 @@ resource "aws_ecs_task_definition" "docker-task" {
         {
         name      = "docker-task-${var.project_environment}"
         image     = "${var.image_name}"
-        cpu       = 256
-        memory    = 512
+        cpu       = 1024
+        memory    = 2048
         essential = true
         portMappings = [
             {
