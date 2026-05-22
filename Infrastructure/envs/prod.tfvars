@@ -3,7 +3,7 @@ project_environment  = "prod"
 force_redeploy = true
 
 force_destroy = false
-backup_on_destroy = false
+backup_on_destroy = true
 enable_vpn = false
 enable_cloudwatch_rule = false
 
