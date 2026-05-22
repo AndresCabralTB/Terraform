@@ -1,0 +1,4 @@
+project_environment = "test"
+force_redeploy = false
+force_destroy = true
+#Force delete
