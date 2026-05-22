@@ -1,28 +1,28 @@
 #This file will call every resource through modules
 module "VPC_Module" {
-  source = "./VPC-Conf"
+  source              = "./VPC-Conf"
   project_environment = var.project_environment
 }
 
 module "EC2_Module" {
-  source = "./EC2-Conf"
-  project_environment = var.project_environment
-  subnet_A_id = module.VPC_Module.VPC_Subnet_A_Output.id #Pass the output from the subnet in the VPC module
-  subnet_B_id = module.VPC_Module.VPC_Subnet_B_Output.id #Pass the output from the subnet in the VPC module
-  vpc_id = module.VPC_Module.VPC_Terraform_Output.id
-  cidr_ipv4_mac = var.cidr_ipv4_mac
-  TerraformDB_SecurityGroup_Id = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
-  BastionHostAMI = var.BastionHostAMI
-  PrivateHostAMI = var.PrivateHostAMI
+  source                        = "./EC2-Conf"
+  project_environment           = var.project_environment
+  subnet_A_id                   = module.VPC_Module.VPC_Subnet_A_Output.id #Pass the output from the subnet in the VPC module
+  subnet_B_id                   = module.VPC_Module.VPC_Subnet_B_Output.id #Pass the output from the subnet in the VPC module
+  vpc_id                        = module.VPC_Module.VPC_Terraform_Output.id
+  cidr_ipv4_mac                 = var.cidr_ipv4_mac
+  TerraformDB_SecurityGroup_Id  = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
+  BastionHostAMI                = var.BastionHostAMI
+  PrivateHostAMI                = var.PrivateHostAMI
 }
 
 module "RDS_Instance_Moduel" {
-  source = "./RDS-DB-Conf"
+  source              = "./RDS-DB-Conf"
   project_environment = var.project_environment
-  vpc_id = module.VPC_Module.VPC_Terraform_Output.id
-  PrivateHostSG_ID= module.EC2_Module.PrivateHost_SecurityGroup_Id
-  vpc_subnet_B_id = module.VPC_Module.VPC_Subnet_B_Output.id
-  vpc_subnet_C_id = module.VPC_Module.VPC_Subnet_C_Output.id
+  vpc_id              = module.VPC_Module.VPC_Terraform_Output.id
+  PrivateHostSG_ID    = module.EC2_Module.PrivateHost_SecurityGroup_Id
+  vpc_subnet_B_id     = module.VPC_Module.VPC_Subnet_B_Output.id
+  vpc_subnet_C_id     = module.VPC_Module.VPC_Subnet_C_Output.id
   #db_username = var.db_username
   #db_password = var.db_password
 }
@@ -56,12 +56,17 @@ module "EventBrideEC2_Module" {
 
 module "Route53_Module" {
   source = "./Route-53-Conf"
-  project_environment = var.project_environment
-  vpc_id = module.VPC_Module.VPC_Terraform_Output.id
-  bastionhost_private_ip = module.EC2_Module.BastionHost_PrivateIp_Output
-  privatehost_private_ip = module.EC2_Module.PrivateHost_PrivateIp_Output
+  project_environment     = var.project_environment
+  vpc_id                  = module.VPC_Module.VPC_Terraform_Output.id
+  bastionhost_private_ip  = module.EC2_Module.BastionHost_PrivateIp_Output
+  privatehost_private_ip  = module.EC2_Module.PrivateHost_PrivateIp_Output
 }
 
+module "EFS_Module" {
+  source              = "./EFS-Conf"
+  project_environment = var.project_environment
+  subnet_A_id         = module.VPC_Module.VPC_Subnet_A_Output.id
+}
 output "vpn_user_certs" {
   sensitive = true
   value     = var.enable_vpn ? module.Client_VPN_Module[0].vpn_user_certs : null
