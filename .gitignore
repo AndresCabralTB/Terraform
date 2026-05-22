@@ -25,5 +25,5 @@ secrets.tf
 #Logs
 /Docker/logs/*
 #Docker volumes
-/Docker/Volumes/*.gz
+/Docker/Volumes/*
 Docker/Volumes/jenkins-data-backup.tar.gz
