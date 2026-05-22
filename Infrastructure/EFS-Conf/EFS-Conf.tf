@@ -11,6 +11,7 @@ variable "BastionHost_SG_id"{
 }
 resource "aws_efs_file_system" "efs_system" {
   creation_token = "efs-docker-volumes-${var.project_environment}"
+  encrypted = true
 
   tags = {
     Name = "efs-docker-volumes-${var.project_environment}"
