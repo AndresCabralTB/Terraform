@@ -66,6 +66,7 @@ module "EFS_Module" {
   source              = "./EFS-Conf"
   project_environment = var.project_environment
   subnet_A_id         = module.VPC_Module.VPC_Subnet_A_Output.id
+  BastionHost_SG_id   = module.EC2_Module.BastionHost_SecurityGroup_Id
 }
 output "vpn_user_certs" {
   sensitive = true
