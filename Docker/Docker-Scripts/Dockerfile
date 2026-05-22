@@ -25,12 +25,15 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
     apt-get update && apt-get install -y terraform docker-ce-cli && \
     apt-get clean && rm -rf /var/lib/apt/lists/* 
 
+# Ensure JENKINS_HOME exists with correct ownership before plugin install
+RUN mkdir -p /var/jenkins_home && \
+    chown -R jenkins:jenkins /var/jenkins_home && \
+    chmod -R u+rwx /var/jenkins_home
+
 WORKDIR /app/Terraform-Project
-RUN chmod -R 744 /app/Terraform-Project/
 RUN chown -R jenkins:jenkins /app/Terraform-Project
-RUN chown -R jenkins:jenkins /var/jenkins_home
-RUN chmod -R +rw /var/jenkins_home
 
 USER jenkins
+
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
 

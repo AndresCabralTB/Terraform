@@ -126,9 +126,9 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 
 docker images
 
-docker tag 98fc0fecd54a 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:terraform-image-v4-amd64
+docker tag 2232d1f06449 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:terraform-image-v5-amd64
 
-docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:terraform-image-v4-amd64
+docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:terraform-image-v5-amd64
 
 MANIFEST=$(aws ecr batch-get-image --repository-name docker-images-repo-prod --image-ids imageTag=tag --output text --query 'images[].imageManifest')
 aws ecr put-image --repository-name docker-images-repo-prod --image-tag 2017.03 --image-manifest "$MANIFEST"
