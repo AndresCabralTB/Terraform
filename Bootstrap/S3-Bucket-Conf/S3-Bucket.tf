@@ -39,7 +39,4 @@ resource "aws_s3_bucket" "docker-volumes" {
     tags = {
         Name = "docker-volumes"
     }
-    lifecycle {
-        prevent_destroy = true
-    }
 }
