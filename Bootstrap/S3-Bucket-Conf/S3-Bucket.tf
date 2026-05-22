@@ -43,3 +43,8 @@ resource "aws_s3_bucket" "docker-volumes" {
         prevent_destroy = true
     }
 }
+
+resource "aws_s3_object" "docker_volumes_folder" {
+  bucket = data.aws_s3_bucket.docker-volumes.id
+  key    = "Volumes/"  # Trailing slash makes it a folder
+}
