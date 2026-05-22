@@ -88,8 +88,8 @@ resource "aws_ecs_task_definition" "docker-task" {
     family                   = var.project_environment
     network_mode             = "awsvpc"        # required for Fargate
     requires_compatibilities = ["FARGATE"]     # required for Fargate
-    cpu                      = "256"           # task-level, not container-level
-    memory                   = "512"           # task-level
+    cpu                      = "1024"           # task-level, not container-level
+    memory                   = "2048"           # task-level
     execution_role_arn       = aws_iam_role.ecs-task-role.arn
     task_role_arn            = aws_iam_role.ecs-task-role.arn  # runtime permissions
 
