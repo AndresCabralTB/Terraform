@@ -71,6 +71,12 @@ resource "aws_ecs_cluster" "docker-cluster" {
     name = "docker-cluster-${var.project_environment}"
 }
 
+data "aws_efs_file_system" "efs_file_system" {
+  tags = {
+    Name = "efs-docker-volumes-${var.project_environment}"
+  }
+}
+
 resource "aws_ecs_task_definition" "docker-task" {
     family                   = var.project_environment
     network_mode             = "awsvpc"        # required for Fargate
@@ -84,7 +90,7 @@ resource "aws_ecs_task_definition" "docker-task" {
         name = "jenkins-home"
 
         efs_volume_configuration {
-        file_system_id = "fs-00b141153110f6e72"
+        file_system_id = data.aws_efs_file_system.efs_file_system.file_system_id 
         root_directory = "/"
         }
     }
