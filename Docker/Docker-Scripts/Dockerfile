@@ -29,6 +29,7 @@ WORKDIR /app/Terraform-Project
 RUN chmod -R 744 /app/Terraform-Project/
 RUN chown -R jenkins:jenkins /app/Terraform-Project
 RUN chown -R jenkins:jenkins /var/jenkins_home
+RUN chmod -R +rw /var/jenkins_home
 
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"

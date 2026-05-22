@@ -1,6 +1,10 @@
 variable "desired_tasks" {
     type = number
 }
+
+variable "image_name" {
+  type = string
+}
 data "aws_vpc" "vpc"{
     filter {
         name   = "tag:Name"
@@ -102,7 +106,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
-        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:terraform-image-v3-amd64"
+        image     = "${var.image_name}"
         cpu       = 256
         memory    = 512
         essential = true
