@@ -102,7 +102,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
-        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:terraform-image-v2-amd64"
+        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:terraform-image-v3-amd64"
         cpu       = 256
         memory    = 512
         essential = true

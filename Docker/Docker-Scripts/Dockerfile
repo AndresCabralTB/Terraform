@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
 WORKDIR /app/Terraform-Project
 RUN chmod -R 744 /app/Terraform-Project/
 RUN chown -R jenkins:jenkins /app/Terraform-Project
+RUN chown -R jenkins:jenkins /var/jenkins_home
 
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
