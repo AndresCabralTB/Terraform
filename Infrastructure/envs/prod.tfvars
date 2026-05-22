@@ -9,3 +9,4 @@ enable_cloudwatch_rule = false
 
 BastionHostAMI = "Baseline-BastionHost-AMI"
 PrivateHostAMI = "Baseline-PrivateHost-AMI"
+#Force redeploy
