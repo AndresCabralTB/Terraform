@@ -19,7 +19,6 @@ module "IAMInstanceProfile_Module" {
 
 module "S3_Bucket_Module" {
     source          = "./S3-Bucket-Conf"
-    project_region  = var.project_region
 }
 
 output "infrastructure_user_output" {
