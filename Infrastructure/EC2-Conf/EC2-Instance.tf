@@ -58,7 +58,7 @@ data "aws_ami" "privatehost_ami" {
 
     filter {
     name   = "tag:Name"                  # The tag key
-    values = ["${var.BastionHostAMI}"]  # The tag value
+    values = ["${var.PrivateHostAMI}"]  # The tag value
   }
 }
 
