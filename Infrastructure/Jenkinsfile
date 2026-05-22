@@ -125,11 +125,7 @@ pipeline {
 
         stage('OVPN File Configuration') {
             when {
-                allOf{
-                    changeset "Infrastructure/*"
-                    expression { env.DEPLOY_TARGETS?.trim() }
-                }
-                
+                expression { env.DEPLOY_TARGETS?.trim() }
             }
             steps {
                 script {
