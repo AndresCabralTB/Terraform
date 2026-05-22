@@ -37,3 +37,13 @@ resource "aws_s3_bucket" "jenkins-project-infrastructure"{
         prevent_destroy = true
     }
 }
+
+resource "aws_s3_bucket" "docker-volumes"{
+    bucket = "docker-volumes"
+    tags = {
+        Name = "docker-volumes"
+    }
+    lifecycle {
+        prevent_destroy = true
+    }
+}

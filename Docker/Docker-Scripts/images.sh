@@ -138,12 +138,23 @@ else
 fi
 }
 
+store_image_ecr(){
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 718254829448.dkr.ecr.us-east-1.amazonaws.com > /dev/null 2>&1
+docker images
+
+read -p "Enter the id of the image you wish to store in ECR: " IMAGE_ID
+#docker tag 158c95faac5b 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:docker-image-prod
+#docker push 718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:docker-image-prod
+
+}
+
 ###################
 #     MENU        #
 ###################
 
 PS3=$'\nEnter the operation you wish to do: '
-options=("List Images" "Create Image" "Delete Image" "Back")
+options=("List Images" "Create Image" "Delete Image" "Store Image in EC2" "Back")
 
 COLUMNS=0 # Display menu in a single column
 
@@ -165,6 +176,10 @@ echo -e "
 			;;
 			"Delete Image")
 			delete_image
+			break
+			;;
+			"Store Image in ECR")
+			store_image_ecr
 			break
 			;;
 			"Back")
