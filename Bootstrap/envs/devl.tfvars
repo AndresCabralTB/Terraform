@@ -1,4 +1,4 @@
 project_environment = "devl"
 
-force_redeploy = false
-force_destroy = true
+force_redeploy = true
+force_destroy = false
