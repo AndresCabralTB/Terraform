@@ -1,0 +1,84 @@
+Fri May 22 01:46:47 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.86kB 0.0s done
+#1 DONE 0.0s
+
+#2 [linux/amd64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#2 ...
+
+#3 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [linux/arm64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#4 ...
+
+#2 [linux/amd64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#2 DONE 0.8s
+
+#4 [linux/arm64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#4 DONE 0.8s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 59B done
+#5 DONE 0.0s
+
+#6 [linux/arm64 1/6] FROM docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5
+#6 resolve docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5
+#6 ...
+
+#7 [linux/amd64 1/6] FROM docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5
+#7 resolve docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5 done
+#7 DONE 0.0s
+
+#8 [linux/arm64 3/6] WORKDIR /app/Terraform-Project
+#8 CACHED
+
+#9 [linux/arm64 2/6] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq less &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [linux/arm64 4/6] RUN chmod -R 744 /app/Terraform-Project/
+#10 CACHED
+
+#11 [linux/arm64 5/6] RUN chown -R jenkins:jenkins /app/Terraform-Project
+#11 CACHED
+
+#12 [linux/arm64 6/6] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#12 CACHED
+
+#13 [linux/amd64 5/6] RUN chown -R jenkins:jenkins /app/Terraform-Project
+#13 CACHED
+
+#14 [linux/amd64 2/6] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq less &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [linux/amd64 4/6] RUN chmod -R 744 /app/Terraform-Project/
+#15 CACHED
+
+#16 [linux/amd64 3/6] WORKDIR /app/Terraform-Project
+#16 CACHED
+
+#17 [linux/amd64 6/6] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:25a3de8713f77b5caffdbfeae1026b587d3b70b1a2c6ed29371eb3c89ce368d5 done
+#18 exporting config sha256:c3d6e57a2468c1fd19e9c9b999f34f28adc08994e7c3da43e2dc7102085454d5 done
+#18 exporting attestation manifest sha256:5b0b529a3416cb13f126ae992f4f990eb9765cdb634a2715f08061a9240d81b2 0.0s done
+#18 exporting manifest sha256:2f103bda567d9463c739dcd897c80e20242974c4dbdb1bc63a9943128d6635e2 done
+#18 exporting config sha256:06c2653ef46dc23108faa9f7b95a704a878f6a9291f7464ca349af441a4de509 done
+#18 exporting attestation manifest sha256:fd3fb3130a2be494fe084acb805ace3f0e0a2c3f871981465a2eda922b7b134c 0.0s done
+#18 exporting manifest list sha256:e8e915717fb987151cef26c6ad454422bd58ce6f84e6c656c777a04a4bae7632 done
+#18 naming to docker.io/library/local-docker-image:latest done
+#18 unpacking to docker.io/library/local-docker-image:latest done
+#18 DONE 0.1s
+[Fri May 22 01:47:07 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                       ID             DISK USAGE   CONTENT SIZE   EXTRA
+local-docker-image:latest   e8e915717fb9       2.38GB          1.1GB        
+94749c700d95ebe5de00fd5e3b854367e715541078dc188709205986917b35d3
+[Fri May 22 01:49:00 CST 2026] - Container Created Successfully
+
+94749c700d95   e8e915717fb9   "/usr/bin/tini -- /u…"   Less than a second ago   Up Less than a second   0.0.0.0:4040->8080/tcp, [::]:4040->8080/tcp   local-docker-container

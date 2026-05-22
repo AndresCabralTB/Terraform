@@ -63,7 +63,7 @@ if docker run --name "$CONTAINER_NAME" --restart=on-failure --detach \
   --publish "$CONTAINER_PORT":8080 \
   --volume "$CONTAINER_VOLUME":/var/jenkins_home \
   --volume jenkins-docker-certs:/certs/client:ro \
-  --mount type=bind,source="$(realpath "${CURRENT_DIR}/../..")",target=/app/Terraform-Project" \
+  --mount type=bind,source="$(realpath "${CURRENT_DIR}/../..")",target="/app/Terraform-Project" \
   "$CONTAINER_IMAGE" >> "$SESSION_LOGS" 2>&1
 then
   echo -e "[$(date)] - Container Created Successfully\n" | tee -a "$SESSION_LOGS"
