@@ -1,5 +1,0 @@
-Thu May 21 12:05:26 CST 2026
-./containers.sh: line 65: --volume: command not found
-[Thu May 21 12:06:04 CST 2026] - Failed to create backup-container-v1
-[Thu May 21 12:06:04 CST 2026] - Stopping container 
-[Thu May 21 12:06:04 CST 2026] - Removing container ...

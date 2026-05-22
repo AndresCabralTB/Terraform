@@ -24,3 +24,5 @@ secrets.tf
 
 #Logs
 /Docker/logs/*
+#Docker volumes
+/Docker/Volumes/*.gz

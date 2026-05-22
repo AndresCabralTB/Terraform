@@ -30,7 +30,10 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2FullAccess" {
     role = aws_iam_role.SSMSessionManagerRole.name
     for_each = toset ([
         "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-        "arn:aws:iam::aws:policy/EC2InstanceConnect"
+        "arn:aws:iam::aws:policy/EC2InstanceConnect",
+        "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientFullAccess",
+        "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+
     ])
     policy_arn = each.value
 }

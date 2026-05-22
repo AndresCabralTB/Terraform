@@ -62,11 +62,11 @@ pipeline{
                         # Create script to delete images in ECR
                         cd ${env.HOME_DIR}
                         terraform plan \
-                        -destroy \
+                        --destroy \
                         -var-file=envs/${destroyEnv}.tfvars \
                         --out=destroy.tfplan
                         
-                        terraform apply -auto-approve destroy.tfplan 
+                        terraform apply destroy.tfplan 
                     """
                     }
                 }
