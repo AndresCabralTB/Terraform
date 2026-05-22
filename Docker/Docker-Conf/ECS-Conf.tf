@@ -5,6 +5,11 @@ variable "desired_tasks" {
 variable "image_name" {
   type = string
 }
+
+variable "efs_id"{
+    type = string
+}
+
 data "aws_vpc" "vpc"{
     filter {
         name   = "tag:Name"
@@ -78,11 +83,6 @@ resource "aws_ecs_cluster" "docker-cluster" {
     name = "docker-cluster-${var.project_environment}"
 }
 
-data "aws_efs_file_system" "efs_file_system" {
-  tags = {
-    Name = "efs-docker-volumes-${var.project_environment}"
-  }
-}
 
 resource "aws_ecs_task_definition" "docker-task" {
     family                   = var.project_environment
@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     volume {
         name = "jenkins-home"
         efs_volume_configuration {
-        file_system_id = data.aws_efs_file_system.efs_file_system.file_system_id 
+        file_system_id = var.efs_id 
         root_directory = "/"
         }
     }

@@ -1,6 +1,7 @@
 module "ECR_Module"{
-    source = "./Docker-Conf"
+    source              = "./Docker-Conf"
     project_environment = var.project_environment
-    desired_tasks = var.desired_tasks
-    image_name    = var.image_name
+    desired_tasks       = var.desired_tasks
+    image_name          = var.image_name
+    efs_id              = var.efs_id
 }
