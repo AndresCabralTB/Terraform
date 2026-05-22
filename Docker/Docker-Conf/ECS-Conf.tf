@@ -1,3 +1,6 @@
+variable "desired_tasks" {
+    type = number
+}
 data "aws_vpc" "vpc"{
     filter {
         name   = "tag:Name"
@@ -54,7 +57,7 @@ resource "aws_ecs_service" "ECS-Service" {
     name    = "Docker-container-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
     task_definition = aws_ecs_task_definition.docker-task.arn
-    desired_count = 1
+    desired_count = var.desired_tasks
     launch_type     = "FARGATE"  # or "EC2"
     enable_execute_command = true        # add to allow connections to the docker container
 
@@ -99,7 +102,7 @@ resource "aws_ecs_task_definition" "docker-task" {
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
-        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:terraform-image-v1"
+        image     = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:terraform-image-v2-amd64"
         cpu       = 256
         memory    = 512
         essential = true

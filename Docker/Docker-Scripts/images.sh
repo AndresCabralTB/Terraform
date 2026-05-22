@@ -42,7 +42,7 @@ CREATING IMAGE STAGE 2: BUILD THE DOCKER IMAGE
 
 # Build the docker image — write ONLY to log file (not terminal)
 # Verify that the logs don't contain any errors
-if docker build -t "$IMAGE_NAME":"$IMAGE_TAG" "$DOCKERFILE_PATH" >> "$SESSION_LOGS" 2>&1
+if docker build -t "$IMAGE_NAME":"$IMAGE_TAG" --platform linux/amd64,linux/arm64 "$DOCKERFILE_PATH" >> "$SESSION_LOGS" 2>&1
 then
     echo "[$(date)] - Image created successfully" | tee -a "$SESSION_LOGS"
     docker images "$IMAGE_NAME" >> "$SESSION_LOGS" 2>&1
