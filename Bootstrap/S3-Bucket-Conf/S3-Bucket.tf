@@ -1,3 +1,7 @@
+variable "project_environment" {
+    type = string
+}
+
 resource "aws_s3_bucket" "vpn_config_bucket"{
     bucket = "cloud-cabral-ovpn-files"
     tags = {
@@ -46,5 +50,5 @@ resource "aws_s3_bucket" "docker-volumes" {
 
 resource "aws_s3_object" "docker_volumes_folder" {
   bucket = aws_s3_bucket.docker-volumes.id
-  key    = "Volumes/"  # Trailing slash makes it a folder
+  key    = "Volumes/${env.project_environment}"  # Trailing slash makes it a folder
 }

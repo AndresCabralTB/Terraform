@@ -6,10 +6,11 @@ module "IAM_User_Module" {
 }
 
 module "AdminAccessGroup_Module" {
-    source              = "./Admin-Access-Conf"
-    infrastructure_user       = module.IAM_User_Module.infrastructure_user_output
-    docker_user             = module.IAM_User_Module.docker_user_output
-    project_environment = var.project_environment
+    source                      = "./Admin-Access-Conf"
+    aws_account_id              = var.aws_account_id
+    infrastructure_user         = module.IAM_User_Module.infrastructure_user_output
+    docker_user                 = module.IAM_User_Module.docker_user_output
+    project_environment         = var.project_environment
 }
 
 module "IAMInstanceProfile_Module" {
@@ -18,7 +19,8 @@ module "IAMInstanceProfile_Module" {
 }
 
 module "S3_Bucket_Module" {
-    source          = "./S3-Bucket-Conf"
+    source                  = "./S3-Bucket-Conf"
+    project_environment     = var.project_environment
 }
 
 output "infrastructure_user_output" {
