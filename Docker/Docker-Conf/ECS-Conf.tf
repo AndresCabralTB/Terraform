@@ -101,7 +101,6 @@ resource "aws_ecs_task_definition" "docker-task" {
         }
     }
 
-
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
@@ -111,8 +110,8 @@ resource "aws_ecs_task_definition" "docker-task" {
         essential = true
         portMappings = [
             {
-            containerPort = 443
-            hostPort      = 443
+            containerPort = 8080
+            hostPort      = 5000
             }
         ]
         
