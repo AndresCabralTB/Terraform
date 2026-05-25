@@ -111,7 +111,7 @@ resource "aws_ecs_task_definition" "docker-task" {
         portMappings = [
             {
             containerPort = 8080
-            hostPort      = 5000
+            hostPort      = 8080
             }
         ]
         
