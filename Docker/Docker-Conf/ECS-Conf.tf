@@ -1,3 +1,7 @@
+variable "aws_account_id"{
+    type = string
+}
+
 variable "desired_tasks" {
     type = number
 }
@@ -83,6 +87,11 @@ resource "aws_ecs_cluster" "docker-cluster" {
     name = "docker-cluster-${var.project_environment}"
 }
 
+data "aws_efs_file_system" "efs_tag" {
+  tags = {
+    Name = "efs-docker-volumes-${var.project_environment}"
+  }
+}
 
 resource "aws_ecs_task_definition" "docker-task" {
     family                   = var.project_environment
@@ -96,15 +105,15 @@ resource "aws_ecs_task_definition" "docker-task" {
     volume {
         name = "jenkins-home"
         efs_volume_configuration {
-        file_system_id = var.efs_id 
-        root_directory = "/"
+            file_system_id = data.aws_efs_file_system.efs_tag.file_system_id
+            root_directory = "/"
         }
     }
 
     container_definitions = jsonencode([
         {
         name      = "docker-task-${var.project_environment}"
-        image     = "${var.image_name}"
+        image     = "${var.aws_account_id}.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:${var.image_name}"
         cpu       = 1024
         memory    = 2048
         essential = true

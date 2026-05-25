@@ -18,6 +18,11 @@ variable "project_environment" {
     default = "Unknown"
 }
 
+variable "aws_account_id" {
+    type = string
+    default = "unknown"
+}
+
 #==================================
 #Variables to avoid warnings
 

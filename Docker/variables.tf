@@ -15,7 +15,12 @@ variable "desired_tasks" {
 
 variable "image_name" {
     type = string
-    default = "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:terraform-image-v4-amd64"
+    default = "Image-Not-Defined"
+}
+
+variable "aws_account_id" {
+    type = string
+    default = "AWS Account ID not defined"
 }
 
 variable "efs_id"{
