@@ -37,12 +37,13 @@ variable "efs_system_id" {
     type = string
 }
 
+
 locals {
   BastionHost_InternalName  = "bastionhost.${var.project_environment}.cabral.cloud"
   PrivateHost_InternalName  = "privatehost.${var.project_environment}.cabral.cloud"
   BastionHost_Name          = "BastionHost-Terraform-${var.project_environment}"
   PrivateHost_Name          = "PrivateHost-Terraform-${var.project_environment}"
-
+  MOUNT_DIR                 = "/mnt/efs"
 }
 
 #Retrieve the AMI for the bastion host
@@ -92,11 +93,13 @@ resource "aws_instance" "BastionHost" {
     #    enable_resource_name_dns_a_record   = true
     #    hostname_type                       = "resource-name"
     #}
-    user_data = templatefile("${path.module}/Startup_script.sh",{
-        DNS_NAME        = var.efs_system_id
-        MOUNT_DIR       = "/mnt/efs"
-        INTERNAL_NAME   = local.BastionHost_InternalName
-    })
+    user_data = <<-EOF
+        #!/bin/bash
+        mkdir -p "${local.MOUNT_DIR}"
+        chown 1000:1000 "${local.MOUNT_DIR}"
+        hostnamectl set-hostname ${local.BastionHost_InternalName}
+        mount -t efs -o tls ${var.efs_system_id}:/ ${local.MOUNT_DIR}
+    EOF
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_A_id
