@@ -40,6 +40,6 @@ resource "aws_efs_mount_target" "efs_mount_target_local" {
   security_groups   = ["${var.BastionHost_SG_id}"]
 }
 
-output "efs_system_dns_name" {
-    value = aws_efs_file_system.efs_system.dns_name
+output "efs_system_id" {
+    value = aws_efs_file_system.efs_system.id
 }

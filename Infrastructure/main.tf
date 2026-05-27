@@ -14,7 +14,7 @@ module "EC2_Module" {
   TerraformDB_SecurityGroup_Id  = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
   BastionHostAMI                = var.BastionHostAMI
   PrivateHostAMI                = var.PrivateHostAMI
-  efs_system_dns_name           = module.EFS_Module.efs_system_dns_name
+  efs_system_id                 = module.EFS_Module.efs_system_id
 }
 
 module "RDS_Instance_Moduel" {
@@ -70,8 +70,8 @@ module "EFS_Module" {
   BastionHost_SG_id   = module.EC2_Module.BastionHost_SecurityGroup_Id
 }
 
-output "efs_system_dns_name" {
-    value = module.EFS_Module.efs_system_dns_name
+output "efs_system_id" {
+    value = module.EFS_Module.efs_system_id
 }
 
 output "vpn_user_certs" {

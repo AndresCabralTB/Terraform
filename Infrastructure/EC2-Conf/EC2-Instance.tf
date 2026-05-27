@@ -33,7 +33,7 @@ variable "PrivateHostAMI" {
     default = "Baseline-PrivateHost-AMI"
 }
 
-variable "efs_system_dns_name" {
+variable "efs_system_id" {
     type = string
 }
 
@@ -93,7 +93,7 @@ resource "aws_instance" "BastionHost" {
     #    hostname_type                       = "resource-name"
     #}
     user_data = templatefile("${path.module}/Startup_script.sh",{
-        DNS_NAME        = var.efs_system_dns_name
+        DNS_NAME        = var.efs_system_id
         MOUNT_DIR       = "/mnt/efs"
         INTERNAL_NAME   = local.BastionHost_InternalName
     })
