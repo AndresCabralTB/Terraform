@@ -96,6 +96,8 @@ resource "aws_instance" "BastionHost" {
     user_data = <<-EOF
         #!/bin/bash
         mkdir -p "${local.MOUNT_DIR}"
+        touch "${local.MOUNT_DIR}"/test.txt
+        mkdir -/mnt/test/
         chown 1000:1000 "${local.MOUNT_DIR}"
         hostnamectl set-hostname ${local.BastionHost_InternalName}
         mount -t efs -o tls ${var.efs_system_id}:/ ${local.MOUNT_DIR}
