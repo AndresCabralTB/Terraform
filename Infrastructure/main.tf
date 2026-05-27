@@ -14,6 +14,7 @@ module "EC2_Module" {
   TerraformDB_SecurityGroup_Id  = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
   BastionHostAMI                = var.BastionHostAMI
   PrivateHostAMI                = var.PrivateHostAMI
+  efs_system_dns_name           = module.EFS_Module.efs_system_dns_name
 }
 
 module "RDS_Instance_Moduel" {

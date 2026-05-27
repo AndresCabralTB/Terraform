@@ -33,6 +33,9 @@ variable "PrivateHostAMI" {
     default = "Baseline-PrivateHost-AMI"
 }
 
+variable "efs_system_dns_name" {
+    type = string
+}
 
 locals {
   BastionHost_InternalName  = "bastionhost.${var.project_environment}.cabral.cloud"
@@ -89,10 +92,7 @@ resource "aws_instance" "BastionHost" {
     #    enable_resource_name_dns_a_record   = true
     #    hostname_type                       = "resource-name"
     #}
-    user_data = <<-EOF
-        #! /bin/bash
-        hostnamectl set-hostname ${local.BastionHost_InternalName}
-    EOF
+    user_data = file("./Startup_script.sh ${var.efs_system_dns_name} /mnt/efs ${local.BastionHost_InternalName}")
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_A_id
