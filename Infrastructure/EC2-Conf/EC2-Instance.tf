@@ -92,7 +92,7 @@ resource "aws_instance" "BastionHost" {
     #    enable_resource_name_dns_a_record   = true
     #    hostname_type                       = "resource-name"
     #}
-    user_data = file("./Startup_script.sh ${var.efs_system_dns_name} /mnt/efs ${local.BastionHost_InternalName}")
+    user_data = file("Startup_script.sh ${var.efs_system_dns_name} /mnt/efs ${local.BastionHost_InternalName}")
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_A_id
