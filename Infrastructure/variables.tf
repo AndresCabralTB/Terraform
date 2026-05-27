@@ -85,3 +85,8 @@ variable "force_destroy" {
     type        = bool
     default     = false
 }
+
+variable "backup_on_destroy" {
+    type        = bool
+    default     = false
+}

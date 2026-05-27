@@ -69,6 +69,11 @@ module "EFS_Module" {
   subnet_A_id         = module.VPC_Module.VPC_Subnet_A_Output.id
   BastionHost_SG_id   = module.EC2_Module.BastionHost_SecurityGroup_Id
 }
+
+output "efs_system_dns_name" {
+    value = module.EFS_Module.efs_system_dns_name
+}
+
 output "vpn_user_certs" {
   sensitive = true
   value     = var.enable_vpn ? module.Client_VPN_Module[0].vpn_user_certs : null
