@@ -100,7 +100,7 @@ resource "aws_instance" "BastionHost" {
         touch ${local.MOUNT_DIR}/test.txt
         mkdir /mnt/test/
         chown 1000:1000 ${local.MOUNT_DIR}
-        hostnamectl set-hostname name-test.bastionhost
+        hostnamectl set-hostname name-test.bastionhost-new-ami
         mount -t efs -o tls ${var.efs_system_id}:/ ${local.MOUNT_DIR}
     EOF
 
