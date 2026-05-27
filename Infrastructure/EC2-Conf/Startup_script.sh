@@ -8,5 +8,5 @@ chown 1000:1000 "$MOUNT_DIR"
 
 hostnamectl set-hostname "$INTERNAL_NAME"
 
-mount -t efs -o tls "$DNS_NAME":/ "$MOUNT_DIR"
+sudo mount -t efs -o tls "$DNS_NAME":/ "$MOUNT_DIR"
 
