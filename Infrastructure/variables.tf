@@ -1,61 +1,62 @@
 variable "start_crontab" {
-  type = string
-  default = "cron(0 15 * * ? *)"
+  type      = string
+  default   = "cron(0 15 * * ? *)"
 }
 
 variable "stop_crontab" {
-  type = string
-  default = "cron(30 5 * * ? *)"
+  type      = string
+  default   = "cron(30 5 * * ? *)"
 }
 
 variable "BastionHostAMI" {
-    type = string
-    default = "Baseline-BastionHost-AMI"
+    type        = string
+    default     = "Baseline-BastionHost-AMI"
 }
 
 variable "PrivateHostAMI" {
-    type = string
-    default = "Baseline-PrivateHost-AMI"
+    type        = string
+    default     = "Baseline-PrivateHost-AMI"
 }
 
 variable "project_environment" {
-    type = string 
-    default = "unknown"
-    description = "This is the environment control"
+    type            = string 
+    default         = "unknown"
+    description     = "This is the environment control"
 }
 
 variable "project_version" {
-    type = string 
-    default = "unknown"
-    description = "This is the environment control"
+    type            = string 
+    default         = "unknown"
+    description     = "This is the environment control"
 }
 
 variable "enable_vpn" {
-  type = bool 
-  default = false
+  type      = bool 
+  default   = false
 }
 
 variable "enable_cloudwatch_rule" {
-  type = bool
-  default = true
+  type      = bool
+  default   = true
 }
 
 variable "project_region" {
-  type = string
-  default = "us-east-1"
+  type      = string
+  default   = "us-east-1"
 }
 
 variable "workspace"{
-  type = string
-  default = "workspace"
+  type      = string
+  default   = "workspace"
 }
 #==================================
 # Sensitive variables will be configured from Jenkins
 #==================================
 
-variable "cidr_ipv4_mac" {
-  type = string
-  description = "This is the Public IP for my Mac"
+variable "allowed_hosts" {
+  type          = list
+  default       = ["177.240.100.3/32"]
+  description   = "This is the Public IP for hosts allowed to ssh into the bastion host"
 }
 
 # Pass the variables to an environment variable with:
@@ -76,11 +77,11 @@ variable "db_password" {
 }
 
 variable "force_redeploy" {
-    type = bool
-    default = false
+    type        = bool
+    default     = false
 }
 
 variable "force_destroy" {
-    type = bool
-    default = false
+    type        = bool
+    default     = false
 }

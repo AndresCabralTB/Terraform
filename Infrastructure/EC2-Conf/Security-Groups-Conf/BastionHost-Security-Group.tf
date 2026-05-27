@@ -2,8 +2,8 @@ variable "vpc_id" {
   type = string
 }
 
-variable "cidr_ipv4_mac" {
-  type = string
+variable "allowed_hosts" {
+  type = list
 }
 
 variable "project_environment" {
@@ -22,16 +22,17 @@ resource "aws_security_group" "BastionHostSG" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "BastionHostIngress" {
-  cidr_ipv4 = var.cidr_ipv4_mac
-  description = "Allow connections from Mac - ${var.project_environment}"
-  from_port = 22
-  ip_protocol = "tcp"
-  to_port = 22
-  security_group_id = aws_security_group.BastionHostSG.id
+    for_each = toset(var.allowed_hosts)
+    cidr_ipv4 = each.key
+    description = "Allow connections from Mac - ${var.project_environment}"
+    from_port = 22
+    ip_protocol = "tcp"
+    to_port = 22
+    security_group_id = aws_security_group.BastionHostSG.id
 
-  tags = {
-    Name = "IngressRule-BastionHost-SG--${var.project_environment}"
-  }
+    tags = {
+        Name = "IngressRule-BastionHost-SG--${var.project_environment}"
+    }
 }
 resource "aws_vpc_security_group_egress_rule" "BastionHostEgress" {
     cidr_ipv4 = "0.0.0.0/0" # Allow connection to access the internet
@@ -55,6 +56,7 @@ resource "aws_vpc_security_group_ingress_rule" "EFSIngress" {
         Name = "EFS-IngressRule-BastionHost-SG--${var.project_environment}"
     }
 }
+
 resource "aws_vpc_security_group_egress_rule" "EFSEgress" {
     cidr_ipv4 = "0.0.0.0/0" # Allow connection to access the internet
     description = "Allow connections for EFS"

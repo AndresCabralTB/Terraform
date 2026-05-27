@@ -22,7 +22,6 @@ variable "subnet_C_cidr" {
 }
 variable "vpn_users" {
   type    = list(string)
-  default = ["alice", "bob"]
 }
 
 variable "vpc_id" {

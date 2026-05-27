@@ -6,7 +6,7 @@ variable "vpc_id" {
   type = string
 }
 
-variable "cidr_ipv4_mac" {
+variable "allowed_hosts" {
   type = string
 }
 
@@ -35,10 +35,10 @@ variable "PrivateHostAMI" {
 
 
 locals {
-  BastionHost_InternalName = "bastionhost.${var.project_environment}.cabral.cloud"
-  PrivateHost_InternalName = "privatehost.${var.project_environment}.cabral.cloud"
-  BastionHost_Name = "BastionHost-Terraform-${var.project_environment}"
-  PrivateHost_Name = "PrivateHost-Terraform-${var.project_environment}"
+  BastionHost_InternalName  = "bastionhost.${var.project_environment}.cabral.cloud"
+  PrivateHost_InternalName  = "privatehost.${var.project_environment}.cabral.cloud"
+  BastionHost_Name          = "BastionHost-Terraform-${var.project_environment}"
+  PrivateHost_Name          = "PrivateHost-Terraform-${var.project_environment}"
 
 }
 
@@ -66,7 +66,7 @@ data "aws_ami" "privatehost_ami" {
 module "SecurityGroups_Module" {
   source              = "./Security-Groups-Conf"
   vpc_id                 = var.vpc_id
-  cidr_ipv4_mac       = var.cidr_ipv4_mac
+  allowed_hosts       = var.allowed_hosts
   TerraformDB_SecurityGroup_Id = var.TerraformDB_SecurityGroup_Id
   project_environment     = var.project_environment
 }

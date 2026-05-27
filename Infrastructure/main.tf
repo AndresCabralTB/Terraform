@@ -10,7 +10,7 @@ module "EC2_Module" {
   subnet_A_id                   = module.VPC_Module.VPC_Subnet_A_Output.id #Pass the output from the subnet in the VPC module
   subnet_B_id                   = module.VPC_Module.VPC_Subnet_B_Output.id #Pass the output from the subnet in the VPC module
   vpc_id                        = module.VPC_Module.VPC_Terraform_Output.id
-  cidr_ipv4_mac                 = var.cidr_ipv4_mac
+  allowed_hosts                 = var.allowed_hosts
   TerraformDB_SecurityGroup_Id  = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
   BastionHostAMI                = var.BastionHostAMI
   PrivateHostAMI                = var.PrivateHostAMI
