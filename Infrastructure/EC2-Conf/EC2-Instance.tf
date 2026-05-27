@@ -92,10 +92,10 @@ resource "aws_instance" "BastionHost" {
     #    enable_resource_name_dns_a_record   = true
     #    hostname_type                       = "resource-name"
     #}
-    user_data = file("Startup_script.sh",{
-        DNS_NAME        = "${var.efs_system_dns_name}"
+    user_data = templatefile("Startup_script.sh",{
+        DNS_NAME        = var.efs_system_dns_name
         MOUNT_DIR       = "/mnt/efs"
-        INTERNAL_NAME   = "${local.BastionHost_InternalName}"
+        INTERNAL_NAME   = local.BastionHost_InternalName
     })
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
