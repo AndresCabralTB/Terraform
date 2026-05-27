@@ -7,7 +7,7 @@ variable "vpc_id" {
 }
 
 variable "allowed_hosts" {
-  type = string
+  type = list
 }
 
 #Get the subnet ID through a variable passed from the module calling
