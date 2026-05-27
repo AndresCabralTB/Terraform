@@ -92,7 +92,7 @@ resource "aws_instance" "BastionHost" {
     #    enable_resource_name_dns_a_record   = true
     #    hostname_type                       = "resource-name"
     #}
-    user_data = templatefile("Startup_script.sh",{
+    user_data = templatefile("${pwd.module}/Startup_script.sh",{
         DNS_NAME        = var.efs_system_dns_name
         MOUNT_DIR       = "/mnt/efs"
         INTERNAL_NAME   = local.BastionHost_InternalName
