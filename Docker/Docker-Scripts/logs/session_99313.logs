@@ -1,0 +1,80 @@
+Mon May 25 12:38:14 CST 2026
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.02kB done
+#1 DONE 0.0s
+
+#2 [auth] jenkins/jenkins:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [linux/arm64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#3 ...
+
+#4 [linux/amd64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#4 DONE 0.7s
+
+#3 [linux/arm64 internal] load metadata for docker.io/jenkins/jenkins:2.555.2-jdk21
+#3 DONE 0.7s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 59B done
+#5 DONE 0.0s
+
+#6 [linux/arm64 1/6] FROM docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5
+#6 resolve docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5 0.0s done
+#6 DONE 0.0s
+
+#7 [linux/arm64 2/6] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq less &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [linux/arm64 5/6] RUN chown -R jenkins:jenkins /app/Terraform-Project
+#8 CACHED
+
+#9 [linux/arm64 4/6] WORKDIR /app/Terraform-Project
+#9 CACHED
+
+#10 [linux/arm64 3/6] RUN mkdir -p /var/jenkins_home &&     chown -R jenkins:jenkins /var/jenkins_home &&     chmod -R u+rwx /var/jenkins_home
+#10 CACHED
+
+#11 [linux/arm64 6/6] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#11 CACHED
+
+#12 [linux/amd64 1/6] FROM docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5
+#12 resolve docker.io/jenkins/jenkins:2.555.2-jdk21@sha256:01c992ffef29dcf41c7164e8c16285c657c2368c4943dda8d68c93fdf54447d5 0.0s done
+#12 DONE 0.0s
+
+#13 [linux/amd64 4/6] WORKDIR /app/Terraform-Project
+#13 CACHED
+
+#14 [linux/amd64 2/6] RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq less &&     wget -O- https://apt.releases.hashicorp.com/gpg |     gpg --dearmor |     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list &&     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc         | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null         && echo "deb https://ngrok-agent.s3.amazonaws.com bookworm main"         | tee /etc/apt/sources.list.d/ngrok.list &&     apt-get update && apt-get install -y ngrok &&     install -m 0755 -d /etc/apt/keyrings &&     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc &&     chmod a+r /etc/apt/keyrings/docker.asc &&     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]     https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable"     | tee /etc/apt/sources.list.d/docker.list > /dev/null &&     apt-get update && apt-get install -y terraform docker-ce-cli &&     apt-get clean && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [linux/amd64 3/6] RUN mkdir -p /var/jenkins_home &&     chown -R jenkins:jenkins /var/jenkins_home &&     chmod -R u+rwx /var/jenkins_home
+#15 CACHED
+
+#16 [linux/amd64 5/6] RUN chown -R jenkins:jenkins /app/Terraform-Project
+#16 CACHED
+
+#17 [linux/amd64 6/6] RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:ee34bcab20d9182b63c536d40741d375e3a13f3bbf3d482b40cf9f4a24edc734 done
+#18 exporting config sha256:84c73a7b86498b954d28dc8658da64d247b2ab4e8e985ecbafb4101cceddc66a done
+#18 exporting attestation manifest sha256:f755d9475669ce9a7663749fb87b6c6e4581a63505aa20c770eb5f3907af5355 done
+#18 exporting manifest sha256:4128f04f544c38d4ac7fc4028fc784111708067d8e920184da7f44dad47cabd6 done
+#18 exporting config sha256:5acc8f2a63f9dca0c6954145e82cef52003dd9efb24c2b63bc8211053faa5219 done
+#18 exporting attestation manifest sha256:fd32efcb83d443f85b790d73a1b83c90237988219e1c2a7df26ccdc2e21e4e4e done
+#18 exporting manifest list sha256:fe34fff95a2067d1709b67fe94057f62f86859006d15fe37a8fcf6c0fee45f95 done
+#18 naming to docker.io/library/terraform-image-linuxamd64:0.0.2 done
+#18 unpacking to docker.io/library/terraform-image-linuxamd64:0.0.2
+#18 unpacking to docker.io/library/terraform-image-linuxamd64:0.0.2 3.0s done
+#18 DONE 3.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/l58nke8oiglljh81cwkvcqq0x
+[Mon May 25 12:39:01 CST 2026] - Image created successfully
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+terraform-image-linuxamd64:0.0.2   fe34fff95a20       2.38GB          1.1GB        

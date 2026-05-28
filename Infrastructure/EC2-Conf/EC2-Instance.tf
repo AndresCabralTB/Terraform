@@ -43,7 +43,7 @@ locals {
   PrivateHost_InternalName  = "privatehost.${var.project_environment}.cabral.cloud"
   BastionHost_Name          = "BastionHost-Terraform-${var.project_environment}"
   PrivateHost_Name          = "PrivateHost-Terraform-${var.project_environment}"
-  MOUNT_DIR                 = "/mnt/efs"
+  mount_dir                 = "/mnt/efs"
 }
 
 #Retrieve the AMI for the bastion host
@@ -96,12 +96,10 @@ resource "aws_instance" "BastionHost" {
     #}
     user_data = <<-EOF
         #!/bin/bash
-        mkdir -p ${local.MOUNT_DIR}
-        touch ${local.MOUNT_DIR}/test.txt
-        mkdir /mnt/test/
-        chown 1000:1000 ${local.MOUNT_DIR}
-        hostnamectl set-hostname name-test.bastionhost-new-ami
-        mount -t efs -o tls ${var.efs_system_id}:/ ${local.MOUNT_DIR}
+        mkdir -p ${local.mount_dir}
+        chown 1000:1000 ${local.mount_dir}
+        hostnamectl set-hostname ${local.BastionHost_InternalName}
+        mount -t efs -o tls ${var.efs_system_id}:/ ${local.mount_dir}
     EOF
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
