@@ -52,3 +52,13 @@ resource "aws_s3_object" "docker_volumes_folder" {
   bucket = aws_s3_bucket.docker-volumes.id
   key    = "Volumes/${var.project_environment}/"  # Trailing slash makes it a folder
 }
+
+resource "aws_s3_bucket" "extra-files" {
+    bucket = "extra-files"
+    tags = {
+        Name = "extra-files"
+    }
+    lifecycle {
+        prevent_destroy = true
+    }
+}
