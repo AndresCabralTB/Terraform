@@ -67,7 +67,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 }
 
 resource "aws_ecs_service" "ECS-Service" {
-    name    = "Docker-container-${var.project_environment}"
+    name    = "docker-container-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
     task_definition = aws_ecs_task_definition.docker-task.arn
     desired_count = var.desired_tasks
