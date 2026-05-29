@@ -54,9 +54,9 @@ resource "aws_s3_object" "docker_volumes_folder" {
 }
 
 resource "aws_s3_bucket" "extra-files" {
-    bucket = "extra-files"
+    bucket = "artifacts-cabral-cloud"
     tags = {
-        Name = "extra-files"
+        Name = "artifacts-cabral-cloud"
     }
     lifecycle {
         prevent_destroy = true
