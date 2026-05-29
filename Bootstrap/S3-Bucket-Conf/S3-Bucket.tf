@@ -49,14 +49,15 @@ resource "aws_s3_bucket" "docker-volumes" {
 }
 
 resource "aws_s3_object" "docker_volumes_folder" {
-  bucket = aws_s3_bucket.docker-volumes.id
-  key    = "Volumes/${var.project_environment}/"  # Trailing slash makes it a folder
+    bucket = aws_s3_bucket.docker-volumes.id
+    key    = "Volumes/${var.project_environment}/"  # Trailing slash makes it a folder
 }
 
-resource "aws_s3_bucket" "extra-files" {
-    bucket = "artifacts-cabral-cloud"
-    tags = {
-        Name = "artifacts-cabral-cloud"
+resource "aws_s3_bucket" "artifacts-cloud" {
+    count   = terraform.workspace == "prod" ? 1 : 0
+    bucket  = "artifacts-cabral-cloud"
+    tags    = {
+        Name = "extra-files"
     }
     lifecycle {
         prevent_destroy = true
