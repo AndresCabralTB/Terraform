@@ -31,8 +31,13 @@ RUN mkdir -p /var/jenkins_home && \
     chmod -R u+rwx /var/jenkins_home && \
     mkdir -p /app/Terraform
 
-COPY ${pwd}/../.. /app/Terraform
+COPY ${pwd}/../../.. /app/Terraform
 
+<<<<<<< Updated upstream
+=======
+RUN chown -R jenkins:jenkins /app/Terraform
+
+>>>>>>> Stashed changes
 WORKDIR /var/jenkins_home/workspace
 RUN chown -R jenkins:jenkins /app/Terraform
 
