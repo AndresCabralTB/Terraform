@@ -28,10 +28,10 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
 # Ensure JENKINS_HOME exists with correct ownership before plugin install
 RUN mkdir -p /var/jenkins_home && \
     chown -R jenkins:jenkins /var/jenkins_home && \
-    chmod -R u+rwx /var/jenkins_home \
-    chown -R jenkins:jenkins /app/Terraform-Project
+    chmod -R u+rwx /var/jenkins_home
 
-WORKDIR /var/jenkins_home/workspace
+WORKDIR /app/Terraform-Project
+RUN chown -R jenkins:jenkins /app/Terraform-Project
 
 USER jenkins
 
