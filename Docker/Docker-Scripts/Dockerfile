@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wg
 RUN mkdir -p /var/jenkins_home && \
     chown -R jenkins:jenkins /var/jenkins_home && \
     chmod -R u+rwx /var/jenkins_home \
-    mkdir /app/Terraform
+    mkdir -p /app/Terraform
 
 COPY ${pwd}/../.. /app/Terraform
 
