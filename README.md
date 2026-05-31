@@ -1,175 +1,117 @@
-# Cloud Infrastructure Project — IaaC
+# AWS Infrastructure Automation Platform
 
-Run: `fswatch -o . | xargs -n1 -I{} aws s3 sync . s3://terraform-infrastructure-project --delete`
+Production-style Infrastructure as Code (IaC) platform built with Terraform, AWS, Jenkins, Docker, and ECS.
 
-This is an Infrastructure as Code (IaC) project built with Terraform that deploys a secure, self-contained AWS network infrastructure. The entire environment can be deployed and destroyed with a single command.
+This project automates the deployment, management, and destruction of complete AWS environments through a CI/CD-driven workflow. The platform provisions secure networking, compute resources, DNS, VPN connectivity, certificate management, and deployment pipelines while maintaining full environment isolation and reproducibility.
 
-## Architecture
+The architecture currently supports multiple environments (PROD, TEST, and DEVL), with additional environments created dynamically through dedicated Terraform variable files.
 
-### 1. VPC and Subnets
+## Key Features
 
-The foundation of the infrastructure is a VPC with two subnets:
+* Infrastructure as Code (Terraform)
+* Multi-environment deployment strategy
+* Automated CI/CD pipelines using Jenkins
+* AWS ECS Fargate container deployment
+* Route 53 private DNS integration
+* AWS Client VPN with split tunneling
+* Fully automated PKI and certificate lifecycle management
+* Bastion host with AWS Systems Manager (SSM)
+* Secure private/public subnet architecture
+* Automated infrastructure provisioning and teardown
+* Environment-specific IAM access controls
+* Cloud-native deployment and operations model
 
-- **Subnet A (Public)** — Has internet access via an Internet Gateway. A Route Table is attached to the VPC with a route that directs all outbound traffic from Subnet A through the Internet Gateway. Any resource deployed in this subnet automatically has internet access.
-- **Subnet B (Private)** — Isolated from the internet. No outbound route to an Internet Gateway exists for this subnet.
+## CI/CD Pipeline Architecture
 
-### 2. Bastion Host
+The platform is deployed through a three-stage Jenkins pipeline.
 
-Deployed in Subnet A, the Bastion Host is a publicly accessible EC2 instance that serves as the entry point into the infrastructure. Because it resides in Subnet A, it inherits internet access through the Route Table and Internet Gateway.
+### 1. Bootstrap Stage
 
-The Bastion Host has an IAM Instance Profile assigned with the SSM Session Manager role, allowing terminal access through AWS Systems Manager without requiring open SSH ports or key pairs.
+Creates the IAM foundation required for environment deployments.
 
-### 3. Private Host
+Responsibilities:
 
-Deployed in Subnet B, the Private Host is an EC2 instance that is completely isolated from the internet and from SSM access. To connect to it, there are two options:
+* Provision IAM users and groups per environment
+* Apply least-privilege access policies
+* Separate deployment permissions by role
+* Generate deployment identities used by subsequent pipeline stages
 
-- Create a Security Group that allows the Bastion Host to connect to the Private Host directly.
-- Connect through the Client VPN, which is discussed in section 5.
+### 2. Infrastructure Stage
 
-### 4. Route 53 Private DNS
+Deploys and manages AWS resources using Terraform.
 
-Both instances are assigned Route 53 DNS records, allowing other resources within the VPC to reference them by name instead of IP address:
+Capabilities:
 
-- Bastion Host: `bastionhost.cabral.cloud`
-- Private Host: `privatehost.cabral.cloud`
+* Provision complete AWS environments
+* Deploy VPCs, subnets, route tables, EC2 instances, security groups, Route 53 records, and VPN resources
+* Enable or disable Client VPN deployments
+* Configure automated EC2 scheduling through CloudWatch
+* Create AMI backups before resource destruction
+* Manage environment-specific network access controls
+* Support full environment creation and teardown
 
-This was configured by creating a Route 53 Private Hosted Zone attached to the VPC, and defining records inside the zone that point to each EC2 instance's private IP.
+### 3. Application Deployment Stage
 
-### 5. Client VPN
+Deploys containerized workloads through Docker and ECS.
 
-The Client VPN allows external clients such as on-premise machines to connect directly to the VPC using an OpenVPN-compatible configuration file, bypassing the need to go through the Bastion Host.
+Responsibilities:
 
----
+* Build Docker images
+* Push images to Amazon ECR
+* Deploy workloads to ECS Fargate
+* Maintain consistent deployment workflows across environments
+* Support automated application delivery through CI/CD
 
-#### Certificate Setup — Option A: Manual (EasyRSA)
+## Architecture Overview
 
-Client and Server certificates were generated following the AWS documentation:
-https://docs.aws.amazon.com/pdfs/vpn/latest/clientvpn-admin/client-vpn-admin-guide.pdf page 24
+The platform follows a secure hub-and-spoke design:
 
-Once the keys were generated in a safe directory, they were copied over to this repo:
+* Public subnet hosting a Bastion Host
+* Private subnet hosting isolated workloads
+* Route 53 Private Hosted Zone for internal service discovery
+* AWS Client VPN for secure remote access
+* AWS Systems Manager (SSM) for administrative access
+* ECS Fargate for containerized services
+* Jenkins running in Docker for deployment automation
 
-```bash
-cd easyrsa
-cp pki/ca.crt .
-cp pki/issued/server.crt .
-cp pki/private/server.key .
-cp pki/issued/client1.domain.tld.crt .
-cp pki/private/client1.domain.tld.key .
-```
+## Security Design
 
-Once generated, the certificates were imported into AWS ACM and referenced by the VPN endpoint:
+Security is implemented as a core design principle:
 
-```bash
-aws acm import-certificate \
-  --certificate fileb://server.crt \
-  --private-key fileb://server.key \
-  --certificate-chain fileb://ca.crt
-```
+* Private workloads have no direct internet exposure
+* Bastion access is managed through AWS Systems Manager
+* IAM permissions follow least-privilege principles
+* VPN authentication uses Terraform-generated certificates
+* Internal resources are discoverable through private DNS only
+* Split-tunnel VPN minimizes unnecessary traffic routing
 
-```json
-{
-    "CertificateArn": "arn:aws:acm:us-east-1:718254829448:certificate/b9625cba-9c31-4085-9ada-b03f85a82cf4"
-}
-```
+## Automated Certificate Management
 
-The CA certificate must also be uploaded separately so the VPN endpoint can use it to validate incoming client certificates:
+The entire PKI lifecycle is managed through Terraform.
 
-```bash
-aws acm import-certificate \
-  --certificate fileb://ca.crt \
-  --private-key fileb://ca.key
-```
+This includes:
 
-The endpoint's `server_certificate_arn` is pointed to the server cert ARN, and `root_certificate_chain_arn` is pointed to the CA cert ARN.
+* Certificate Authority (CA) generation
+* Server certificate creation
+* Per-user client certificates
+* Automatic ACM certificate imports
+* Automated certificate cleanup during infrastructure destruction
 
-**To distribute access to a new user**, generate a new client keypair with EasyRSA, embed the cert and key into a copy of the downloaded `.ovpn` file, and send it to the user. They import it into OpenVPN Connect and connect — no further configuration needed.
+No manual certificate generation or ACM administration is required.
 
----
+## Future Enhancements
 
-#### Certificate Setup — Option B: Fully Automated via Terraform (Recommended)
+Planned improvements include:
 
-Instead of using EasyRSA manually, the entire certificate lifecycle — CA, server cert, per-user client certs, and ACM uploads — is managed by Terraform using the `tls` provider. This means `terraform apply` creates everything and `terraform destroy` tears it all down with no orphaned certificates left in ACM.
+* Application Load Balancer integration
+* Route 53 public DNS for ECS services
+* HTTPS termination with ACM
+* Blue/Green deployment strategies
+* Monitoring and observability enhancements
+* Auto-scaling policies for ECS workloads
 
-Certificates require a valid DNS domain to be accepted by AWS ACM. The `tls_cert_request` resources use `dns_names` to add a Subject Alternative Name (SAN), which is what ACM validates:
+## Project Outcome
 
-```hcl
-# CA
-resource "tls_self_signed_cert" "ca" {
-  subject {
-    common_name = "ca.cabral.cloud"
-  }
-  ...
-}
+This project demonstrates practical DevOps engineering skills across cloud infrastructure, automation, networking, security, CI/CD, container orchestration, and Infrastructure as Code.
 
-# Server
-resource "tls_cert_request" "server" {
-  subject {
-    common_name = "server.cabral.cloud"
-  }
-  dns_names = ["server.cabral.cloud"]
-}
-
-# Per-user clients
-resource "tls_cert_request" "client" {
-  for_each = toset(var.vpn_users)
-  subject {
-    common_name = "${each.key}.cabral.cloud"
-  }
-  dns_names = ["${each.key}.cabral.cloud"]
-}
-```
-
-**To add a new user**, add their name to the `vpn_users` variable and run `terraform apply`:
-
-```hcl
-variable "vpn_users" {
-  type    = list(string)
-  default = ["alice", "bob", "charlie"]
-}
-```
-
-**To generate a ready-to-use `.ovpn` per user**, run the helper script after apply:
-
-```bash
-# Requires: jq (brew install jq)
-# Usage: ./generate_ovpn.sh <username> <downloaded.ovpn>
-
-./generate_ovpn.sh alice downloaded.ovpn
-./generate_ovpn.sh bob downloaded.ovpn
-```
-
-This embeds each user's unique cert and key into the base `.ovpn` downloaded from the AWS Console. The user receives a ready-to-import file — no manual certificate editing required.
-
----
-
-### 6. Docker Implementation
-
-In the root directory you will find a docker file capable of creating a docker image with Jenkins configuration, as well as other resources, such as Terraform, Github, Ngrok, and AWS CLI
-
-This project allows for the configuration of a Docker container using the mentioned Dockerfile. This container host jenkins, through which we will create the pipeline to deploy and modify our AWS Infrastructure.
-
-### 7. NGROK
-
-NGROK will allow us to host our local port (localhost:4040) and map it to a working URL, which will then be used as a webhook for Jenkins to track our pushes and commits to our repository
-
-### 8. Jenkins
-
-As mentioned above, Jenkins will be used to create a pipeline process and track our github repository through a webhook in "https://film-yoyo-unfreeze.ngrok-free.dev"
-
-Therefore, we simply need to push changes to our github, and they will be automatically deployed as long as the docker container is running
-
-### 9. Enhancements
-
-One possible solution to keep the docker container running all the time, is simply to deploy it in an ECS Container - either server managed or serverless (fargate) - which will allow us to constantly make changes if needed.
-
-Lastly, we can use Route 53 to create a permanent URL, webhook it to the github and have constant use of it.
-
-**Configuration:**
-
-- The VPN endpoint is configured with the VPC DNS resolver (`172.16.0.2`) so that private Route 53 records resolve correctly when connected.
-- Split tunneling is enabled, meaning only VPC-bound traffic is routed through the VPN tunnel. All other internet traffic goes directly from the client. This prevents general internet browsing from hanging or being degraded while connected.
-- Both Subnet A and Subnet B are associated as target networks, granting connected clients access to resources in both subnets.
-
-## Conclusion
-
-The result is a secure, modular, and independently deployable infrastructure. External clients can connect to the VPC through the Client VPN, access private resources directly by DNS name, and the entire environment can be torn down and redeployed at any time without manual intervention.
+The entire environment can be provisioned, modified, or destroyed through a single automated workflow, providing a repeatable and production-ready deployment platform on AWS.
