@@ -106,7 +106,6 @@ Planned improvements include:
 * Application Load Balancer integration
 * Route 53 public DNS for ECS services
 * HTTPS termination with ACM
-* Blue/Green deployment strategies
 * Monitoring and observability enhancements
 * Auto-scaling policies for ECS workloads
 
