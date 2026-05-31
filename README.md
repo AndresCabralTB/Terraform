@@ -140,8 +140,6 @@ variable "vpn_users" {
 
 This embeds each user's unique cert and key into the base `.ovpn` downloaded from the AWS Console. The user receives a ready-to-import file — no manual certificate editing required.
 
-> ⚠️ Private keys are stored in the Terraform state file. Ensure your state backend (e.g. S3) has encryption and restricted access enabled.
-
 ---
 
 ### 6. Docker Implementation
