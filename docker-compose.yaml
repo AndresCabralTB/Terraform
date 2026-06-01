@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  Jenkins-Local:
+    build: .
+  Jenkins-Remote:
+    image: "mysql"
