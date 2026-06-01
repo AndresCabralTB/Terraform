@@ -1,6 +1,7 @@
 services:
   jenkins-local:
     build: .
+    image: "jenkins-local"
     ports:
       - "4040:8080"
   jenkins-remote:
