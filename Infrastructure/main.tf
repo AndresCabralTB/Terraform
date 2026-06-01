@@ -70,6 +70,12 @@ module "EFS_Module" {
   BastionHost_SG_id   = module.EC2_Module.BastionHost_SecurityGroup_Id
 }
 
+module "EBS_Volume_Module" {
+    source  = "./EBS-Volume-Conf"
+    project_environment = var.project_environment
+    BastionHost_Id = module.EC2_Module.BastionHost_Output_Id
+}
+
 output "efs_system_id" {
     value = module.EFS_Module.efs_system_id
 }
