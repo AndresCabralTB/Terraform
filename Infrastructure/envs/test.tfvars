@@ -5,5 +5,5 @@ backup_on_destroy = false
 enable_vpn = false
 enable_cloudwatch_rule = false
 
-BastionHostAMI = "Baseline-BastionHost-AMI"
+BastionHostAMI = "BastionHost-Terraform-prod-backup-20260601"
 PrivateHostAMI = "Baseline-PrivateHost-AMI"
