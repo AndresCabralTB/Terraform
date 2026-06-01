@@ -8,11 +8,15 @@ variable "BastionHost_Id"{
 
 resource "aws_ebs_volume" "bastionhost_ebs_volumes"{
     availability_zone   = "us-east-1a"
-    size                = 8
+    size                = 10
+
+    tags = {
+        Name = "ebs-bh-${var.project_environemnt}"
+    }
 }
 
 resource "aws_volume_attachment" "bastionhost_ebs_att"{
-    device_name     = "/dev/xyz"
+    device_name     = "/dev/xvda1"
     volume_id       = aws_ebs_volume.bastionhost_ebs_volumes.id
     instance_id     = var.BastionHost_Id
 }

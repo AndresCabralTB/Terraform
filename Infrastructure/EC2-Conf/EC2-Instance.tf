@@ -86,7 +86,7 @@ resource "aws_instance" "BastionHost" {
     availability_zone           = "us-east-1a"
     iam_instance_profile        =  data.aws_iam_instance_profile.BastionHostProfile.name
     instance_type               = "t2.micro"
-    #user_data_replace_on_change = true
+    user_data_replace_on_change = true
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
