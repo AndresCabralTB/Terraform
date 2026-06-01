@@ -98,8 +98,8 @@ resource "aws_instance" "BastionHost" {
         #!/bin/bash
         mkdir -p ${local.mount_dir}
         chown 1000:1000 ${local.mount_dir}
-        hostnamectl set-hostname ${local.BastionHost_InternalName}
         mount -t efs -o tls ${var.efs_system_id}:/ ${local.mount_dir}
+        hostnamectl set-hostname ${local.BastionHost_InternalName}.test.1
     EOF
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]

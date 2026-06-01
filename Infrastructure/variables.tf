@@ -90,3 +90,8 @@ variable "backup_on_destroy" {
     type        = bool
     default     = false
 }
+
+variable "enable_ebs" {
+    type = bool
+    default = false
+}

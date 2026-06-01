@@ -71,9 +71,10 @@ module "EFS_Module" {
 }
 
 module "EBS_Volume_Module" {
-    source  = "./EBS-Volume-Conf"
-    project_environment = var.project_environment
-    BastionHost_Id = module.EC2_Module.BastionHost_Output_Id
+    source                  = "./EBS-Volume-Conf"
+    project_environment     = var.project_environment
+    BastionHost_Id          = module.EC2_Module.BastionHost_Output_Id
+    count                   = var.enable_ebs ? 1 : 0
 }
 
 output "efs_system_id" {
