@@ -24,22 +24,6 @@ resource "aws_efs_mount_target" "efs_mount_target" {
   security_groups   = ["${var.BastionHost_SG_id}"]
 }
 
-resource "aws_efs_file_system" "efs_system_local_to_bastionhost" {
-  creation_token    = "efs-local-to-bastionhost"
-  #description       = "This it the EFS system to share my local code to the bastion host"
-  encrypted         = true
-
-  tags = {
-    Name = "efs-local-to-bastionhost"
-  }
-}
-
-resource "aws_efs_mount_target" "efs_mount_target_local" {
-  file_system_id    = aws_efs_file_system.efs_system_local_to_bastionhost.id
-  subnet_id         = var.subnet_A_id
-  security_groups   = ["${var.BastionHost_SG_id}"]
-}
-
 output "efs_system_id" {
     value = aws_efs_file_system.efs_system.id
 }
