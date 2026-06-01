@@ -39,7 +39,7 @@ variable "efs_system_id" {
 
 
 locals {
-  BastionHost_InternalName  = "bastionhost.${var.project_environment}.cabral.cloud.test.1"
+  BastionHost_InternalName  = "bastionhost.${var.project_environment}.cabral.cloud"
   PrivateHost_InternalName  = "privatehost.${var.project_environment}.cabral.cloud"
   BastionHost_Name          = "BastionHost-Terraform-${var.project_environment}"
   PrivateHost_Name          = "PrivateHost-Terraform-${var.project_environment}"
@@ -99,11 +99,21 @@ resource "aws_instance" "BastionHost" {
         mkdir -p ${local.mount_dir}
         chown 1000:1000 ${local.mount_dir}
         mount -t efs -o tls ${var.efs_system_id}:/ ${local.mount_dir}
-        hostnamectl set-hostname ${local.BastionHost_InternalName}.test.1
+        hostnamectl set-hostname ${local.BastionHost_InternalName}
     EOF
 
     vpc_security_group_ids      = [module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_A_id
+
+    root_block_device {
+        delete_on_termination  = false
+        volume_size = 10
+        volume_type = "standard"
+
+        tags = {
+            Name = "bastion-host-root-block-device-${var.project_environment}"
+        }
+    }
 
     tags = {
       Name = local.BastionHost_Name
