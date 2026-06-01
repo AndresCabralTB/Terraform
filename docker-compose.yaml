@@ -3,5 +3,10 @@ version: "3.9"
 services:
   Jenkins-Local:
     build: .
+    ports:
+      - "4040:8080"
   Jenkins-Remote:
-    image: "mysql"
+    image: "jenkins/jenkins"
+    ports:
+      - "5050:8080"
+    
