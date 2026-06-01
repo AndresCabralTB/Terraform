@@ -19,6 +19,11 @@ resource "aws_volume_attachment" "bastionhost_ebs_att"{
     device_name     = "/dev/sda1"
     volume_id       = aws_ebs_volume.bastionhost_ebs_volumes.id
     instance_id     = var.BastionHost_Id
+
+    timeouts {
+        create = "30m"
+        delete = "30m"  # ← increase this
+    }
 }
 
 
