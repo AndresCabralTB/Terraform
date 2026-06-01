@@ -1,11 +1,9 @@
-version: "3.9"
-
 services:
-  Jenkins-Local:
+  jenkins-local:
     build: .
     ports:
       - "4040:8080"
-  Jenkins-Remote:
+  jenkins-remote:
     image: "jenkins/jenkins"
     ports:
       - "5050:8080"
