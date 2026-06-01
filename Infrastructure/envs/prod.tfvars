@@ -5,6 +5,6 @@ backup_on_destroy = true
 enable_vpn = false
 enable_cloudwatch_rule = true
 
-BastionHostAMI = "BastionHost-Terraform-prod-backup-20260527"
+BastionHostAMI = "BastionHost-Terraform-prod-backup-20260601"
 PrivateHostAMI = "PrivateHost-Terraform-prod-backup-20260527"
 #Force redeploy
