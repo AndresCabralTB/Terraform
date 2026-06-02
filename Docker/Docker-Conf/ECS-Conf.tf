@@ -106,7 +106,7 @@ resource "aws_ecs_task_definition" "docker-task" {
         name = "jenkins-home"
         efs_volume_configuration {
             file_system_id = data.aws_efs_file_system.efs_tag.file_system_id
-            root_directory = "/"
+            root_directory = "/jenkins"
         }
     }
 

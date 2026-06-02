@@ -88,7 +88,7 @@ variable "force_destroy" {
 
 variable "backup_on_destroy" {
     type        = bool
-    default     = false
+    default     = true
 }
 
 variable "enable_ebs" {
