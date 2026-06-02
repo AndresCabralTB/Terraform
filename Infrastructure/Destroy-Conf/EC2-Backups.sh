@@ -4,14 +4,11 @@ date=$(date '+%Y%m%d')
 echo "Creating backup"
 
 # Get running instances
-IFS=$'\n' read -r -d '' -a INSTANCE_LIST < <(
-  aws ec2 describe-instances \
-    --filters \
-      "Name=tag:Name,Values=*${ENVIRONMENT}*" \
-      "Name=instance-state-name,Values=running" \
-    --query "Reservations[].Instances[].InstanceId" \
-    --output text
-)
+IFS=$'\n' read -r -d '' -a INSTANCE_LIST < <(aws ec2 describe-instances \
+    --filters "Name=tag:Name,Values=*${ENVIRONMENT}*" \
+    "Name=instance-state-name,Values=running" \
+    --query "Reservations[*].Instances[*].[InstanceId]" \
+    --output text)
 
 NEW_INSTANCE_LIST=$(IFS=','; echo "${INSTANCE_LIST[*]}")
 echo "List: ${NEW_INSTANCE_LIST}"
