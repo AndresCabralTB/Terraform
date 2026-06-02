@@ -3,4 +3,4 @@ project_environment = "prod"
 force_redeploy = true
 desired_tasks = 1
 image_name = "terraform-image-linuxamd64-v7.0"
-efs_id = "fs-06e648d04941f658c"  #Currently not used - Instead ECS gets the Terraform data source
+#efs_id = "fs-06e648d04941f658c"  #Currently not used - Instead ECS gets the Terraform data source
