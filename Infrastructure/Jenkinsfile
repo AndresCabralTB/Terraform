@@ -94,7 +94,7 @@ pipeline {
                             terraform plan \
                                 -destroy \
                                 -var-file=envs/${deployEnv}.tfvars \
-                                -vat-file=envs/ips.tfvars \
+                                -var-file=envs/ips.tfvars \
                                 -out=destroy.tfplan
 
                             terraform apply -auto-approve destroy.tfplan
