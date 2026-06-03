@@ -1,4 +1,3 @@
-allowed_hosts = ["177.240.100.3/32","177.240.135.3/32", "177.240.102.207/32"]
 project_environment  = "prod"
 force_redeploy = true
 enable_vpn = false

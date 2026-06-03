@@ -27,3 +27,6 @@ secrets.tf
 #Docker volumes
 /Docker/Volumes/*
 Docker/Volumes/jenkins-data-backup.tar.gz
+
+# Ips
+Infrastructure/envs/ips.tfvars
