@@ -6,13 +6,14 @@ pipeline {
     agent any
 
     environment {
-        HOME_DIR              = "Infrastructure"
-        AWS_ACCESS_KEY_ID     = credentials('Jenkins-infrastructure-access-key')
-        AWS_SECRET_ACCESS_KEY = credentials('Jenkins-infrastructure-secret-access-key')
-        NGROK_TOKEN           = credentials('NGROK_TOKEN')
-        TF_VAR_workspace      = "${WORKSPACE}"
-        TF_VAR_project_region = "us-east-1"
-        SKIP_PIPELINE         = false
+        HOME_DIR                = "Infrastructure"
+        AWS_ACCESS_KEY_ID       = credentials('Jenkins-infrastructure-access-key')
+        AWS_SECRET_ACCESS_KEY   = credentials('Jenkins-infrastructure-secret-access-key')
+        NGROK_TOKEN             = credentials('NGROK_TOKEN')
+        TF_VAR_workspace        = "${WORKSPACE}"
+        TF_VAR_project_region   = "us-east-1"
+        SECRET_FILE             = credentials('BastionHost_IPs')
+        SKIP_PIPELINE           = false
     }
 
     stages {
@@ -94,7 +95,7 @@ pipeline {
                             terraform plan \
                                 -destroy \
                                 -var-file=envs/${deployEnv}.tfvars \
-                                -var-file=envs/ips.tfvars \
+                                -var-file=${env.SECRET_FILE} \
                                 -out=destroy.tfplan
 
                             terraform apply -auto-approve destroy.tfplan
@@ -117,7 +118,7 @@ pipeline {
                             chmod -R +rx *
                             terraform init
                             terraform workspace select ${deployEnv} || terraform workspace new ${deployEnv}
-                            terraform plan -var-file=envs/${deployEnv}.tfvars -var-file=envs/ips.tfvars --out=tfplan
+                            terraform plan -var-file=envs/${deployEnv}.tfvars -var-file=${env.SECRET_FILE} --out=tfplan
                             terraform apply tfplan 
                         """
                     }

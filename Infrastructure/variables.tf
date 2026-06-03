@@ -55,7 +55,7 @@ variable "workspace"{
 
 variable "allowed_hosts" {
   type          = list
-  default       = ["177.240.100.3/32"]
+  default       = [""]
   description   = "This is the Public IP for hosts allowed to ssh into the bastion host"
 }
 
