@@ -96,9 +96,20 @@ resource "aws_instance" "BastionHost" {
     #}
     user_data = <<-EOF
         #!/bin/bash
-        mkdir -p ${local.mount_dir}
-        chown 1000:1000 ${local.mount_dir}
-        mount -t efs -o tls ${var.efs_system_id}:/ ${local.mount_dir}
+
+        set -e
+        MOUNT_DIR=${local.mount_dir}
+        EFS_ID=${var.efs_system_id}
+
+        mkdir -p "$MOUNT_DIR"
+        chown 1000:1000 "$MOUNT_DIR"
+
+        grep -q " $MOUNT_DIR " /etc/fstab || \
+            echo "$EFS_ID:/ $MOUNT_DIR efs _netdev,tls,nofail,x-systemd.automount 0 0" >> /etc/fstab
+
+        systemctl daemon-reload
+        mount -a
+
         hostnamectl set-hostname ${local.BastionHost_InternalName}
     EOF
 
