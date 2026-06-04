@@ -32,6 +32,12 @@ data "aws_subnet" "subnet_A" {
   }
 }
 
+data "aws_efs_file_system" "efs_tag" {
+  tags = {
+    Name = "efs-docker-volumes-${var.project_environment}"
+  }
+}
+
 #Create the ECS Cluster for all PROD ECS Services
 resource "aws_ecs_cluster" "docker-cluster" {
     name = "containers-cluster-${var.project_environment}"
