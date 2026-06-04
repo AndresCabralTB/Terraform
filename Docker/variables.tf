@@ -32,3 +32,8 @@ variable "efs_id"{
     type = string
     default = ""
 }
+
+variable "enable_garafana" {
+    type = bool
+    default = false
+}
