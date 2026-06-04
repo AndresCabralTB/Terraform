@@ -1,11 +1,13 @@
 services:
-  jenkins-local:
+  jenkins:
     build: .
-    image: "jenkins-local"
+    image: "jenkins-image-linuxamd64-v8.0"
+    platform: linux/arm64/v8
     ports:
       - "4040:8080"
-  jenkins-remote:
-    image: "jenkins/jenkins"
+  garafana:
+    image: "garafana/garafana"
+    platform: linux/arm64/v8
     ports:
-      - "5050:8080"
+      - "3000:3000"
     

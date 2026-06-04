@@ -13,9 +13,14 @@ variable "desired_tasks" {
     default = 1
 }
 
-variable "image_name" {
+variable "jenkins_image_name" {
     type = string
-    default = "Image-Not-Defined"
+    default = "Jenkins-Image-Not-Defined"
+}
+
+variable "garafana_image_name" {
+    type = string
+    default = "Garafana-Image-Not-Defined"
 }
 
 variable "aws_account_id" {
