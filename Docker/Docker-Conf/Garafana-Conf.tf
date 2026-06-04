@@ -5,12 +5,12 @@ variable "enable_garafana" {
 resource "aws_ecs_service" "Garafana-Service" {
     name = "garafana-service-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
-    task_definition = aws_ecs_task_definition.garafana-task.arn
+    task_definition = aws_ecs_task_definition.garafana-task[0].arn
     desired_count = var.desired_tasks
     launch_type     = "FARGATE"  # or "EC2"
     enable_execute_command = true        # add to allow connections to the docker container
     count           = var.enable_garafana ? 1 : 0
-    
+
     network_configuration {                                        # block, not = {}
         assign_public_ip = true
         security_groups  = [aws_security_group.ecs_task_securitygroup.id]
