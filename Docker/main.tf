@@ -5,5 +5,6 @@ module "ECR_Module"{
     desired_tasks               = var.desired_tasks
     jenkins_image_name          = var.jenkins_image_name
     garafana_image_name         = var.garafana_image_name
+    enable_garafana             = var.enable_garafana
     efs_id                      = var.efs_id #Currently not used
 }
