@@ -1,3 +1,16 @@
+data "aws_subnet" "subnet_A" {
+  filter {
+    name   = "tag:Name"
+    values = ["VPC-Subnet-A-Terraform-${var.project_environment}"]
+  }
+}
+
+data "aws_efs_file_system" "efs_tag" {
+  tags = {
+    Name = "efs-docker-volumes-${var.project_environment}"
+  }
+}
+
 #Create the Garafana Service
 resource "aws_ecs_service" "Garafana-Service" {
   name = "garafana-service-${var.project_environment}"
