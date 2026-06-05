@@ -2,12 +2,11 @@ services:
   jenkins:
     build: .
     image: "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod"
-    platform: linux/arm64/v8
     ports:
       - "4040:8080"
   garafana:
+    build: .
     image: "garafana/garafana"
-    platform: linux/arm64/v8
     ports:
       - "3000:3000"
     
