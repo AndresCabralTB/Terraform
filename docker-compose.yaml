@@ -1,6 +1,5 @@
 services:
   jenkins:
-    build: .
     image: "jenkins/jenkins"
     container_name: "jenkins-container-v1"
     ports:
