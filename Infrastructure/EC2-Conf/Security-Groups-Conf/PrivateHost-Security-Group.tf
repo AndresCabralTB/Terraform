@@ -33,8 +33,8 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
   from_port                    = 22
   ip_protocol                  = "tcp"
   to_port                      = 22
-  security_group_id            = aws_security_group.PrivateHostSG.id
-  referenced_security_group_id = aws_security_group.BastionHostSG.id
+  security_group_id            = aws_security_group.PrivateHostSG[count.index].id
+  referenced_security_group_id = aws_security_group.BastionHostSG[count.index].id
   tags = {
     Name = "IngressRule-PrivateHost-SG-${var.project_environment}"
   }
@@ -47,7 +47,7 @@ resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {
   from_port                    = 3306
   to_port                      = 3306
   ip_protocol                  = "tcp"
-  security_group_id            = aws_security_group.PrivateHostSG.id
+  security_group_id            = aws_security_group.PrivateHostSG[count.index].id
   referenced_security_group_id = var.TerraformDB_SecurityGroup_Id
 }
 
