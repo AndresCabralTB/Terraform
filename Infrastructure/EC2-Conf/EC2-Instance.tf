@@ -20,8 +20,8 @@ variable "subnet_B_id" {
 }
 
 variable "TerraformDB_SecurityGroup_Id" {
-  type = string
-  default = ""
+  type = list
+  default = [""]
 }
 
 variable "BastionHostAMI" {
