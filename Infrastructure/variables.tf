@@ -96,7 +96,7 @@ variable "enable_ebs" {
     default = false
 }
 
-variable "deploy_private_host"{
+variable "deploy_private_resources"{
   type = bool
   default = true
 }

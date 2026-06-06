@@ -2,7 +2,7 @@ variable "TerraformDB_SecurityGroup_Id" {
   type = string
 }
 
-variable "deploy_private_host"{
+variable "deploy_private_resources"{
   type = bool
 }
 
@@ -16,7 +16,7 @@ variable "deploy_private_host"{
 # ─────────────────────────────────────────────
 
 resource "aws_security_group" "PrivateHostSG" {
-  count   = var.deploy_private_host ? 1 : 0
+  count   = var.deploy_private_resources ? 1 : 0
   name    = "Private-Host-Security-Group-${var.project_environment}"
   vpc_id  = var.vpc_id
   tags    = {
@@ -28,7 +28,7 @@ resource "aws_security_group" "PrivateHostSG" {
 # Users SSH into the bastion first, then jump to this private host.
 # No direct public SSH access is permitted.
 resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
-  count   = var.deploy_private_host ? 1 : 0
+  count   = var.deploy_private_resources ? 1 : 0
   description                  = "Allow SSH connections from Bastion Host - ${var.project_environment}"
   from_port                    = 22
   ip_protocol                  = "tcp"
@@ -43,7 +43,7 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
 # Allow the private host to reach the database on port 3306 (MySQL/Aurora).
 # Scoped to the DB security group only — no broad outbound access.
 resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {
-  count   = var.deploy_private_host ? 1 : 0
+  count   = var.deploy_private_resources ? 1 : 0
   from_port                    = 3306
   to_port                      = 3306
   ip_protocol                  = "tcp"

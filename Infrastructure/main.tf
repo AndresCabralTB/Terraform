@@ -15,11 +15,12 @@ module "EC2_Module" {
   BastionHostAMI                = var.BastionHostAMI
   PrivateHostAMI                = var.PrivateHostAMI
   efs_system_id                 = module.EFS_Module.efs_system_id
-  deploy_private_host           = var.deploy_private_host
+  deploy_private_resources      = var.deploy_private_resources
 }
 
-module "RDS_Instance_Moduel" {
+module "RDS_Instance_Module" {
   source              = "./RDS-DB-Conf"
+  count               = var.deploy_private_resources ? 1 : 0
   project_environment = var.project_environment
   vpc_id              = module.VPC_Module.VPC_Terraform_Output.id
   PrivateHostSG_ID    = module.EC2_Module.PrivateHost_SecurityGroup_Id

@@ -37,7 +37,7 @@ variable "efs_system_id" {
     type = string
 }
 
-variable "deploy_private_host"{
+variable "deploy_private_resources"{
   type = bool
 }
 
@@ -77,7 +77,7 @@ module "SecurityGroups_Module" {
   allowed_hosts                 = var.allowed_hosts
   TerraformDB_SecurityGroup_Id  = var.TerraformDB_SecurityGroup_Id
   project_environment           = var.project_environment
-  deploy_private_host           = var.deploy_private_host
+  deploy_private_host           = var.deploy_private_resources
 }
 
 #Fetch the instance profile created in the bootstrap workspace
@@ -143,7 +143,7 @@ resource "aws_instance" "PrivateHost" {
     instance_type               = "t2.micro"
     vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_B_id
-    count                       = var.deploy_private_host ? 1 : 0
+    count                       = var.deploy_private_resources ? 1 : 0
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
