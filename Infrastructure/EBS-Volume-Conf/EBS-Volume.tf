@@ -8,7 +8,7 @@ variable "BastionHost_Id"{
 
 resource "aws_ebs_volume" "bastionhost_ebs_volumes"{
     availability_zone   = "us-east-1a"
-    size                = 15
+    size                = 20
 
     tags = {
         Name = "ebs-bh-${var.project_environment}"
