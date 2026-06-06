@@ -1,5 +1,6 @@
 variable "TerraformDB_SecurityGroup_Id" {
   type = string
+  default = ""
 }
 
 variable "deploy_private_resources"{

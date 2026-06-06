@@ -21,6 +21,7 @@ variable "subnet_B_id" {
 
 variable "TerraformDB_SecurityGroup_Id" {
   type = string
+  default = ""
 }
 
 variable "BastionHostAMI" {
