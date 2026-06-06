@@ -105,7 +105,7 @@ resource "aws_instance" "BastionHost" {
         chown 1000:1000 "$MOUNT_DIR"
 
         grep -q " $MOUNT_DIR " /etc/fstab || \
-            echo "$EFS_ID:/ $MOUNT_DIR efs _netdev,tls,nofail,x-systemd.automount 0 0" >> /etc/fstab
+            echo "$EFS_ID:/dev/sda1 $MOUNT_DIR efs _netdev,tls,nofail,x-systemd.automount 0 0" >> /etc/fstab
 
         systemctl daemon-reload
         mount -a
@@ -118,7 +118,7 @@ resource "aws_instance" "BastionHost" {
 
     root_block_device {
         delete_on_termination  = false
-        volume_size = 10
+        volume_size = 15
         volume_type = "standard"
 
         tags = {
