@@ -72,12 +72,12 @@ data "aws_ami" "privatehost_ami" {
 
 # Create the Security Groups
 module "SecurityGroups_Module" {
-  source                        = "./Security-Groups-Conf"
-  vpc_id                        = var.vpc_id
-  allowed_hosts                 = var.allowed_hosts
-  TerraformDB_SecurityGroup_Id  = var.TerraformDB_SecurityGroup_Id
-  project_environment           = var.project_environment
-  deploy_private_host           = var.deploy_private_resources
+  source                          = "./Security-Groups-Conf"
+  vpc_id                          = var.vpc_id
+  allowed_hosts                   = var.allowed_hosts
+  TerraformDB_SecurityGroup_Id    = var.TerraformDB_SecurityGroup_Id
+  project_environment             = var.project_environment
+  deploy_private_resources        = var.deploy_private_resources
 }
 
 #Fetch the instance profile created in the bootstrap workspace
