@@ -59,10 +59,11 @@ module "EventBrideEC2_Module" {
 
 module "Route53_Module" {
   source = "./Route-53-Conf"
-  project_environment     = var.project_environment
-  vpc_id                  = module.VPC_Module.VPC_Terraform_Output.id
-  bastionhost_private_ip  = module.EC2_Module.BastionHost_PrivateIp_Output
-  privatehost_private_ip  = module.EC2_Module.PrivateHost_PrivateIp_Output
+  project_environment       = var.project_environment
+  vpc_id                    = module.VPC_Module.VPC_Terraform_Output.id
+  bastionhost_private_ip    = module.EC2_Module.BastionHost_PrivateIp_Output
+  privatehost_private_ip    = module.EC2_Module.PrivateHost_PrivateIp_Output
+  deploy_private_resources  = var.deploy_private_resources
 }
 
 module "EFS_Module" {

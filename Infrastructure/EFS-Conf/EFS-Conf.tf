@@ -9,6 +9,7 @@ variable "subnet_A_id"{
 variable "BastionHost_SG_id"{
     type = string
 }
+
 resource "aws_efs_file_system" "efs_system" {
   creation_token = "efs-docker-volumes-${var.project_environment}"
   encrypted = true
