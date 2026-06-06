@@ -15,6 +15,7 @@ module "EC2_Module" {
   BastionHostAMI                = var.BastionHostAMI
   PrivateHostAMI                = var.PrivateHostAMI
   efs_system_id                 = module.EFS_Module.efs_system_id
+  deploy_private_host           = var.deploy_private_host
 }
 
 module "RDS_Instance_Moduel" {

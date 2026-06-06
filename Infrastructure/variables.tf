@@ -95,3 +95,8 @@ variable "enable_ebs" {
     type = bool
     default = false
 }
+
+variable "deploy_private_host"{
+  type = bool
+  default = true
+}

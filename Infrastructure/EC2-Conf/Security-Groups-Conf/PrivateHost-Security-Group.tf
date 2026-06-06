@@ -2,6 +2,10 @@ variable "TerraformDB_SecurityGroup_Id" {
   type = string
 }
 
+variable "deploy_private_host"{
+  type = bool
+}
+
 # ─────────────────────────────────────────────
 # Private Host Security Group
 # Defines inbound and outbound rules for the private host.
@@ -12,9 +16,10 @@ variable "TerraformDB_SecurityGroup_Id" {
 # ─────────────────────────────────────────────
 
 resource "aws_security_group" "PrivateHostSG" {
-  name   = "Private-Host-Security-Group-${var.project_environment}"
-  vpc_id = var.vpc_id
-  tags = {
+  count   = var.deploy_private_host ? 1 : 0
+  name    = "Private-Host-Security-Group-${var.project_environment}"
+  vpc_id  = var.vpc_id
+  tags    = {
     Name = "Private-Host-Security-Group-${var.project_environment}"
   }
 }
@@ -23,6 +28,7 @@ resource "aws_security_group" "PrivateHostSG" {
 # Users SSH into the bastion first, then jump to this private host.
 # No direct public SSH access is permitted.
 resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
+  count   = var.deploy_private_host ? 1 : 0
   description                  = "Allow SSH connections from Bastion Host - ${var.project_environment}"
   from_port                    = 22
   ip_protocol                  = "tcp"
@@ -37,6 +43,7 @@ resource "aws_vpc_security_group_ingress_rule" "PrivateHostIngress" {
 # Allow the private host to reach the database on port 3306 (MySQL/Aurora).
 # Scoped to the DB security group only — no broad outbound access.
 resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {
+  count   = var.deploy_private_host ? 1 : 0
   from_port                    = 3306
   to_port                      = 3306
   ip_protocol                  = "tcp"
@@ -47,5 +54,5 @@ resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {
 # Output the Private Host SG ID so it can be referenced by other modules,
 # such as the VPN and DB security group configurations.
 output "PrivateHostSecurityGroup_Id_Output" {
-  value = aws_security_group.PrivateHostSG.id
+  value = one(aws_security_group.PrivateHostSG[*].id)
 }
