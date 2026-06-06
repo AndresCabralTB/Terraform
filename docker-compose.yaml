@@ -1,12 +1,12 @@
 services:
   jenkins:
-    image: "jenkins/jenkins"
+    image: "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:jenkins-image-linuxamd64-v9.0"
     container_name: "jenkins-container-v1"
     ports:
       - "4040:8080"
   garafana:
-    image: "garafana/garafana"
-    container_name: "garafana-container-v1"
+    image: "grafana/grafana"
+    container_name: "grafana-container-v1"
     ports:
       - "3000:3000"
     
