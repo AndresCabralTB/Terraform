@@ -1,7 +1,7 @@
 services:
   jenkins:
     build: .
-    image: "jenkins-image-linuxamd64-v8.0"
+    image: "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod"
     platform: linux/arm64/v8
     ports:
       - "4040:8080"
