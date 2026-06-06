@@ -20,7 +20,8 @@ variable "subnet_B_id" {
 }
 
 variable "TerraformDB_SecurityGroup_Id" {
-  type = string
+  type = list
+  default = [""]
 }
 
 variable "BastionHostAMI" {
@@ -35,6 +36,10 @@ variable "PrivateHostAMI" {
 
 variable "efs_system_id" {
     type = string
+}
+
+variable "deploy_private_resources"{
+  type = bool
 }
 
 
@@ -68,11 +73,12 @@ data "aws_ami" "privatehost_ami" {
 
 # Create the Security Groups
 module "SecurityGroups_Module" {
-  source              = "./Security-Groups-Conf"
-  vpc_id                 = var.vpc_id
-  allowed_hosts       = var.allowed_hosts
-  TerraformDB_SecurityGroup_Id = var.TerraformDB_SecurityGroup_Id
-  project_environment     = var.project_environment
+  source                          = "./Security-Groups-Conf"
+  vpc_id                          = var.vpc_id
+  allowed_hosts                   = var.allowed_hosts
+  TerraformDB_SecurityGroup_Id    = var.TerraformDB_SecurityGroup_Id
+  project_environment             = var.project_environment
+  deploy_private_resources        = var.deploy_private_resources
 }
 
 #Fetch the instance profile created in the bootstrap workspace
@@ -85,7 +91,7 @@ resource "aws_instance" "BastionHost" {
     associate_public_ip_address = true
     availability_zone           = "us-east-1a"
     iam_instance_profile        =  data.aws_iam_instance_profile.BastionHostProfile.name
-    instance_type               = "t2.micro"
+    instance_type               = "t3.small"
     user_data_replace_on_change = true
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
@@ -117,8 +123,8 @@ resource "aws_instance" "BastionHost" {
     subnet_id                   = var.subnet_A_id
 
     root_block_device {
-        delete_on_termination  = false
-        volume_size = 10
+        delete_on_termination  = true
+        volume_size = 15
         volume_type = "standard"
 
         tags = {
@@ -138,6 +144,7 @@ resource "aws_instance" "PrivateHost" {
     instance_type               = "t2.micro"
     vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_B_id
+    count                       = var.deploy_private_resources ? 1 : 0
     timeouts {
         create = "15m"  # Increases wait time to 15 minutes
       }
@@ -154,27 +161,29 @@ resource "aws_instance" "PrivateHost" {
     }
 }
 
+# Bastion Host Outputs
 output "BastionHost_Output_Id" {
   value = aws_instance.BastionHost.id
-}
-
-output "PrivateHost_Output_Id" {
-  value = aws_instance.PrivateHost.id
 }
 
 output "BastionHost_PrivateIp_Output" {
   value = aws_instance.BastionHost.private_ip
 }
 
-output "PrivateHost_PrivateIp_Output" {
-  value = aws_instance.PrivateHost.private_ip
-}
-
-
-output "PrivateHost_SecurityGroup_Id" {
-  value = module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output
-}
-
 output "BastionHost_SecurityGroup_Id" {
   value = module.SecurityGroups_Module.BastionHostSecurityGroup_Id_Output
 }
+
+# Private Host Outputs
+output "PrivateHost_Output_Id" {
+  value = one(aws_instance.PrivateHost[*].id)
+}
+
+output "PrivateHost_PrivateIp_Output" {
+  value = one(aws_instance.PrivateHost[*].private_ip)
+}
+
+output "PrivateHost_SecurityGroup_Id" {
+  value = one(module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output[*])
+}
+

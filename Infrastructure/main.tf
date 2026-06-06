@@ -11,14 +11,16 @@ module "EC2_Module" {
   subnet_B_id                   = module.VPC_Module.VPC_Subnet_B_Output.id #Pass the output from the subnet in the VPC module
   vpc_id                        = module.VPC_Module.VPC_Terraform_Output.id
   allowed_hosts                 = var.allowed_hosts
-  TerraformDB_SecurityGroup_Id  = module.RDS_Instance_Moduel.TerraformDB_SecurityGroup_Output_id
+  TerraformDB_SecurityGroup_Id  = module.RDS_Instance_Module[*].TerraformDB_SecurityGroup_Output_id
   BastionHostAMI                = var.BastionHostAMI
   PrivateHostAMI                = var.PrivateHostAMI
   efs_system_id                 = module.EFS_Module.efs_system_id
+  deploy_private_resources      = var.deploy_private_resources
 }
 
-module "RDS_Instance_Moduel" {
+module "RDS_Instance_Module" {
   source              = "./RDS-DB-Conf"
+  count               = var.deploy_private_resources ? 1 : 0
   project_environment = var.project_environment
   vpc_id              = module.VPC_Module.VPC_Terraform_Output.id
   PrivateHostSG_ID    = module.EC2_Module.PrivateHost_SecurityGroup_Id
@@ -57,10 +59,11 @@ module "EventBrideEC2_Module" {
 
 module "Route53_Module" {
   source = "./Route-53-Conf"
-  project_environment     = var.project_environment
-  vpc_id                  = module.VPC_Module.VPC_Terraform_Output.id
-  bastionhost_private_ip  = module.EC2_Module.BastionHost_PrivateIp_Output
-  privatehost_private_ip  = module.EC2_Module.PrivateHost_PrivateIp_Output
+  project_environment       = var.project_environment
+  vpc_id                    = module.VPC_Module.VPC_Terraform_Output.id
+  bastionhost_private_ip    = module.EC2_Module.BastionHost_PrivateIp_Output
+  privatehost_private_ip    = module.EC2_Module.PrivateHost_PrivateIp_Output
+  deploy_private_resources  = var.deploy_private_resources
 }
 
 module "EFS_Module" {
