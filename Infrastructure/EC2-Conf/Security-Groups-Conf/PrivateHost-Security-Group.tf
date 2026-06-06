@@ -49,7 +49,7 @@ resource "aws_vpc_security_group_egress_rule" "PrivateHostEgress" {
   to_port                      = 3306
   ip_protocol                  = "tcp"
   security_group_id            = aws_security_group.PrivateHostSG[count.index].id
-  referenced_security_group_id = var.TerraformDB_SecurityGroup_Id
+  referenced_security_group_id = var.TerraformDB_SecurityGroup_Id[0]
 }
 
 # Output the Private Host SG ID so it can be referenced by other modules,
