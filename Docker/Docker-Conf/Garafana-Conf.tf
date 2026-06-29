@@ -1,15 +1,15 @@
-variable "enable_garafana" {
+variable "enable_grafana" {
     type = bool
 }
-#Create the Garafana Service
-resource "aws_ecs_service" "Garafana-Service" {
-    name = "garafana-service-${var.project_environment}"
+#Create the Grafana Service
+resource "aws_ecs_service" "Grafana-Service" {
+    name = "grafana-service-${var.project_environment}"
     cluster = aws_ecs_cluster.docker-cluster.id
-    task_definition = aws_ecs_task_definition.garafana-task[0].arn
+    task_definition = aws_ecs_task_definition.grafana-task[0].arn
     desired_count = var.desired_tasks
     launch_type     = "FARGATE"  # or "EC2"
     enable_execute_command = true        # add to allow connections to the docker container
-    count           = var.enable_garafana ? 1 : 0
+    count           = var.enable_grafana ? 1 : 0
 
     network_configuration {                                        # block, not = {}
         assign_public_ip = true
@@ -18,8 +18,8 @@ resource "aws_ecs_service" "Garafana-Service" {
     }
 }
 
-# Task definition for Garafana
-resource "aws_ecs_task_definition" "garafana-task" {
+# Task definition for Grafana
+resource "aws_ecs_task_definition" "grafana-task" {
     family                   = var.project_environment
     network_mode             = "awsvpc"        # required for Fargate
     requires_compatibilities = ["FARGATE"]     # required for Fargate
@@ -27,20 +27,20 @@ resource "aws_ecs_task_definition" "garafana-task" {
     memory                   = "2048"           # task-level
     execution_role_arn       = aws_iam_role.ecs-task-role.arn
     task_role_arn            = aws_iam_role.ecs-task-role.arn  # runtime permissions
-    count                   = var.enable_garafana ? 1 : 0
+    count                   = var.enable_grafana ? 1 : 0
 
     volume {
-        name = "garafana-lib"
+        name = "grafana-lib"
         efs_volume_configuration {
             file_system_id = data.aws_efs_file_system.efs_tag.file_system_id
-            root_directory = "/garafana"
+            root_directory = "/grafana"
         }
     }
 
     container_definitions = jsonencode([
         {
-        name      = "garafana-task-${var.project_environment}"
-        image     = "${var.aws_account_id}.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:${var.garafana_image_name}"
+        name      = "grafana-task-${var.project_environment}"
+        image     = "${var.aws_account_id}.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-${var.project_environment}:${var.grafana_image_name}"
         cpu       = 1024
         memory    = 2048
         essential = true
@@ -53,7 +53,7 @@ resource "aws_ecs_task_definition" "garafana-task" {
 
         mountPoints = [
             {
-                sourceVolume  = "garafana-lib"    # must match volume name above
+                sourceVolume  = "grafana-lib"    # must match volume name above
                 containerPath = "/var/lib/grafana"
                 readOnly      = false
             }
@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "garafana-task" {
         logConfiguration = {
             logDriver = "awslogs"
             options = {
-            awslogs-group         = "/ecs/garafana/${var.project_environment}"
+            awslogs-group         = "/ecs/grafana/${var.project_environment}"
             awslogs-region        = "us-east-1"
             awslogs-stream-prefix = "ecs"
             }

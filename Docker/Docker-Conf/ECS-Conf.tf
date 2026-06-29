@@ -10,7 +10,7 @@ variable "jenkins_image_name" {
   type = string
 }
 
-variable "garafana_image_name"{
+variable "grafana_image_name"{
   type = string
 }
 

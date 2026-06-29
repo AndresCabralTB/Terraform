@@ -18,9 +18,9 @@ variable "jenkins_image_name" {
     default = "Jenkins-Image-Not-Defined"
 }
 
-variable "garafana_image_name" {
+variable "grafana_image_name" {
     type = string
-    default = "Garafana-Image-Not-Defined"
+    default = "Grafana-Image-Not-Defined"
 }
 
 variable "aws_account_id" {
@@ -33,7 +33,7 @@ variable "efs_id"{
     default = ""
 }
 
-variable "enable_garafana" {
+variable "enable_grafana" {
     type = bool
     default = false
 }

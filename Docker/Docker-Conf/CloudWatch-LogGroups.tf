@@ -9,14 +9,14 @@ resource "aws_cloudwatch_log_group" "jenkins_log_group" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "garafana_log_group" {
-  name              = "/ecs/garafana/${var.project_environment}"
+resource "aws_cloudwatch_log_group" "grafana_log_group" {
+  name              = "/ecs/grafana/${var.project_environment}"
   retention_in_days = 30
-  count           = var.enable_garafana ? 1 : 0
+  count           = var.enable_grafana ? 1 : 0
 
   tags = {
     Environment = "${var.project_environment}"
     ManagedBy   = "terraform"
-    Name        = "Garafana-log-group"
+    Name        = "Grafana-log-group"
   }
 }

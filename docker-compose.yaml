@@ -1,12 +1,44 @@
 services:
   jenkins:
-    image: "718254829448.dkr.ecr.us-east-1.amazonaws.com/docker-images-repo-prod:jenkins-image-linuxamd64-v9.0"
-    container_name: "jenkins-container-v1"
+    image: "jenkins/jenkins"
+    container_name: "jenkins-container"
+    user: "1000:1000"   # Jenkins default UID:GID
     ports:
-      - "4040:8080"
-  garafana:
-    image: "grafana/grafana"
-    container_name: "grafana-container-v1"
+      - "8080:8080"
+    volumes:
+      - jenkins-data-local:/var/jenkins_home
+    profiles:
+      - pipeline_services
+  database:
+    image: mysql
+    container_name: "mysql-container"
+    user: "1000:1000"
     ports:
-      - "3000:3000"
+      - "80:80"
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Roma2026
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-container
+    ports:
+      - "4040:3000"
+    depends_on:
+      - database
+    profiles:
+      - grafana_services
+volumes:
+  jenkins-data-local:
+    external: true
+    name: "jenkins-data-local"
+  mysql-volume:
+    name: "mysql-volume"
+
+
     
+#How to compile a tar.gz
+#tar -cvzf new_file_name.tar.gz /source/directory
+
+#Extract file
+#tar -xvzf new_file_name.tar.gz -C /target/directory
