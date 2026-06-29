@@ -1,6 +1,7 @@
 aws_account_id = "718254829448"
 project_environment = "prod"
-force_redeploy = true
+force_destroy = true
+force_redeploy = false
 desired_tasks = 1
 jenkins_image_name = "jenkins-image-linuxamd64-v8.0"
 garafana_image_name = "grafana-image-v2.0"
