@@ -1,7 +1,8 @@
 project_environment  = "prod"
-force_redeploy = true
+force_destroy = true
+force_redeploy = false
 enable_vpn = false
-enable_cloudwatch_rule = true
+enable_cloudwatch_rule = false
 enable_ebs = false
 deploy_private_resources = false
 
